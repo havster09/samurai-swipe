@@ -53,7 +53,12 @@ public class GenjuroController : MonoBehaviour
             genjuroAnimator.SetTrigger("IsStandMediumSlash");
         }
 
-       
+        if (canMove && grounded && Input.GetButtonDown("Fire3"))
+        {
+            genjuroAnimator.SetTrigger("IsStandHardSlash");
+        }
+
+
 
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
         genjuroAnimator.SetBool("IsGrounded", grounded);

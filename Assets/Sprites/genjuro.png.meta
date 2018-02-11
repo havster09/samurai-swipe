@@ -30,6 +30,20 @@ TextureImporter:
     21300046: standSlashMedium_02
     21300048: standSlashMedium_03
     21300050: standSlashMedium_04
+    21300052: standSlashMedium_05
+    21300054: standSlashMedium_06
+    21300056: standSlashMedium_07
+    21300058: standSlashMedium_08
+    21300060: standLightSlash_03
+    21300062: standSlashHard_01
+    21300064: standSlashHard_02
+    21300066: standSlashHard_03
+    21300068: standSlashHard_04
+    21300070: standSlashHard_05
+    21300072: standSlashHard_06
+    21300074: standSlashHard_07
+    21300076: standSlashHard_08
+    21300078: standSlashHard_09
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -96,12 +110,12 @@ TextureImporter:
       name: 01
       rect:
         serializedVersion: 2
-        x: 266
-        y: 678
-        width: 122
-        height: 113
+        x: 819
+        y: 661
+        width: 123
+        height: 115
       alignment: 9
-      pivot: {x: 0.24590164, y: 0.9734513}
+      pivot: {x: 0.25203252, y: 0.95652175}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -110,12 +124,12 @@ TextureImporter:
       name: 02
       rect:
         serializedVersion: 2
-        x: 349
-        y: 447
-        width: 108
-        height: 111
+        x: 235
+        y: 350
+        width: 109
+        height: 113
       alignment: 9
-      pivot: {x: 0.2777778, y: 0.990991}
+      pivot: {x: 0.28440368, y: 0.9734513}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -124,12 +138,12 @@ TextureImporter:
       name: 03
       rect:
         serializedVersion: 2
-        x: 390
-        y: 678
+        x: 470
+        y: 683
         width: 119
-        height: 113
+        height: 114
       alignment: 9
-      pivot: {x: 0.26890758, y: 0.9734513}
+      pivot: {x: 0.26890758, y: 0.95614034}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -138,12 +152,12 @@ TextureImporter:
       name: 04
       rect:
         serializedVersion: 2
-        x: 369
-        y: 560
-        width: 112
-        height: 116
+        x: 120
+        y: 457
+        width: 113
+        height: 117
       alignment: 9
-      pivot: {x: 0.26785713, y: 0.94827586}
+      pivot: {x: 0.27433628, y: 0.93162394}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -152,12 +166,12 @@ TextureImporter:
       name: 05
       rect:
         serializedVersion: 2
-        x: 120
-        y: 469
-        width: 113
-        height: 115
+        x: 381
+        y: 567
+        width: 114
+        height: 114
       alignment: 9
-      pivot: {x: 0.26548672, y: 0.95652175}
+      pivot: {x: 0.27192983, y: 0.9649123}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -166,12 +180,12 @@ TextureImporter:
       name: 06
       rect:
         serializedVersion: 2
-        x: 1
-        y: 202
-        width: 107
-        height: 108
+        x: 915
+        y: 436
+        width: 108
+        height: 110
       alignment: 9
-      pivot: {x: 0.28037384, y: 1.0185186}
+      pivot: {x: 0.28703704, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -180,12 +194,12 @@ TextureImporter:
       name: 07
       rect:
         serializedVersion: 2
-        x: 1
-        y: 312
-        width: 109
-        height: 109
+        x: 363
+        y: 454
+        width: 110
+        height: 111
       alignment: 9
-      pivot: {x: 0.27522936, y: 1.0091743}
+      pivot: {x: 0.28181818, y: 0.990991}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -194,12 +208,12 @@ TextureImporter:
       name: 08
       rect:
         serializedVersion: 2
-        x: 338
-        y: 337
-        width: 107
-        height: 108
+        x: 609
+        y: 491
+        width: 108
+        height: 110
       alignment: 9
-      pivot: {x: 0.28037384, y: 1.0185186}
+      pivot: {x: 0.28703704, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -208,12 +222,12 @@ TextureImporter:
       name: 09
       rect:
         serializedVersion: 2
-        x: 1
-        y: 423
-        width: 113
-        height: 115
+        x: 247
+        y: 465
+        width: 114
+        height: 114
       alignment: 9
-      pivot: {x: 0.26548672, y: 0.95652175}
+      pivot: {x: 0.27192983, y: 0.9649123}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -222,12 +236,12 @@ TextureImporter:
       name: 10
       rect:
         serializedVersion: 2
-        x: 235
-        y: 449
-        width: 112
-        height: 116
+        x: 1
+        y: 448
+        width: 113
+        height: 117
       alignment: 9
-      pivot: {x: 0.26785713, y: 0.94827586}
+      pivot: {x: 0.27433628, y: 0.93162394}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -236,12 +250,12 @@ TextureImporter:
       name: 11
       rect:
         serializedVersion: 2
-        x: 1
-        y: 540
-        width: 117
-        height: 113
+        x: 127
+        y: 576
+        width: 118
+        height: 114
       alignment: 9
-      pivot: {x: 0.25641027, y: 0.9734513}
+      pivot: {x: 0.26271185, y: 0.95614034}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -250,12 +264,12 @@ TextureImporter:
       name: 12
       rect:
         serializedVersion: 2
-        x: 228
-        y: 336
-        width: 108
-        height: 111
+        x: 116
+        y: 342
+        width: 109
+        height: 113
       alignment: 9
-      pivot: {x: 0.2777778, y: 0.990991}
+      pivot: {x: 0.28440368, y: 0.9734513}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -264,12 +278,12 @@ TextureImporter:
       name: standLightSlash_01
       rect:
         serializedVersion: 2
-        x: 1
-        y: 55
-        width: 95
-        height: 145
+        x: 719
+        y: 366
+        width: 96
+        height: 147
       alignment: 9
-      pivot: {x: 0.34736842, y: 0.7586207}
+      pivot: {x: 0.34375, y: 0.7482993}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -278,26 +292,152 @@ TextureImporter:
       name: standLightSlash_02
       rect:
         serializedVersion: 2
-        x: 1
-        y: 772
-        width: 134
-        height: 130
+        x: 846
+        y: 778
+        width: 137
+        height: 132
       alignment: 9
-      pivot: {x: 0.5597015, y: 0.84615386}
+      pivot: {x: 0.54744524, y: 0.8333333}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: standLightSlash_04
+      name: standLightSlash_03
       rect:
         serializedVersion: 2
-        x: 324
-        y: 903
-        width: 138
-        height: 120
+        x: 338
+        y: 700
+        width: 130
+        height: 118
       alignment: 9
-      pivot: {x: 0.23188406, y: 0.9166667}
+      pivot: {x: 0.25384617, y: 0.9322034}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: standSlashHard_01
+      rect:
+        serializedVersion: 2
+        x: 591
+        y: 650
+        width: 91
+        height: 147
+      alignment: 9
+      pivot: {x: 0.23076923, y: 0.7482993}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: standSlashHard_02
+      rect:
+        serializedVersion: 2
+        x: 805
+        y: 515
+        width: 108
+        height: 144
+      alignment: 9
+      pivot: {x: 0.16666667, y: 0.7638889}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: standSlashHard_03
+      rect:
+        serializedVersion: 2
+        x: 537
+        y: 799
+        width: 145
+        height: 127
+      alignment: 9
+      pivot: {x: -0.13103448, y: 0.86614174}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: standSlashHard_04
+      rect:
+        serializedVersion: 2
+        x: 697
+        y: 901
+        width: 147
+        height: 122
+      alignment: 9
+      pivot: {x: -0.17687075, y: 0.90163934}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: standSlashHard_05
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 802
+        width: 136
+        height: 97
+      alignment: 9
+      pivot: {x: -0.1985294, y: 1.1340206}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: standSlashHard_06
+      rect:
+        serializedVersion: 2
+        x: 197
+        y: 914
+        width: 173
+        height: 109
+      alignment: 9
+      pivot: {x: -0.040462427, y: 1.0091743}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: standSlashHard_07
+      rect:
+        serializedVersion: 2
+        x: 537
+        y: 928
+        width: 158
+        height: 95
+      alignment: 9
+      pivot: {x: -0.050632913, y: 1.1578947}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: standSlashHard_08
+      rect:
+        serializedVersion: 2
+        x: 915
+        y: 548
+        width: 108
+        height: 111
+      alignment: 9
+      pivot: {x: -0.17592593, y: 0.990991}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: standSlashHard_09
+      rect:
+        serializedVersion: 2
+        x: 372
+        y: 916
+        width: 163
+        height: 107
+      alignment: 9
+      pivot: {x: 0.2208589, y: 1.0280374}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -306,12 +446,12 @@ TextureImporter:
       name: standSlashMedium_01
       rect:
         serializedVersion: 2
-        x: 116
-        y: 356
+        x: 497
+        y: 535
         width: 110
-        height: 111
+        height: 113
       alignment: 9
-      pivot: {x: 0.34545454, y: 0.990991}
+      pivot: {x: 0.34545454, y: 0.9734513}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -320,12 +460,12 @@ TextureImporter:
       name: standSlashMedium_02
       rect:
         serializedVersion: 2
-        x: 183
-        y: 803
-        width: 138
-        height: 109
+        x: 197
+        y: 801
+        width: 139
+        height: 111
       alignment: 9
-      pivot: {x: 0.5507246, y: 1.0091743}
+      pivot: {x: 0.5467626, y: 0.990991}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -334,12 +474,12 @@ TextureImporter:
       name: standSlashMedium_03
       rect:
         serializedVersion: 2
-        x: 112
-        y: 245
-        width: 108
-        height: 109
+        x: 1
+        y: 336
+        width: 109
+        height: 110
       alignment: 9
-      pivot: {x: 0.42592594, y: 1.0091743}
+      pivot: {x: 0.42201835, y: 0.9909091}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -349,11 +489,67 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1
-        y: 904
-        width: 180
-        height: 119
+        y: 902
+        width: 194
+        height: 121
       alignment: 9
-      pivot: {x: 0.2611111, y: 0.92436975}
+      pivot: {x: 0.31443298, y: 0.90909094}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: standSlashMedium_05
+      rect:
+        serializedVersion: 2
+        x: 372
+        y: 820
+        width: 141
+        height: 94
+      alignment: 9
+      pivot: {x: 0.34042552, y: 1.1702127}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: standSlashMedium_06
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 709
+        width: 133
+        height: 91
+      alignment: 9
+      pivot: {x: 0.36842105, y: 1.2087913}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: standSlashMedium_07
+      rect:
+        serializedVersion: 2
+        x: 346
+        y: 351
+        width: 105
+        height: 101
+      alignment: 9
+      pivot: {x: 0.43809524, y: 1.089109}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: standSlashMedium_08
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 603
+        width: 119
+        height: 104
+      alignment: 9
+      pivot: {x: 0.2857143, y: 1.0576923}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -362,12 +558,12 @@ TextureImporter:
       name: walk_01
       rect:
         serializedVersion: 2
-        x: 338
-        y: 220
+        x: 475
+        y: 416
         width: 105
-        height: 115
+        height: 117
       alignment: 9
-      pivot: {x: 0.36190477, y: 0.95652175}
+      pivot: {x: 0.36190477, y: 0.94017094}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -376,12 +572,12 @@ TextureImporter:
       name: walk_02
       rect:
         serializedVersion: 2
-        x: 250
+        x: 1
         y: 567
         width: 117
-        height: 109
+        height: 110
       alignment: 9
-      pivot: {x: 0.42735043, y: 1.0091743}
+      pivot: {x: 0.42735043, y: 0.9909091}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -390,12 +586,12 @@ TextureImporter:
       name: walk_03
       rect:
         serializedVersion: 2
-        x: 1
-        y: 655
-        width: 126
-        height: 115
+        x: 261
+        y: 581
+        width: 118
+        height: 117
       alignment: 9
-      pivot: {x: 0.46031746, y: 0.95652175}
+      pivot: {x: 0.42372882, y: 0.94017094}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -404,12 +600,12 @@ TextureImporter:
       name: walk_04
       rect:
         serializedVersion: 2
-        x: 323
-        y: 793
-        width: 127
-        height: 108
+        x: 1
+        y: 679
+        width: 124
+        height: 110
       alignment: 9
-      pivot: {x: 0.44094488, y: 1.0185186}
+      pivot: {x: 0.42741936, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -418,12 +614,12 @@ TextureImporter:
       name: walk_05
       rect:
         serializedVersion: 2
-        x: 129
-        y: 586
-        width: 119
-        height: 105
+        x: 134
+        y: 692
+        width: 125
+        height: 107
       alignment: 9
-      pivot: {x: 0.38655463, y: 1.0476191}
+      pivot: {x: 0.416, y: 1.0280374}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -432,12 +628,12 @@ TextureImporter:
       name: walk_06
       rect:
         serializedVersion: 2
-        x: 137
-        y: 693
-        width: 127
-        height: 108
+        x: 1
+        y: 791
+        width: 131
+        height: 109
       alignment: 9
-      pivot: {x: 0.36220473, y: 1.0185186}
+      pivot: {x: 0.3816794, y: 1.0091743}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -446,12 +642,12 @@ TextureImporter:
       name: walk_07
       rect:
         serializedVersion: 2
-        x: 183
-        y: 914
+        x: 846
+        y: 912
         width: 139
-        height: 109
+        height: 111
       alignment: 9
-      pivot: {x: 0.32374102, y: 1.0091743}
+      pivot: {x: 0.32374102, y: 0.990991}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

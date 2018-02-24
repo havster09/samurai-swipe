@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
         }
 
         //Start moving enemies.
-        StartCoroutine(MoveEnemies());
+        StartCoroutine(EnemiesAi());
     }
 
     //Call this to add the passed in Enemy to the List of Enemy objects.
@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviour
     }
 
     //Coroutine to move enemies in sequence.
-    IEnumerator MoveEnemies()
+    IEnumerator EnemiesAi()
     {
         //While enemiesMoving is true player is unable to move.
         enemiesMoving = true;
@@ -125,18 +125,22 @@ public class GameManager : MonoBehaviour
         //Loop through List of Enemy objects.
         for (int i = 0; i < enemies.Count; i++)
         {
-            //Call the MoveEnemy function of Enemy at index i in the enemies List.
-            bool isInCombatRange = Mathf.Abs(Vector3.Distance(player.transform.position, enemies[i].transform.position)) < enemies[i].maxHorizontalDistance;
-            if (!isInCombatRange)
+            enemies[i].FaceTarget();
+            if (!enemies[i].IsInWalkRange())
             {
                 enemies[i].RunEnemy();
-                yield return new WaitForSeconds(enemies[i].moveTime * 0.1f);
-                //enemies[i].MoveEnemy();
-                //Wait for Enemy's moveTime before moving next Enemy, 
-                yield return new WaitForSeconds(enemies[i].moveTime * level);
+                // Wait for Enemy's moveTime before moving next Enemy, 
+                yield return new WaitForSeconds(enemies[i].moveTime * 1f);
             }
-            else if (isInCombatRange)
+            else if (!enemies[i].IsInCombatRange())
             {
+                enemies[i].RunStopEnemy();
+                enemies[i].MoveEnemy();
+                yield return new WaitForSeconds(enemies[i].moveTime * 1f);
+            }
+            else
+            {
+                enemies[i].RunStopEnemy();
                 enemies[i].Attack();
             }
         }

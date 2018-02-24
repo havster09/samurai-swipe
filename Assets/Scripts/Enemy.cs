@@ -4,13 +4,12 @@ using System.Collections;
 public class Enemy : MovingObject
 {
     public int playerDamage;
+    public float runSpeed;
 
-    private Animator animator;                          
-    private Transform target;                         
+    private Animator animator;
+    private Transform target;
     private bool skipMove;
     private bool flipX;
-    public float RunSpeed = 10f;
-
 
     //Start overrides the virtual Start function of the base class.
     protected override void Start()
@@ -43,7 +42,6 @@ public class Enemy : MovingObject
 
     protected override void AttemptMove<T>(float xDir, float yDir, Transform target, Transform movingObject)
     {
-        FaceTarget();
         base.AttemptMove<T>(xDir, yDir, target, movingObject);
     }
 
@@ -58,8 +56,8 @@ public class Enemy : MovingObject
         float xDir = 0;
         float yDir = 0;
 
-        bool walkBackwards = Random.Range(0, 2) < .5;
-        
+        bool walkBackwards = Random.Range(0, 5) < 1;
+
         //If the difference in positions is approximately zero (Epsilon) do the following:
         if (Mathf.Abs(target.position.x - transform.position.x) < float.Epsilon)
         {
@@ -79,23 +77,38 @@ public class Enemy : MovingObject
                 xDir = target.position.x > transform.position.x ? -1f : 1f;
                 animator.SetTrigger("enemyWalkBack");
             }
-            
+
         }
 
         //Call the AttemptMove function and pass in the generic parameter Player, because Enemy is moving and expecting to potentially encounter a Player
 
         // Debug.DrawLine(target.position, transform.position, Color.red);
-        
+
         AttemptMove<Player>(xDir, yDir, target, transform);
-        
+
+    }
+
+    public bool IsInWalkRange()
+    {
+        return Mathf.Abs(Vector3.Distance(target.transform.position, transform.position)) < maxWalkRange;
+    }
+
+    public bool IsInCombatRange()
+    {
+        return Mathf.Abs(Vector3.Distance(target.transform.position, transform.position)) < maxCombatRange;
+    }
+
+    public void RunStopEnemy()
+    {
+        animator.SetBool("enemyRun", false);
+        rb2D.velocity = new Vector2(0f, rb2D.velocity.y);
     }
 
     public void RunEnemy()
     {
-        Debug.Log("running");
-        FaceTarget();
         animator.SetBool("enemyRun", true);
-        transform.position = Vector3.MoveTowards(transform.position, target.position, RunSpeed * Time.deltaTime);
+        runSpeed = target.position.x > transform.position.x ? 2f : -2f;
+        rb2D.velocity = new Vector2(runSpeed, rb2D.velocity.y);
     }
 
     protected override void OnCantMove<T>(T component)

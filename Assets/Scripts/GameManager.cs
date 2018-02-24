@@ -136,6 +136,7 @@ public class GameManager : MonoBehaviour
             else if (isCloseToTarget)
             {
                 enemies[i].Attack();
+                Debug.Log("git test");
             }
         }
         //Once Enemies are done moving, set playersTurn to true so player can move.

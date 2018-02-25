@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GenjuroController : MonoBehaviour
+public class Player : MonoBehaviour
 {
     private Rigidbody2D genjuroRB;
     private SpriteRenderer genjuroRenderer;
@@ -24,6 +24,8 @@ public class GenjuroController : MonoBehaviour
     public Transform groundCheck;
     public float jumpPower;
 
+    public float speed = 0.1F;
+
     // Use this for initialization
     void Start()
     {
@@ -42,23 +44,6 @@ public class GenjuroController : MonoBehaviour
             genjuroRB.AddForce(new Vector2(0, jumpPower), ForceMode2D.Impulse);
             grounded = false;
         }
-
-        if (canMove && grounded && Input.GetButtonDown("Fire1"))
-        {
-            genjuroAnimator.SetTrigger("IsStandLightSlash");
-        }
-
-        if (canMove && grounded && Input.GetButtonDown("Fire2"))
-        {
-            genjuroAnimator.SetTrigger("IsStandMediumSlash");
-        }
-
-        if (canMove && grounded && Input.GetButtonDown("Fire3"))
-        {
-            genjuroAnimator.SetTrigger("IsStandHardSlash");
-        }
-
-
 
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
         genjuroAnimator.SetBool("IsGrounded", grounded);
@@ -83,6 +68,30 @@ public class GenjuroController : MonoBehaviour
         {
             genjuroRB.velocity = new Vector2(0, genjuroRB.velocity.y);
             genjuroAnimator.SetFloat("MoveSpeed", 0);
+        }
+
+        if (canMove && grounded && Input.GetButtonDown("Fire1"))
+        {
+            genjuroAnimator.SetTrigger("IsStandLightSlash");
+        }
+
+        if (canMove && grounded && Input.GetButtonDown("Fire2"))
+        {
+            genjuroAnimator.SetTrigger("IsStandMediumSlash");
+        }
+
+        if (canMove && grounded && Input.GetButtonDown("Fire3"))
+        {
+            genjuroAnimator.SetTrigger("IsStandHardSlash");
+        }
+
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
+        {
+            // Get movement of the finger since last frame
+            Vector2 touchDeltaPosition = Input.GetTouch(0).deltaPosition;
+
+            // Move object across XY plane
+            transform.Translate(-touchDeltaPosition.x * speed, -touchDeltaPosition.y * speed, 0);
         }
     }
 

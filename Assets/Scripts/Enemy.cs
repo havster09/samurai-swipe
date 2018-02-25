@@ -10,6 +10,7 @@ public class Enemy : MovingObject
     private Transform target;
     private bool skipMove;
     private bool flipX;
+    private bool checkingIsInCombatRangeWhileRunning;
 
     //Start overrides the virtual Start function of the base class.
     protected override void Start()
@@ -42,21 +43,26 @@ public class Enemy : MovingObject
 
     protected override void AttemptMove<T>(float xDir, float yDir, Transform target, Transform movingObject)
     {
+        if (checkingIsInCombatRangeWhileRunning)
+        {
+            checkingIsInCombatRangeWhileRunning = false;
+            StopCoroutine("CheckIsInCombatRangeWhileRunning");
+        }
         base.AttemptMove<T>(xDir, yDir, target, movingObject);
     }
 
     public void MoveEnemy()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsTag("attack"))
-        {
-            Debug.Log("is Attacking");
-            return;
-        }
+        //if (animator.GetCurrentAnimatorStateInfo(0).IsTag("attack"))
+        //{
+        //    Debug.Log("is Attacking");
+        //    return;
+        //}
 
         float xDir = 0;
         float yDir = 0;
 
-        bool walkBackwards = Random.Range(0, 5) < 1;
+        bool walkBackwards = Random.Range(0, 5) < 2;
 
         //If the difference in positions is approximately zero (Epsilon) do the following:
         if (Mathf.Abs(target.position.x - transform.position.x) < float.Epsilon)
@@ -79,6 +85,13 @@ public class Enemy : MovingObject
             }
 
         }
+
+        if (animator.GetCurrentAnimatorStateInfo(0).IsTag("attack"))
+        {
+            Debug.Log("is Attacking");
+            xDir = 0;
+            yDir = 0;
+        }   
 
         //Call the AttemptMove function and pass in the generic parameter Player, because Enemy is moving and expecting to potentially encounter a Player
 
@@ -109,6 +122,31 @@ public class Enemy : MovingObject
         animator.SetBool("enemyRun", true);
         runSpeed = target.position.x > transform.position.x ? 2f : -2f;
         rb2D.velocity = new Vector2(runSpeed, rb2D.velocity.y);
+        if (!checkingIsInCombatRangeWhileRunning)
+        {
+            StartCoroutine("CheckIsInCombatRangeWhileRunning");
+        }        
+    }
+
+    protected IEnumerator CheckIsInCombatRangeWhileRunning()
+    {
+        Debug.Log("check in combat range init");
+        checkingIsInCombatRangeWhileRunning = true;
+        int checkCount = 0;
+        while(true)
+        {
+            checkCount++;
+            Debug.Log("check in combat range check" + checkCount);
+            if (IsInCombatRange())
+            {
+                RunStopEnemy();
+                StopCoroutine("CheckIsInCombatRangeWhileRunning");
+                Debug.Log("check in combat range total " + checkCount);
+                checkingIsInCombatRangeWhileRunning = false;
+                yield return null;
+            }
+            yield return new WaitForSeconds(1f);
+        }        
     }
 
     protected override void OnCantMove<T>(T component)
@@ -124,5 +162,14 @@ public class Enemy : MovingObject
     public void Attack()
     {
         animator.SetTrigger("enemyAttackOne");
+    }
+
+    protected virtual void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.gameObject.tag == "Player")
+        {
+            Debug.Log("is colliding with player");
+            RunStopEnemy();
+        }
     }
 }

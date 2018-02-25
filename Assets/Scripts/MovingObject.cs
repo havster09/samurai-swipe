@@ -43,7 +43,8 @@ public abstract class MovingObject : MonoBehaviour
         boxCollider.enabled = false;
 
         //Cast a line from start point to end point checking collision on blockingLayer.
-        hit = Physics2D.Linecast(start, end, blockingLayer);
+
+        hit = Physics2D.Linecast(start, end, blockingLayer); // todo reuse for projectile attack
 
         //Re-enable boxCollider after linecast
         boxCollider.enabled = true;

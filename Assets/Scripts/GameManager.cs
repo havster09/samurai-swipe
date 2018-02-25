@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     public float turnDelay = 0.1f;                          //Delay between each Player turn.
     public int playerFoodPoints = 100;                      //Starting value for Player food points.
     public static GameManager instance = null;              //Static instance of GameManager which allows it to be accessed by any other script.
+    public GameObject instantiateEnemyType;
+    public int instantiateEnemyCount = 1;
     [HideInInspector] public bool playersTurn = true;       //Boolean to check if it's players turn, hidden in inspector but public.
 
 
@@ -18,6 +20,7 @@ public class GameManager : MonoBehaviour
     private List<Enemy> enemies;                          //List of all Enemy units, used to issue them move commands.
     private GameObject player;
     private bool enemiesMoving;                             //Boolean to check if enemies are moving.
+    
 
 
 
@@ -69,6 +72,13 @@ public class GameManager : MonoBehaviour
 
         //Call the SetupScene function of the BoardManager script, pass it current level number.
         // boardScript.SetupScene(level);
+        if (instantiateEnemyType)
+        {
+            for (int i = 0; i < instantiateEnemyCount; i++)
+            {
+                Instantiate(instantiateEnemyType, new Vector3(1 + i, 0, 0), Quaternion.identity);
+            }
+        }        
 
     }
 
@@ -122,6 +132,8 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(turnDelay);
         }
 
+        int moveTimeMultiplier = 1;
+
         //Loop through List of Enemy objects.
         for (int i = 0; i < enemies.Count; i++)
         {
@@ -130,18 +142,19 @@ public class GameManager : MonoBehaviour
             {
                 enemies[i].RunEnemy();
                 // Wait for Enemy's moveTime before moving next Enemy, 
-                yield return new WaitForSeconds(enemies[i].moveTime * 1f);
+                yield return new WaitForSeconds(enemies[i].moveTime * moveTimeMultiplier);                
             }
             else if (!enemies[i].IsInCombatRange())
             {
                 enemies[i].RunStopEnemy();
                 enemies[i].MoveEnemy();
-                yield return new WaitForSeconds(enemies[i].moveTime * 1f);
+                yield return new WaitForSeconds(enemies[i].moveTime * moveTimeMultiplier);
             }
             else
             {
                 enemies[i].RunStopEnemy();
                 enemies[i].Attack();
+                yield return null;
             }
         }
         //Once Enemies are done moving, set playersTurn to true so player can move.

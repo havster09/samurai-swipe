@@ -126,17 +126,18 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < enemies.Count; i++)
         {
             //Call the MoveEnemy function of Enemy at index i in the enemies List.
-            bool isCloseToTarget = Mathf.Abs(Vector3.Distance(player.transform.position, enemies[i].transform.position)) < enemies[i].maxHorizontalDistance;
-            if (isCloseToTarget == false)
+            bool isInCombatRange = Mathf.Abs(Vector3.Distance(player.transform.position, enemies[i].transform.position)) < enemies[i].maxHorizontalDistance;
+            if (!isInCombatRange)
             {
-                enemies[i].MoveEnemy();
+                enemies[i].RunEnemy();
+                yield return new WaitForSeconds(enemies[i].moveTime * 0.1f);
+                //enemies[i].MoveEnemy();
                 //Wait for Enemy's moveTime before moving next Enemy, 
                 yield return new WaitForSeconds(enemies[i].moveTime * level);
             }
-            else if (isCloseToTarget)
+            else if (isInCombatRange)
             {
                 enemies[i].Attack();
-                Debug.Log("git test");
             }
         }
         //Once Enemies are done moving, set playersTurn to true so player can move.

@@ -6,6 +6,8 @@ public class Enemy : MovingObject
     public int playerDamage;
     public float runSpeed;
 
+    public bool hasWalkAbility;
+
     private Animator animator;
     private Transform target;
     private bool skipMove;
@@ -53,11 +55,11 @@ public class Enemy : MovingObject
 
     public void MoveEnemy()
     {
-        //if (animator.GetCurrentAnimatorStateInfo(0).IsTag("attack"))
-        //{
-        //    Debug.Log("is Attacking");
-        //    return;
-        //}
+        if (animator.GetCurrentAnimatorStateInfo(0).IsTag("attack"))
+        {
+            Debug.Log("is Attacking");
+            return;
+        }
 
         float xDir = 0;
         float yDir = 0;
@@ -75,18 +77,19 @@ public class Enemy : MovingObject
         {
             if (!walkBackwards)
             {
-                xDir = target.position.x > transform.position.x ? 1f : -1f;
+                xDir = target.position.x > transform.position.x ? .5f : -.5f;
                 animator.SetTrigger("enemyWalk");
             }
             else
             {
-                xDir = target.position.x > transform.position.x ? -1f : 1f;
+                xDir = target.position.x > transform.position.x ? -.5f : .5f;
                 animator.SetTrigger("enemyWalkBack");
             }
 
         }
 
-        if (animator.GetCurrentAnimatorStateInfo(0).IsTag("attack"))
+
+        if (IsAttacking())
         {
             Debug.Log("is Attacking");
             xDir = 0;
@@ -162,6 +165,24 @@ public class Enemy : MovingObject
     public void Attack()
     {
         animator.SetTrigger("enemyAttackOne");
+    }
+
+    public bool IsAttacking()
+    {
+        return animator.GetCurrentAnimatorStateInfo(0).IsTag("attack");
+    }
+
+    public bool IsWalking()
+    {
+        return animator.GetCurrentAnimatorStateInfo(0).IsTag("walk");
+    }
+    public bool IsRunning()
+    {
+        return animator.GetCurrentAnimatorStateInfo(0).IsTag("run");
+    }
+    public bool IsIdle()
+    {
+        return animator.GetCurrentAnimatorStateInfo(0).Equals(null) || animator.GetCurrentAnimatorStateInfo(0).IsTag("idle");
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D collider)

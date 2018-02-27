@@ -10,8 +10,10 @@ public class GameManager : MonoBehaviour
     public float turnDelay = 0.1f;                          //Delay between each Player turn.
     public int playerFoodPoints = 100;                      //Starting value for Player food points.
     public static GameManager instance = null;              //Static instance of GameManager which allows it to be accessed by any other script.
-    public GameObject instantiateEnemyType;
-    public int instantiateEnemyCount = 1;
+    public GameObject instantiateEnemyTypeOne;
+    public GameObject instantiateEnemyTypeTwo;
+    public GameObject instantiateEnemyTypeThree;
+    public int enemiesPoolCount = 5;
     [HideInInspector] public bool playersTurn = true;       //Boolean to check if it's players turn, hidden in inspector but public.
 
 
@@ -20,7 +22,8 @@ public class GameManager : MonoBehaviour
     private List<Enemy> enemies;                          //List of all Enemy units, used to issue them move commands.
     private GameObject player;
     private bool enemiesMoving;                             //Boolean to check if enemies are moving.
-    
+    private float moveTimeMultiplier;
+
 
 
 
@@ -72,14 +75,28 @@ public class GameManager : MonoBehaviour
 
         //Call the SetupScene function of the BoardManager script, pass it current level number.
         // boardScript.SetupScene(level);
-        if (instantiateEnemyType)
+        List<GameObject> enemyGameObjects = new List<GameObject>
         {
-            for (int i = 0; i < instantiateEnemyCount; i++)
-            {
-                Instantiate(instantiateEnemyType, new Vector3(1 + i, 0, 0), Quaternion.identity);
-            }
-        }        
+            instantiateEnemyTypeOne,
+            instantiateEnemyTypeTwo,
+            instantiateEnemyTypeThree
+        };
 
+        enemyGameObjects.RemoveAll(item => item == null);
+
+        moveTimeMultiplier = 1 - (enemiesPoolCount / 10);
+
+        if (enemyGameObjects.Count > 0)
+        {
+            for (int i = 0; i < enemiesPoolCount; i++)
+            {
+                int randomEnemyIndex = Random.Range(0, enemyGameObjects.Count);
+                if (enemyGameObjects[randomEnemyIndex])
+                {
+                    Instantiate(enemyGameObjects[randomEnemyIndex], new Vector3(1 + i, 0, 0), Quaternion.identity);
+                }
+            }
+        }
     }
 
 
@@ -132,32 +149,37 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(turnDelay);
         }
 
-        int moveTimeMultiplier = 1;
-
         //Loop through List of Enemy objects.
         for (int i = 0; i < enemies.Count; i++)
         {
             enemies[i].FaceTarget();
+
             if (!enemies[i].IsInWalkRange())
             {
                 enemies[i].RunEnemy();
-                // Wait for Enemy's moveTime before moving next Enemy, 
-                yield return new WaitForSeconds(enemies[i].moveTime * moveTimeMultiplier);                
-            }
-            else if (!enemies[i].IsInCombatRange())
-            {
-                enemies[i].RunStopEnemy();
-                enemies[i].MoveEnemy();
                 yield return new WaitForSeconds(enemies[i].moveTime * moveTimeMultiplier);
             }
             else
             {
-                enemies[i].RunStopEnemy();
-                enemies[i].Attack();
-                yield return null;
+                if (enemies[i].IsInCombatRange())
+                {
+                    enemies[i].RunStopEnemy();
+                    enemies[i].Attack();
+                    yield return null;
+                }
+                else if (enemies[i].IsIdle())
+                {
+                    if (enemies[i].hasWalkAbility && !enemies[i].IsRunning())
+                    {
+                        enemies[i].MoveEnemy();
+                    }
+                    yield return new WaitForSeconds(enemies[i].moveTime * moveTimeMultiplier);
+                }
+
+
             }
         }
-        //Once Enemies are done moving, set playersTurn to true so player can move.
+        
         playersTurn = true;
 
         //Enemies are done moving, set enemiesMoving to false.

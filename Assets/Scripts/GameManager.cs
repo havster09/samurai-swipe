@@ -70,20 +70,23 @@ public class GameManager : MonoBehaviour
 
         //Call the SetupScene function of the BoardManager script, pass it current level number.
         // boardScript.SetupScene(level);
-        
-        moveTimeMultiplier = 1 - (5 / 10);
 
+        moveTimeMultiplier = 1 - (5 / 10);
+        InitEnemies();
+    }
+
+    private static void InitEnemies()
+    {
         for (int i = 0; i < 10; i++)
         {
             GameObject enemyFromPool = ObjectPooler.SharedInstance.GetPooledObject("Enemy");
-            Instantiate(enemyFromPool, new Vector3(1 + i, 0, 0), Quaternion.identity);
+            RecycleEnemy();
         }
     }
 
     private static float GetPlayerCurrentPosition()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-        Debug.Log(player.transform.position.x);
         return player.transform.position.x;
     }
 

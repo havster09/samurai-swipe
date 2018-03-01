@@ -53,6 +53,17 @@ public class ObjectPooler : MonoBehaviour
         return null;
     }
 
+    public void InitializeAllEnemies(string tag)
+    {
+        for (int i = 0; i < pooledObjects.Count; i++)
+        {
+            if (!pooledObjects[i].activeInHierarchy && pooledObjects[i].tag == tag)
+            {
+                pooledObjects[i].SetActive(true);
+            }
+        }
+    }
+
     [System.Serializable]
     public class ObjectPoolItem
     {

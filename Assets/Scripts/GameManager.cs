@@ -79,7 +79,6 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < 10; i++)
         {
-            GameObject enemyFromPool = ObjectPooler.SharedInstance.GetPooledObject("Enemy");
             RecycleEnemy();
         }
     }
@@ -106,6 +105,12 @@ public class GameManager : MonoBehaviour
         {
             //If any of these are true, return and do not start MoveEnemies.
             return;
+        }
+        GameObject[] activeEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+        if (activeEnemies.Length < 1)
+        {
+            Debug.Log("Init all enemies");
+            ObjectPooler.SharedInstance.InitializeAllEnemies("Enemy");
         }
 
         //Start moving enemies.
@@ -141,12 +146,13 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < enemies.Count; i++)
         {
             enemies[i].FaceTarget();
-            if (!enemies[i].isActiveAndEnabled)
+            if (!enemies[i].gameObject.activeInHierarchy)
             {
                 yield return new WaitForSeconds(1f);
             }
-
-            if (!enemies[i].IsInWalkRange())
+            else
+            {
+                if (!enemies[i].IsInWalkRange())
             {
                 enemies[i].RunEnemy();
                 yield return new WaitForSeconds(enemies[i].moveTime * moveTimeMultiplier);
@@ -169,6 +175,7 @@ public class GameManager : MonoBehaviour
                 }
 
 
+            }
             }
         }
         

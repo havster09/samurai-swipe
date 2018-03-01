@@ -119,7 +119,7 @@ public class Enemy : MovingObject
         animator.SetBool("enemyRun", true);
         runSpeed = target.position.x > transform.position.x ? 2f : -2f;
         rb2D.velocity = new Vector2(runSpeed, rb2D.velocity.y);
-        if (!checkingIsInCombatRangeWhileRunning)
+        if (!checkingIsInCombatRangeWhileRunning && gameObject.activeInHierarchy)
         {
             StartCoroutine("CheckIsInCombatRangeWhileRunning");
         }        
@@ -175,7 +175,11 @@ public class Enemy : MovingObject
     }
     public bool IsIdle()
     {
-        return animator.GetCurrentAnimatorStateInfo(0).Equals(null) || animator.GetCurrentAnimatorStateInfo(0).IsTag("idle");
+        if (animator.GetCurrentAnimatorStateInfo(0).Equals(null) || animator.GetCurrentAnimatorStateInfo(0).IsTag("idle"))
+        {
+            return true;
+        }
+        return false;
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D collider)

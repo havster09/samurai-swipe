@@ -77,18 +77,15 @@ LightmapSettings:
     m_PVRDirectSampleCount: 32
     m_PVRSampleCount: 500
     m_PVRBounces: 2
-    m_PVRFilterTypeDirect: 0
-    m_PVRFilterTypeIndirect: 0
-    m_PVRFilterTypeAO: 0
+    m_PVRFiltering: 0
     m_PVRFilteringMode: 1
     m_PVRCulling: 1
     m_PVRFilteringGaussRadiusDirect: 1
     m_PVRFilteringGaussRadiusIndirect: 5
     m_PVRFilteringGaussRadiusAO: 2
-    m_PVRFilteringAtrousPositionSigmaDirect: 0.5
-    m_PVRFilteringAtrousPositionSigmaIndirect: 2
-    m_PVRFilteringAtrousPositionSigmaAO: 1
-    m_ShowResolutionOverlay: 1
+    m_PVRFilteringAtrousColorSigma: 1
+    m_PVRFilteringAtrousNormalSigma: 1
+    m_PVRFilteringAtrousPositionSigma: 1
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -110,8 +107,6 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
-    debug:
-      m_Flags: 0
   m_NavMeshData: {fileID: 0}
 --- !u!1001 &1475380826
 Prefab:
@@ -205,8 +200,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1869648005}
-  - component: {fileID: 1869648004}
   - component: {fileID: 1869648006}
+  - component: {fileID: 1869648004}
   m_Layer: 0
   m_Name: GlobalGameObject
   m_TagString: Untagged
@@ -254,17 +249,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemsToPool:
-  - amountToPool: 1
+  - amountToPool: 2
     objectToPool: {fileID: 1662671873553116, guid: 7b17081931e49a046b8c51148a18009b,
       type: 2}
     shouldExpand: 0
-  - amountToPool: 1
+  - amountToPool: 3
     objectToPool: {fileID: 1603413900680280, guid: 1e3be7b61629bf642ba47e248360ef1f,
+      type: 2}
+    shouldExpand: 0
+  - amountToPool: 3
+    objectToPool: {fileID: 1110474289633428, guid: ebd731446439f804ebfdee98622af00f,
       type: 2}
     shouldExpand: 0
   pooledObjects:
   - {fileID: 1662671873553116, guid: 7b17081931e49a046b8c51148a18009b, type: 2}
   - {fileID: 1603413900680280, guid: 1e3be7b61629bf642ba47e248360ef1f, type: 2}
+  - {fileID: 1603413900680280, guid: 1e3be7b61629bf642ba47e248360ef1f, type: 2}
+  - {fileID: 1110474289633428, guid: ebd731446439f804ebfdee98622af00f, type: 2}
+  - {fileID: 1110474289633428, guid: ebd731446439f804ebfdee98622af00f, type: 2}
+  - {fileID: 1110474289633428, guid: ebd731446439f804ebfdee98622af00f, type: 2}
+  - {fileID: 1110474289633428, guid: ebd731446439f804ebfdee98622af00f, type: 2}
+  - {fileID: 1110474289633428, guid: ebd731446439f804ebfdee98622af00f, type: 2}
 --- !u!1 &2139275455
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,11 +341,11 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+  m_StereoMirrorMode: 0
 --- !u!4 &2139275460
 Transform:
   m_ObjectHideFlags: 0

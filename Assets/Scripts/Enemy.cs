@@ -15,7 +15,7 @@ public class Enemy : MovingObject
     private bool checkingIsInCombatRangeWhileRunning;
 
     //Start overrides the virtual Start function of the base class.
-    protected override void Start()
+    protected override void OnEnable()
     {
         GameManager.instance.AddEnemyToList(this);
 
@@ -23,7 +23,7 @@ public class Enemy : MovingObject
         animator = GetComponent<Animator>();
 
         target = GameObject.FindGameObjectWithTag("Player").transform;
-        base.Start();
+        base.OnEnable();
     }
 
 
@@ -91,8 +91,6 @@ public class Enemy : MovingObject
             yDir = 0;
         }   
 
-        //Call the AttemptMove function and pass in the generic parameter Player, because Enemy is moving and expecting to potentially encounter a Player
-
         // Debug.DrawLine(target.position, transform.position, Color.red);
 
         AttemptMove<Player>(xDir, yDir, target, transform);
@@ -117,6 +115,7 @@ public class Enemy : MovingObject
 
     public void RunEnemy()
     {
+        FaceTarget();
         animator.SetBool("enemyRun", true);
         runSpeed = target.position.x > transform.position.x ? 2f : -2f;
         rb2D.velocity = new Vector2(runSpeed, rb2D.velocity.y);
@@ -183,7 +182,6 @@ public class Enemy : MovingObject
     {
         if (collider.gameObject.tag == "Player")
         {
-            Debug.Log("is colliding with player");
             RunStopEnemy();
             gameObject.SetActive(false);
             GameManager.RecycleEnemy();

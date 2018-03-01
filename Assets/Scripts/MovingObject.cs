@@ -16,7 +16,7 @@ public abstract class MovingObject : MonoBehaviour
 
 
     //Protected, virtual functions can be overridden by inheriting classes.
-    protected virtual void Start()
+    protected virtual void OnEnable()
     {
         //Get a component reference to this object's BoxCollider2D
         boxCollider = GetComponent<BoxCollider2D>();

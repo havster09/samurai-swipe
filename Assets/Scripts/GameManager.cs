@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour
     // private BoardManager boardScript;                       //Store a reference to our BoardManager which will set up the level.
     private int level = 2;                                  //Current level number, expressed in game as "Day 1".
     private List<Enemy> enemies;                          //List of all Enemy units, used to issue them move commands.
-    private GameObject player;
     private bool enemiesMoving;                             //Boolean to check if enemies are moving.
     private float moveTimeMultiplier;
 
@@ -44,12 +43,12 @@ public class GameManager : MonoBehaviour
         //Assign enemies to a new List of Enemy objects.
         enemies = new List<Enemy>();
 
-        player = GameObject.FindGameObjectWithTag("Player");
-
         //Get a component reference to the attached BoardManager script
         // boardScript = GetComponent<BoardManager>();
+    }
 
-        //Call the InitGame function to initialize the first level 
+    void Start()
+    {
         InitGame();
     }
 
@@ -74,17 +73,25 @@ public class GameManager : MonoBehaviour
         
         moveTimeMultiplier = 1 - (5 / 10);
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 10; i++)
         {
             GameObject enemyFromPool = ObjectPooler.SharedInstance.GetPooledObject("Enemy");
             Instantiate(enemyFromPool, new Vector3(1 + i, 0, 0), Quaternion.identity);
         }
     }
 
+    private static float GetPlayerCurrentPosition()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        Debug.Log(player.transform.position.x);
+        return player.transform.position.x;
+    }
+
     public static void RecycleEnemy()
     {
+        float respawnPositionX = GetPlayerCurrentPosition() * (Random.Range(0,10) > 5 ? 5 : -5f);
         GameObject enemyFromPool = ObjectPooler.SharedInstance.GetPooledObject("Enemy");
-        enemyFromPool.transform.position = new Vector3(10, 0, 0);
+        enemyFromPool.transform.position = new Vector3(respawnPositionX, 0, 0);
         enemyFromPool.SetActive(true);
     }
 
@@ -127,25 +134,14 @@ public class GameManager : MonoBehaviour
         //While enemiesMoving is true player is unable to move.
         enemiesMoving = true;
 
-        //Wait for turnDelay seconds, defaults to .1 (100 ms).
-        yield return new WaitForSeconds(turnDelay);
-
-        //If there are no enemies spawned (IE in first level):
-        if (enemies.Count == 0)
-        {
-            //Wait for turnDelay seconds between moves, replaces delay caused by enemies moving when there are none.
-            yield return new WaitForSeconds(turnDelay);
-        }
-
         //Loop through List of Enemy objects.
         for (int i = 0; i < enemies.Count; i++)
         {
-            if(!enemies[i].isActiveAndEnabled)
-            {
-                yield return new WaitForSeconds(3f);
-            }
-
             enemies[i].FaceTarget();
+            if (!enemies[i].isActiveAndEnabled)
+            {
+                yield return new WaitForSeconds(1f);
+            }
 
             if (!enemies[i].IsInWalkRange())
             {

@@ -157,7 +157,7 @@ public class GameManager : MonoBehaviour
             if (!enemies[i].IsInWalkRange())
             {
                 enemies[i].RunEnemy();
-                yield return new WaitForSeconds(enemies[i].moveTime * moveTimeMultiplier);
+                yield return new WaitForSeconds(enemies[i].moveTime / moveTimeMultiplier);
             }
             else
             {
@@ -173,7 +173,7 @@ public class GameManager : MonoBehaviour
                     {
                         enemies[i].MoveEnemy();
                     }
-                    yield return new WaitForSeconds(enemies[i].moveTime * moveTimeMultiplier);
+                    yield return new WaitForSeconds(enemies[i].moveTime / moveTimeMultiplier);
                 }
 
 

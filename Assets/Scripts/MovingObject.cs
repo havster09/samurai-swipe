@@ -14,6 +14,10 @@ public abstract class MovingObject : MonoBehaviour
     protected Rigidbody2D rb2D;               //The Rigidbody2D component attached to this object.
     private float inverseMoveTime;          //Used to make movement more efficient.
 
+    protected virtual void Start()
+    {
+
+    }
 
     protected virtual void OnEnable()
     {

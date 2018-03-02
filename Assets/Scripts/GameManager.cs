@@ -71,13 +71,14 @@ public class GameManager : MonoBehaviour
         //Call the SetupScene function of the BoardManager script, pass it current level number.
         // boardScript.SetupScene(level);
 
-        moveTimeMultiplier = 1 - (5 / 10);
+        moveTimeMultiplier = 1f;
         InitEnemies();
+        AudioManager.SharedInstance.TestLog();
     }
 
     private static void InitEnemies()
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 1; i++)
         {
             RecycleEnemy();
         }
@@ -91,7 +92,7 @@ public class GameManager : MonoBehaviour
 
     public static void RecycleEnemy()
     {
-        float respawnPositionX = GetPlayerCurrentPosition() * (Random.Range(0,10) > 5 ? 5 : -5f);
+        float respawnPositionX = GetPlayerCurrentPosition() * (Random.Range(0,10) > 5 ? 10 : -10f);
         GameObject enemyFromPool = ObjectPooler.SharedInstance.GetPooledObject("Enemy");
         enemyFromPool.transform.position = new Vector3(respawnPositionX, 0, 0);
         enemyFromPool.SetActive(true);

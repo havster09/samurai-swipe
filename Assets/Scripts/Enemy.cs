@@ -14,15 +14,24 @@ public class Enemy : MovingObject
     private bool flipX;
     private bool checkingIsInCombatRangeWhileRunning;
 
-    //Start overrides the virtual Start function of the base class.
+    private void PrintEvent(int testInt)
+    {
+        Debug.Log(testInt);
+    }
+
     protected override void OnEnable()
     {
         GameManager.instance.AddEnemyToList(this);
-
-        //Get and store a reference to the attached Animator component.
-        animator = GetComponent<Animator>();
-
         target = GameObject.FindGameObjectWithTag("Player").transform;
+        animator = GetComponent<Animator>();
+        AnimationClip attackOneClip;
+        AnimationEvent attackOneEvent;
+        attackOneEvent = new AnimationEvent();
+        attackOneClip = animator.runtimeAnimatorController.animationClips[1];
+        attackOneEvent.intParameter = 888;
+        attackOneEvent.time = attackOneClip.length;
+        attackOneEvent.functionName = "PrintEvent";
+        attackOneClip.AddEvent(attackOneEvent);
         base.OnEnable();
     }
 
@@ -158,6 +167,19 @@ public class Enemy : MovingObject
     public void Attack()
     {
         animator.SetTrigger("enemyAttackOne");
+        // StartCoroutine("CheckAttackFrame");
+    }
+
+    protected IEnumerator CheckAttackFrame()
+    {
+        float frameNormalizedTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+        while(frameNormalizedTime < 1.0)
+        {
+            Debug.Log(frameNormalizedTime + "attack process");
+            yield return new WaitForSeconds(.1f);
+        }
+        Debug.Log(frameNormalizedTime + "attack complete");
+        yield return null;
     }
 
     public bool IsAttacking()
@@ -187,8 +209,8 @@ public class Enemy : MovingObject
         if (collider.gameObject.tag == "Player")
         {
             RunStopEnemy();
-            gameObject.SetActive(false);
-            GameManager.RecycleEnemy();
+            // gameObject.SetActive(false);
+            // GameManager.RecycleEnemy();
         }
     }
 }

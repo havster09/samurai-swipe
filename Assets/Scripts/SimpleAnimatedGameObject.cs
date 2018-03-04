@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class SimpleAnimatedGameObject : MonoBehaviour {
     private Animator animator;
-    private bool isFacingRight { get; set; }
 
     public float holdLastFrameInSeconds;
 
@@ -18,10 +17,6 @@ public class SimpleAnimatedGameObject : MonoBehaviour {
         simpleAnimatedGameObjectEvent.stringParameter = "end";
         simpleAnimatedGameObjectEvent.functionName = "SimpleAnimatedObjectEndEventHandler";
         simpleAnimatedGameObjectClip.AddEvent(simpleAnimatedGameObjectEvent);
-
-        isFacingRight = GameManager.GetPlayerCurrentPosition() > gameObject.transform.position.x ;
-
-        gameObject.transform.localRotation = Quaternion.Euler(0, isFacingRight ? 180 : 0, 0);
     }
 
     private void SimpleAnimatedObjectEndEventHandler(string stringParameter)

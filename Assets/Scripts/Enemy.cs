@@ -292,11 +292,11 @@ public class Enemy : MovingObject
     {
         canMove = false;
         StopEnemyVelocity();
-        Vector2 start = enemyFlipX ? transform.position : transform.position + new Vector3(5f, 0, 0);
         GameObject bloodFromPool = ObjectPooler.SharedInstance.GetPooledObject("Blood");
         if (bloodFromPool)
         {
-            bloodFromPool.transform.position = start;
+            bloodFromPool.transform.position = transform.position;
+            bloodFromPool.transform.rotation = transform.rotation;
             bloodFromPool.SetActive(true);
         }
         animator.SetTrigger("enemyHit");

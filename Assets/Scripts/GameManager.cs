@@ -78,21 +78,21 @@ public class GameManager : MonoBehaviour
 
     private static void InitEnemies()
     {
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < 5; i++)
         {
-            RecycleEnemy();
+            RespawnEnemyFromPool();
         }
     }
 
-    private static float GetPlayerCurrentPosition()
+    public static float GetPlayerCurrentPosition()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         return player.transform.position.x;
     }
 
-    public static void RecycleEnemy()
+    public static void RespawnEnemyFromPool()
     {
-        float respawnPositionX = GetPlayerCurrentPosition() * (Random.Range(0,10) > 5 ? 10 : -10f);
+        float respawnPositionX = GetPlayerCurrentPosition() * (Random.Range(0,10) > 5 ? 15f : -15f);
         GameObject enemyFromPool = ObjectPooler.SharedInstance.GetPooledObject("Enemy");
         enemyFromPool.transform.position = new Vector3(respawnPositionX, 0, 0);
         enemyFromPool.SetActive(true);
@@ -146,14 +146,18 @@ public class GameManager : MonoBehaviour
         //Loop through List of Enemy objects.
         for (int i = 0; i < enemies.Count; i++)
         {
-            enemies[i].FaceTarget();
-            if (!enemies[i].gameObject.activeInHierarchy)
+            if (enemies[i].health > 0)
             {
-                yield return new WaitForSeconds(1f);
+                enemies[i].FaceTarget();
+            }
+            
+            if (!enemies[i].gameObject.activeInHierarchy || enemies[i].health < 1)
+            {
+                yield return new WaitForSeconds(.1f);
             }
             else
             {
-                if (!enemies[i].IsInWalkRange())
+                if (!enemies[i].IsInWalkRange() && !enemies[i].IsRunning() && !enemies[i].isAttacking)
             {
                 enemies[i].RunEnemy();
                 yield return new WaitForSeconds(enemies[i].moveTime * moveTimeMultiplier);
@@ -162,13 +166,13 @@ public class GameManager : MonoBehaviour
             {
                 if (enemies[i].IsInCombatRange())
                 {
-                    enemies[i].RunStopEnemy();
+                    enemies[i].StopEnemyVelocity();
                     enemies[i].Attack();
-                    yield return null;
+                    yield return new WaitForSeconds(.5f);
                 }
                 else if (enemies[i].IsIdle())
                 {
-                    if (enemies[i].hasWalkAbility && !enemies[i].IsRunning())
+                    if (enemies[i].hasWalkAbility && !enemies[i].IsRunning() && !enemies[i].isAttacking)
                     {
                         enemies[i].MoveEnemy();
                     }

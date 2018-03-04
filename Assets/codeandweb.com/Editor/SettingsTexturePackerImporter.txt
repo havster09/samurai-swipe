@@ -2,18 +2,21 @@ version: 2
 importPivots: 1
 tpsheetFileNames:
 - Assets/codeandweb.com/Example/SpriteSheet/sprites.tpsheet
+- Assets/Sprites/effects.tpsheet
 - Assets/Sprites/genjuro.tpsheet
 - Assets/Sprites/hanzo.tpsheet
 - Assets/Sprites/kyoshiro.tpsheet
 - Assets/Sprites/ukyo.tpsheet
 textureFileNames:
 - Assets/codeandweb.com/Example/SpriteSheet/sprites.png
+- Assets/Sprites/effects.png
 - Assets/Sprites/genjuro.png
 - Assets/Sprites/hanzo.png
 - Assets/Sprites/kyoshiro.png
 - Assets/Sprites/ukyo.png
 normalmapFileNames:
 - Assets/codeandweb.com/Example/SpriteSheet/sprites_n.png
+- 
 - 
 - 
 - 

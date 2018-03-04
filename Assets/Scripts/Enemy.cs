@@ -6,17 +6,30 @@ public class Enemy : MovingObject
     public int playerDamage;
     public float runSpeed;
 
+    public int health = 100;
+
     public bool hasWalkAbility;
 
     private Animator animator;
     private Transform target;
     private bool skipMove;
-    private bool flipX;
+    private bool enemyFlipX;
     private bool checkingIsInCombatRangeWhileRunning;
+    private GameObject headFromPool;
 
-    private void PrintEvent(int testInt)
+    public bool isAttacking { get; private set; }
+    public bool isDead { get; set; }
+
+    private void EnemyAttackOneEventHandler(string stringParameter)
     {
-        Debug.Log(testInt);
+        Debug.Log(stringParameter);
+        isAttacking = false;
+        canMove = true;
+    }
+
+    private void EnemyHitEventHandler()
+    {
+        canMove = true;
     }
 
     protected override void OnEnable()
@@ -24,14 +37,24 @@ public class Enemy : MovingObject
         GameManager.instance.AddEnemyToList(this);
         target = GameObject.FindGameObjectWithTag("Player").transform;
         animator = GetComponent<Animator>();
+
         AnimationClip attackOneClip;
         AnimationEvent attackOneEvent;
         attackOneEvent = new AnimationEvent();
         attackOneClip = animator.runtimeAnimatorController.animationClips[1];
-        attackOneEvent.intParameter = 888;
         attackOneEvent.time = attackOneClip.length;
-        attackOneEvent.functionName = "PrintEvent";
+        attackOneEvent.stringParameter = "end";
+        attackOneEvent.functionName = "EnemyAttackOneEventHandler";
         attackOneClip.AddEvent(attackOneEvent);
+
+        AnimationClip hitClip;
+        AnimationEvent hitEvent;
+        hitEvent = new AnimationEvent();
+        hitClip = animator.runtimeAnimatorController.animationClips[7];
+        hitEvent.time = hitClip.length;
+        hitEvent.functionName = "EnemyHitEventHandler";
+        hitClip.AddEvent(hitEvent);
+
         base.OnEnable();
     }
 
@@ -40,15 +63,15 @@ public class Enemy : MovingObject
     {
         float enemyDistance = target.position.x - transform.position.x;
 
-        if (enemyDistance < 0 && flipX == false)
+        if (enemyDistance < 0 && enemyFlipX == false)
         {
             transform.localRotation = Quaternion.Euler(0, 180, 0);
-            flipX = true;
+            enemyFlipX = true;
         }
-        else if (enemyDistance > 0 && flipX == true)
+        else if (enemyDistance > 0 && enemyFlipX == true)
         {
             transform.localRotation = Quaternion.Euler(0, 0, 0);
-            flipX = false;
+            enemyFlipX = false;
         }
     }
 
@@ -95,9 +118,7 @@ public class Enemy : MovingObject
 
         if (IsAttacking())
         {
-            Debug.Log("is Attacking");
-            xDir = 0;
-            yDir = 0;
+            canMove = false;
         }   
 
         // Debug.DrawLine(target.position, transform.position, Color.red);
@@ -116,7 +137,7 @@ public class Enemy : MovingObject
         return Mathf.Abs(Vector3.Distance(target.transform.position, transform.position)) < maxCombatRange;
     }
 
-    public void RunStopEnemy()
+    public void StopEnemyVelocity()
     {
         animator.SetBool("enemyRun", false);
         rb2D.velocity = new Vector2(0f, rb2D.velocity.y);
@@ -142,10 +163,9 @@ public class Enemy : MovingObject
         while(checkingIsInCombatRangeWhileRunning)
         {
             checkCount++;
-            Debug.Log("check in combat range check" + checkCount);
             if (IsInCombatRange())
             {
-                RunStopEnemy();
+                StopEnemyVelocity();
                 Debug.Log("check in combat range total " + checkCount);
                 checkingIsInCombatRangeWhileRunning = false;
                 yield return null;
@@ -156,16 +176,13 @@ public class Enemy : MovingObject
 
     protected override void OnCantMove<T>(T component)
     {
-        //Declare hitPlayer and set it to equal the encountered component.
-        // Player hitPlayer = component as Player;
-
-        //Call the LoseFood function of hitPlayer passing it playerDamage, the amount of foodpoints to be subtracted.
-        // hitPlayer.LoseFood(playerDamage);
         animator.SetTrigger("enemyAttackOne");
     }
 
     public void Attack()
     {
+        isAttacking = true;
+        canMove = false;
         animator.SetTrigger("enemyAttackOne");
         // StartCoroutine("CheckAttackFrame");
     }
@@ -184,7 +201,7 @@ public class Enemy : MovingObject
 
     public bool IsAttacking()
     {
-        return animator.GetCurrentAnimatorStateInfo(0).IsTag("attack");
+        return isAttacking;
     }
 
     public bool IsWalking()
@@ -204,13 +221,84 @@ public class Enemy : MovingObject
         return false;
     }
 
+    public void EnemyDie()
+    {
+        StopEnemyVelocity();
+        canMove = false;
+
+        // animator.SetBool("enemyDieSplit", true);
+        enemyDecapitation();
+
+        health = 0;
+        isDead = true;
+        StartCoroutine(WaitToRespawn(5));
+    }
+
+    private void enemyDecapitation()
+    {
+        canMove = true;
+        animator.SetBool("enemyDecapitationBody", true);
+        Vector2 start = transform.position;
+        float distance = enemyFlipX ? .25f : -.25f;
+        Vector2 end = start + new Vector2(distance, 0);
+        StartCoroutine(SmoothMovement(end));
+
+        headFromPool = ObjectPooler.SharedInstance.GetPooledObject("HanzoHead");
+        if (headFromPool)
+        {
+            headFromPool.transform.position = start;
+            headFromPool.SetActive(true);
+        }
+    }
+
+    protected IEnumerator WaitToRespawn(int respawnTime)
+    {
+        int elapsedDeathTime = 0;
+        while (elapsedDeathTime < respawnTime)
+        {
+            yield return new WaitForSeconds(1f);
+            elapsedDeathTime++;
+        }
+        RespawnEnemy();
+        yield return null;
+    }
+
+    private void RespawnEnemy()
+    {
+        gameObject.SetActive(false);
+        health = 100;
+        isDead = false;
+        canMove = true;
+        GameManager.RespawnEnemyFromPool();
+    }
+
     protected virtual void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.tag == "Player")
         {
-            RunStopEnemy();
-            // gameObject.SetActive(false);
-            // GameManager.RecycleEnemy();
+            health -= 10;
+            if (health > 0)
+            {
+                EnemyHit();
+            }
+            else if(!isDead)
+            {
+                EnemyDie();
+            }
         }
+    }
+
+   private void EnemyHit()
+    {
+        canMove = false;
+        StopEnemyVelocity();
+        Vector2 start = enemyFlipX ? transform.position : transform.position + new Vector3(5f, 0, 0);
+        GameObject bloodFromPool = ObjectPooler.SharedInstance.GetPooledObject("Blood");
+        if (bloodFromPool)
+        {
+            bloodFromPool.transform.position = start;
+            bloodFromPool.SetActive(true);
+        }
+        animator.SetTrigger("enemyHit");
     }
 }

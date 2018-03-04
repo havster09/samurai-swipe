@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
+  - HanzoHead
+  - Blood
   layers:
   - Default
   - TransparentFX
@@ -44,4 +46,10 @@ TagManager:
     locked: 0
   - name: Enemies
     uniqueID: 2359454127
+    locked: 0
+  - name: Heads
+    uniqueID: 551882659
+    locked: 0
+  - name: Blood
+    uniqueID: 2625093745
     locked: 0

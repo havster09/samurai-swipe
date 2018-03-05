@@ -13,7 +13,7 @@ public abstract class MovingObject : MonoBehaviour
     private BoxCollider2D boxCollider;      //The BoxCollider2D component attached to this object.
     protected Rigidbody2D rb2D;               //The Rigidbody2D component attached to this object.
     private float inverseMoveTime;          //Used to make movement more efficient.
-    protected bool canMove = true;
+    protected bool canMoveInSmoothMovement = true;
 
     protected virtual void Start()
     {
@@ -73,7 +73,7 @@ public abstract class MovingObject : MonoBehaviour
     //Co-routine for moving units from one space to next, takes a parameter end to specify where to move to.
     protected IEnumerator SmoothMovement(Vector3 end)
     {
-        if (!canMove)
+        if (!canMoveInSmoothMovement)
         {
             yield break;
         }
@@ -98,10 +98,10 @@ public abstract class MovingObject : MonoBehaviour
         //Hit will store whatever our linecast hits when Move is called.
         RaycastHit2D hit;
 
-        //Set canMove to true if Move was successful, false if failed.
+        //Set canMoveInSmoothMovement to true if Move was successful, false if failed.
         bool canMove = Move(xDir, yDir, out hit, target, movingObject);
 
-        //If canMove is false and hitComponent is not equal to null, meaning MovingObject is blocked and has hit something it can interact with.
+        //If canMoveInSmoothMovement is false and hitComponent is not equal to null, meaning MovingObject is blocked and has hit something it can interact with.
         if (!canMove)
 
             //Call the OnCantMove function and pass it hitComponent as a parameter.

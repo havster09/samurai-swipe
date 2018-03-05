@@ -24,12 +24,12 @@ public class Enemy : MovingObject
     {
         Debug.Log(stringParameter);
         isAttacking = false;
-        canMove = true;
+        canMoveInSmoothMovement = true;
     }
 
     private void EnemyHitEventHandler()
     {
-        canMove = true;
+        canMoveInSmoothMovement = true;
     }
 
     protected override void OnEnable()
@@ -118,7 +118,7 @@ public class Enemy : MovingObject
 
         if (IsAttacking())
         {
-            canMove = false;
+            canMoveInSmoothMovement = false;
         }   
 
         // Debug.DrawLine(target.position, transform.position, Color.red);
@@ -168,7 +168,7 @@ public class Enemy : MovingObject
                 StopEnemyVelocity();
                 Debug.Log("check in combat range total " + checkCount);
                 checkingIsInCombatRangeWhileRunning = false;
-                yield return null;
+                yield break;
             }
             yield return new WaitForSeconds(1f);
         }        
@@ -182,7 +182,7 @@ public class Enemy : MovingObject
     public void Attack()
     {
         isAttacking = true;
-        canMove = false;
+        canMoveInSmoothMovement = false;
         animator.SetTrigger("enemyAttackOne");
         // StartCoroutine("CheckAttackFrame");
     }
@@ -223,8 +223,8 @@ public class Enemy : MovingObject
 
     public void EnemyDie()
     {
+        canMoveInSmoothMovement = false;
         StopEnemyVelocity();
-        canMove = false;
 
         // animator.SetBool("enemyDieSplit", true);
         enemyDecapitation();
@@ -236,17 +236,19 @@ public class Enemy : MovingObject
 
     private void enemyDecapitation()
     {
-        canMove = true;
+        canMoveInSmoothMovement = false;
         animator.SetBool("enemyDecapitationBody", true);
         Vector2 start = transform.position;
         float distance = enemyFlipX ? .25f : -.25f;
         Vector2 end = start + new Vector2(distance, 0);
         StartCoroutine(SmoothMovement(end));
-
-        headFromPool = ObjectPooler.SharedInstance.GetPooledObject("HanzoHead");
+        string headString = name.Replace("(Clone)", "") + "Head";
+        headFromPool = ObjectPooler.SharedInstance.GetPooledObject(headString);
+        GetBloodEffect("BloodDecapitation");
         if (headFromPool)
         {
-            headFromPool.transform.position = start;
+            headFromPool.transform.position = transform.position;
+            headFromPool.transform.rotation = transform.rotation;
             headFromPool.SetActive(true);
         }
     }
@@ -268,7 +270,7 @@ public class Enemy : MovingObject
         gameObject.SetActive(false);
         health = 100;
         isDead = false;
-        canMove = true;
+        canMoveInSmoothMovement = true;
         GameManager.RespawnEnemyFromPool();
     }
 
@@ -276,7 +278,7 @@ public class Enemy : MovingObject
     {
         if (collider.gameObject.tag == "Player")
         {
-            health -= 10;
+            health -= 50;
             if (health > 0)
             {
                 EnemyHit();
@@ -290,15 +292,20 @@ public class Enemy : MovingObject
 
    private void EnemyHit()
     {
-        canMove = false;
+        canMoveInSmoothMovement = false;
         StopEnemyVelocity();
-        GameObject bloodFromPool = ObjectPooler.SharedInstance.GetPooledObject("Blood");
+        GetBloodEffect("Blood");
+        animator.SetTrigger("enemyHit");
+    }
+
+    private void GetBloodEffect(string tag)
+    {
+        GameObject bloodFromPool = ObjectPooler.SharedInstance.GetPooledObject(tag);
         if (bloodFromPool)
         {
             bloodFromPool.transform.position = transform.position;
             bloodFromPool.transform.rotation = transform.rotation;
             bloodFromPool.SetActive(true);
         }
-        animator.SetTrigger("enemyHit");
     }
 }

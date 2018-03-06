@@ -1,0 +1,12 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: KyoshiroHeadACOverride
+  m_Controller: {fileID: 9100000, guid: da88ef88bf0500b4f8f101e39bea4e11, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 5fcac1002b8f83a40a48e7b485c591da, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 334a8d1a0b8984b4ba844aba1e390811, type: 2}

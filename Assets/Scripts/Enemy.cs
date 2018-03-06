@@ -244,7 +244,8 @@ public class Enemy : MovingObject
         StartCoroutine(SmoothMovement(end));
         string headString = name.Replace("(Clone)", "") + "Head";
         headFromPool = ObjectPooler.SharedInstance.GetPooledObject(headString);
-        GetBloodEffect("BloodDecapitation");
+        int randomDecapitationIndex = Random.Range(0, ObjectPooler.SharedInstance.bloodDecapitationEffects.Length);
+        GetBloodEffect("BloodDecapitation", ObjectPooler.SharedInstance.bloodDecapitationEffects[randomDecapitationIndex]);
         if (headFromPool)
         {
             headFromPool.transform.position = transform.position;
@@ -298,9 +299,9 @@ public class Enemy : MovingObject
         animator.SetTrigger("enemyHit");
     }
 
-    private void GetBloodEffect(string tag)
+    private void GetBloodEffect(string tag, string name = null)
     {
-        GameObject bloodFromPool = ObjectPooler.SharedInstance.GetPooledObject(tag);
+        GameObject bloodFromPool = ObjectPooler.SharedInstance.GetPooledObject(tag, name);
         if (bloodFromPool)
         {
             bloodFromPool.transform.position = transform.position;

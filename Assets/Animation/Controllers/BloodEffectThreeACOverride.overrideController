@@ -5,8 +5,8 @@ AnimatorOverrideController:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: BloodEffectTwoAC
+  m_Name: BloodEffectThreeACOverride
   m_Controller: {fileID: 9100000, guid: a9be6041de9413b45a50d5c6027c87df, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: 7400000, guid: 7da4b7be6cb712d468b867f0079dbe8f, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 2e7e2d9c7d274294984a454146610b67, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: d713b26a699f37b459af4445b25ffc56, type: 2}

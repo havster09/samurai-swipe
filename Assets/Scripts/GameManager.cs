@@ -11,8 +11,7 @@ public class GameManager : MonoBehaviour
     public int playerFoodPoints = 100;                      //Starting value for Player food points.
     public static GameManager instance = null;              //Static instance of GameManager which allows it to be accessed by any other script.
     [HideInInspector] public bool playersTurn = true;       //Boolean to check if it's players turn, hidden in inspector but public.
-
-
+    
     // private BoardManager boardScript;                       //Store a reference to our BoardManager which will set up the level.
     private int level = 2;                                  //Current level number, expressed in game as "Day 1".
     private List<Enemy> enemies;                          //List of all Enemy units, used to issue them move commands.

@@ -8,6 +8,7 @@ public class ObjectPooler : MonoBehaviour
     public static ObjectPooler SharedInstance;
     public List<ObjectPoolItem> itemsToPool;
     public List<GameObject> pooledObjects;
+    [HideInInspector] public string[] bloodDecapitationEffects;
 
     void Awake()
     {
@@ -16,6 +17,7 @@ public class ObjectPooler : MonoBehaviour
 
     void Start()
     {
+        bloodDecapitationEffects = new string[] { "BloodEffect4", "BloodEffect5" };
         pooledObjects = new List<GameObject>();
         foreach (ObjectPoolItem item in itemsToPool)
         {
@@ -28,13 +30,20 @@ public class ObjectPooler : MonoBehaviour
         }
     }
 
-    public GameObject GetPooledObject(string tag)
+    public GameObject GetPooledObject(string tag, string name = null)
     {
         for (int i = 0; i < pooledObjects.Count; i++)
         {
-            if (!pooledObjects[i].activeInHierarchy && pooledObjects[i].tag == tag)
+            if (!pooledObjects[i].activeInHierarchy)
             {
-                return pooledObjects[i];
+                if(name != null && pooledObjects[i].name.Replace("(Clone)", "") == name)
+                {
+                    return pooledObjects[i];
+                }
+                else if (name == null && pooledObjects[i].tag == tag)
+                {
+                    return pooledObjects[i];
+                }
             }
         }
         foreach (ObjectPoolItem item in itemsToPool)

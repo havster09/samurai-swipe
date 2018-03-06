@@ -36,7 +36,7 @@ public class ObjectPooler : MonoBehaviour
         {
             if (!pooledObjects[i].activeInHierarchy)
             {
-                if(name != null && pooledObjects[i].name.Replace("(Clone)", "") == name)
+                if(name != null && Utilities.ReplaceClone(pooledObjects[i].name) == name)
                 {
                     return pooledObjects[i];
                 }

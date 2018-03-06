@@ -242,7 +242,7 @@ public class Enemy : MovingObject
         float distance = enemyFlipX ? .25f : -.25f;
         Vector2 end = start + new Vector2(distance, 0);
         StartCoroutine(SmoothMovement(end));
-        string headString = name.Replace("(Clone)", "") + "Head";
+        string headString = Utilities.ReplaceClone(name) + "Head";
         headFromPool = ObjectPooler.SharedInstance.GetPooledObject(headString);
         int randomDecapitationIndex = Random.Range(0, ObjectPooler.SharedInstance.bloodDecapitationEffects.Length);
         GetBloodEffect("BloodDecapitation", ObjectPooler.SharedInstance.bloodDecapitationEffects[randomDecapitationIndex]);

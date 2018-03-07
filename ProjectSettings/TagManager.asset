@@ -56,3 +56,6 @@ TagManager:
   - name: Blood
     uniqueID: 2625093745
     locked: 0
+  - name: Slash
+    uniqueID: 4036345693
+    locked: 0

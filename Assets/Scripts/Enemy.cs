@@ -54,7 +54,6 @@ public class Enemy : MovingObject
         hitEvent.time = hitClip.length;
         hitEvent.functionName = "EnemyHitEventHandler";
         hitClip.AddEvent(hitEvent);
-
         base.OnEnable();
     }
 
@@ -91,15 +90,11 @@ public class Enemy : MovingObject
         float xDir = 0;
         float yDir = 0;
 
-        bool walkBackwards = Random.Range(0, 5) < 2;
-
-        //If the difference in positions is approximately zero (Epsilon) do the following:
+        bool walkBackwards = Random.Range(0, 5) < 2 && Utilities.ReplaceClone(name) != "Ukyo";
         if (Mathf.Abs(target.position.x - transform.position.x) < float.Epsilon)
         {
-            //If the y coordinate of the target's (player) position is greater than the y coordinate of this enemy's position set y direction 1 (to move up). If not, set it to -1 (to move down).
             yDir = target.position.y > transform.position.y ? 1f : -1f;
         }
-        //If the difference in positions is not approximately zero (Epsilon) do the following:
         else
         {
             if (!walkBackwards)
@@ -297,6 +292,10 @@ public class Enemy : MovingObject
         StopEnemyVelocity();
         GetBloodEffect("Blood");
         animator.SetTrigger("enemyHit");
+
+        animator.SetFloat("enemyHitSpeedMultiplier", 0f);
+        // freeze frame then transition to blood spurt animation
+        
     }
 
     private void GetBloodEffect(string tag, string name = null)

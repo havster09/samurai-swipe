@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class SlashRenderer : MonoBehaviour {
     private const int slashZPosition = 3;
+    public Material slashMaterial;
     public Color c1 = Color.yellow;
     public Color c2 = Color.red;
     private GameObject slashGO;
     private LineRenderer lineRenderer;
-    private int i = 0;
+    private int linePoints = 0;
 
     private Vector3 mouseDownPos;
     private Vector3 mouseUpPos;
@@ -17,12 +18,14 @@ public class SlashRenderer : MonoBehaviour {
         slashGO = new GameObject("Line");
         slashGO.AddComponent<LineRenderer>();
         lineRenderer = slashGO.GetComponent<LineRenderer>();
+        lineRenderer.material = slashMaterial;
         // lineRenderer.material = new Material(Shader.Find("Mobile/Particles/Additive"));
-        lineRenderer.startColor = c1;
+        lineRenderer.startColor = c2;
         lineRenderer.endColor = c2;
         lineRenderer.startWidth = .1f;
         lineRenderer.endWidth = 0;
         lineRenderer.positionCount = 0;
+        lineRenderer.sortingLayerName = "Slash";
     }
 	
 	void Update () {
@@ -62,7 +65,7 @@ public class SlashRenderer : MonoBehaviour {
     private void RemoveSlash()
     {
         lineRenderer.positionCount = 0;
-        i = 0;
+        linePoints = 0;
 
         BoxCollider2D[] lineColliders = slashGO.GetComponents<BoxCollider2D>();
 
@@ -74,10 +77,10 @@ public class SlashRenderer : MonoBehaviour {
 
     private void AddSlash()
     {
-        lineRenderer.positionCount = i + 1;
+        lineRenderer.positionCount = linePoints + 1;
         Vector3 mPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, slashZPosition);
-        lineRenderer.SetPosition(i, Camera.main.ScreenToWorldPoint(mPosition));
-        i++;
+        lineRenderer.SetPosition(linePoints, Camera.main.ScreenToWorldPoint(mPosition));
+        linePoints++;
 
         BoxCollider2D bc = slashGO.AddComponent<BoxCollider2D>();
         bc.transform.position = lineRenderer.transform.position;

@@ -222,11 +222,34 @@ public class Enemy : MovingObject
         StopEnemyVelocity();
 
         // animator.SetBool("enemyDieSplit", true);
-        enemyDecapitation();
+        // enemyDecapitation();
+        EnemySpray();
 
         health = 0;
         isDead = true;
-        StartCoroutine(WaitToRespawn(5));
+        StartCoroutine(WaitToRespawn(10));
+    }
+
+    private void EnemySpray()
+    {
+        canMoveInSmoothMovement = false;
+        animator.SetFloat("enemyHitSpeedMultiplier", 0f);
+        animator.Play("enemyHit", 0, 1f);
+        GetBloodEffect("Blood", "BloodEffectSpray");
+        StartCoroutine(SprayBlood(3));
+    }
+
+    protected IEnumerator SprayBlood(int sprayTime)
+    {
+        int elapsedSprayTime = 0;
+        while (elapsedSprayTime < sprayTime)
+        {
+            yield return new WaitForSeconds(1f);
+            elapsedSprayTime++;
+        }
+        animator.SetFloat("enemyHitSpeedMultiplier", 1f);
+        animator.SetBool("enemyDrop", true);
+        yield return null;
     }
 
     private void enemyDecapitation()
@@ -292,10 +315,6 @@ public class Enemy : MovingObject
         StopEnemyVelocity();
         GetBloodEffect("Blood");
         animator.SetTrigger("enemyHit");
-
-        animator.SetFloat("enemyHitSpeedMultiplier", 0f);
-        // freeze frame then transition to blood spurt animation
-        
     }
 
     private void GetBloodEffect(string tag, string name = null)

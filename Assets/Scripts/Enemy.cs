@@ -12,6 +12,7 @@ public class Enemy : MovingObject
 
     private Animator animator;
     private Transform target;
+    private SpriteRenderer spriteRenderer;
     private bool skipMove;
     private bool enemyFlipX;
     private bool checkingIsInCombatRangeWhileRunning;
@@ -228,6 +229,7 @@ public class Enemy : MovingObject
         health = 0;
         isDead = true;
         StartCoroutine(WaitToRespawn(10));
+        // StartCoroutine(Utilities.SpriteFadeOut(spriteRenderer, 10f));
     }
 
     private void EnemySpray()
@@ -248,11 +250,24 @@ public class Enemy : MovingObject
             elapsedSprayTime++;
         }
         animator.SetFloat("enemyHitSpeedMultiplier", 1f);
-        animator.SetBool("enemyDrop", true);
+        if (Random.Range(0, 2) > 1)
+        {
+            animator.SetBool("enemyDrop", true);
+        }
+        else
+        {
+            EnemySplitDrop();
+        }
         yield return null;
     }
 
-    private void enemyDecapitation()
+    private void EnemySplitDrop()
+    {
+        GetBloodEffect("Blood", "BloodEffectSplit");
+        animator.SetBool("enemySplitDrop", true);
+    }
+
+    private void EnemyDecapitation()
     {
         canMoveInSmoothMovement = false;
         animator.SetBool("enemyDecapitationBody", true);

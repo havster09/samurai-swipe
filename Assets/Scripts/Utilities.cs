@@ -7,7 +7,8 @@ public static class Utilities {
     {
         return hasClone.Replace("(Clone)", "");
     }
-    public static IEnumerator SpriteFadeOut(SpriteRenderer renderer, float duration)
+
+    public static IEnumerator FadeOut(SpriteRenderer renderer, float duration)
     {
         float start = Time.time;
         while (Time.time <= start + duration)

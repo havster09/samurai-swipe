@@ -12,8 +12,6 @@ public class Enemy : MovingObject
 
     private Animator animator;
     private Transform target;
-    private SpriteRenderer spriteRenderer;
-    private bool skipMove;
     private bool enemyFlipX;
     private bool checkingIsInCombatRangeWhileRunning;
     private GameObject headFromPool;
@@ -55,6 +53,7 @@ public class Enemy : MovingObject
         hitEvent.time = hitClip.length;
         hitEvent.functionName = "EnemyHitEventHandler";
         hitClip.AddEvent(hitEvent);
+
         base.OnEnable();
     }
 
@@ -223,13 +222,11 @@ public class Enemy : MovingObject
         StopEnemyVelocity();
 
         // animator.SetBool("enemyDieSplit", true);
-        // enemyDecapitation();
+        // EnemyDecapitation();
         EnemySpray();
 
         health = 0;
-        isDead = true;
-        StartCoroutine(WaitToRespawn(10));
-        // StartCoroutine(Utilities.SpriteFadeOut(spriteRenderer, 10f));
+        isDead = true;        
     }
 
     private void EnemySpray()
@@ -250,7 +247,7 @@ public class Enemy : MovingObject
             elapsedSprayTime++;
         }
         animator.SetFloat("enemyHitSpeedMultiplier", 1f);
-        if (Random.Range(0, 2) > 1)
+        if (Random.Range(0, 10) > 5)
         {
             animator.SetBool("enemyDrop", true);
         }
@@ -258,6 +255,8 @@ public class Enemy : MovingObject
         {
             EnemySplitDrop();
         }
+        StartCoroutine(WaitToRespawn(3f));
+        StartCoroutine(Utilities.FadeOut(spriteRenderer, 3f));
         yield return null;
     }
 
@@ -287,7 +286,7 @@ public class Enemy : MovingObject
         }
     }
 
-    protected IEnumerator WaitToRespawn(int respawnTime)
+    protected IEnumerator WaitToRespawn(float respawnTime)
     {
         int elapsedDeathTime = 0;
         while (elapsedDeathTime < respawnTime)

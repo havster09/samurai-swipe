@@ -9,6 +9,8 @@ public abstract class MovingObject : MonoBehaviour
     public float maxCombatRange;
     public float maxWalkRange;
 
+    protected SpriteRenderer spriteRenderer;
+
 
     private BoxCollider2D boxCollider;      //The BoxCollider2D component attached to this object.
     protected Rigidbody2D rb2D;               //The Rigidbody2D component attached to this object.
@@ -24,9 +26,18 @@ public abstract class MovingObject : MonoBehaviour
     {
         boxCollider = GetComponent<BoxCollider2D>();
         rb2D = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
         //By storing the reciprocal of the move time we can use it by multiplying instead of dividing, this is more efficient.
         inverseMoveTime = 1.1f / moveTime;
+        ResetSpriteAlpha();
+    }
+
+    protected void ResetSpriteAlpha()
+    {
+        Color color = spriteRenderer.color;
+        color.a = 1f;
+        spriteRenderer.color = color;
     }
 
     protected virtual void OnDisable()
@@ -107,7 +118,6 @@ public abstract class MovingObject : MonoBehaviour
             //Call the OnCantMove function and pass it hitComponent as a parameter.
             OnCantMove(target);
     }
-
 
     //The abstract modifier indicates that the thing being modified has a missing or incomplete implementation.
     //OnCantMove will be overriden by functions in the inheriting classes.

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +19,13 @@ public static class Utilities {
             renderer.color = color;
             yield return new WaitForEndOfFrame();
         }
+    }
+
+    public static void ResetSpriteAlpha(SpriteRenderer spriteRenderer)
+    {
+        Color color = spriteRenderer.color;
+        color.a = 1f;
+        spriteRenderer.color = color;
     }
 }
 

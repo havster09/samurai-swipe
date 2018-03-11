@@ -5,11 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
-  - HanzoHead
   - Blood
-  - UkyoHead
   - BloodDecapitation
-  - KyoshiroHead
+  - Background
+  - BodyParts
   layers:
   - Default
   - TransparentFX
@@ -44,6 +43,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 2016958415
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

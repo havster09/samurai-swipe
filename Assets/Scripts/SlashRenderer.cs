@@ -22,7 +22,7 @@ public class SlashRenderer : MonoBehaviour {
         // lineRenderer.material = new Material(Shader.Find("Mobile/Particles/Additive"));
         lineRenderer.startColor = c2;
         lineRenderer.endColor = c2;
-        lineRenderer.startWidth = .1f;
+        lineRenderer.startWidth = .02f;
         lineRenderer.endWidth = 0;
         lineRenderer.positionCount = 0;
         lineRenderer.sortingLayerName = "Slash";

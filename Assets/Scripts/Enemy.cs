@@ -117,7 +117,6 @@ public class Enemy : MovingObject
         }   
 
         // Debug.DrawLine(target.position, transform.position, Color.red);
-
         AttemptMove<Player>(xDir, yDir, target, transform);
 
     }
@@ -194,35 +193,11 @@ public class Enemy : MovingObject
         yield return null;
     }
 
-    public bool IsAttacking()
-    {
-        return isAttacking;
-    }
-
-    public bool IsWalking()
-    {
-        return animator.GetCurrentAnimatorStateInfo(0).IsTag("walk");
-    }
-    public bool IsRunning()
-    {
-        return animator.GetCurrentAnimatorStateInfo(0).IsTag("run");
-    }
-    public bool IsIdle()
-    {
-        if (animator.GetCurrentAnimatorStateInfo(0).Equals(null) || animator.GetCurrentAnimatorStateInfo(0).IsTag("idle"))
-        {
-            return true;
-        }
-        return false;
-    }
-
     public void EnemyDie()
     {
         canMoveInSmoothMovement = false;
         StopEnemyVelocity();
 
-        // animator.SetBool("enemyDieSplit", true);
-        // EnemyDecapitation();
         EnemySpray();
 
         health = 0;
@@ -247,23 +222,25 @@ public class Enemy : MovingObject
             elapsedSprayTime++;
         }
         animator.SetFloat("enemyHitSpeedMultiplier", 1f);
-        if (Random.Range(0, 10) > 5)
+        if (Random.Range(0, 10) > 9)
         {
-            animator.SetBool("enemyDrop", true);
+            // animator.SetBool("enemyDrop", true);
+            EnemyDecapitation();
         }
         else
         {
             EnemySplitDrop();
+            GetBloodEffect("BodyParts", "HanzoTorsoSplit"); // todo prefix enemy name 
         }
-        StartCoroutine(WaitToRespawn(3f));
-        StartCoroutine(Utilities.FadeOut(spriteRenderer, 3f));
+        StartCoroutine(DieStateHandler(5f));
         yield return null;
     }
 
     private void EnemySplitDrop()
     {
-        GetBloodEffect("Blood", "BloodEffectSplit");
         animator.SetBool("enemySplitDrop", true);
+        GetBloodEffect("Blood", "BloodEffectDiagonal1");
+        WaitFor(() => GetBloodEffect("Blood", "BloodEffectSplit"), .1f);
     }
 
     private void EnemyDecapitation()
@@ -275,7 +252,7 @@ public class Enemy : MovingObject
         Vector2 end = start + new Vector2(distance, 0);
         StartCoroutine(SmoothMovement(end));
         string headString = Utilities.ReplaceClone(name) + "Head";
-        headFromPool = ObjectPooler.SharedInstance.GetPooledObject(headString);
+        headFromPool = ObjectPooler.SharedInstance.GetPooledObject("BodyPart", headString);
         int randomDecapitationIndex = Random.Range(0, ObjectPooler.SharedInstance.bloodDecapitationEffects.Length);
         GetBloodEffect("BloodDecapitation", ObjectPooler.SharedInstance.bloodDecapitationEffects[randomDecapitationIndex]);
         if (headFromPool)
@@ -283,7 +260,22 @@ public class Enemy : MovingObject
             headFromPool.transform.position = transform.position;
             headFromPool.transform.rotation = transform.rotation;
             headFromPool.SetActive(true);
+            WaitFor(() => GetBloodEffect("Blood"), .1f);
         }
+    }
+
+    protected IEnumerator DieStateHandler(float waitTime)
+    {
+        float elapsedWaitTime = 0f;
+        while (elapsedWaitTime < waitTime)
+        {
+            // todo spray blood objects here
+            yield return new WaitForSeconds(1f);
+            elapsedWaitTime++;
+        }
+        StartCoroutine(WaitToRespawn(3f));
+        StartCoroutine(Utilities.FadeOut(spriteRenderer, 3f));
+        yield return null;
     }
 
     protected IEnumerator WaitToRespawn(float respawnTime)
@@ -329,6 +321,7 @@ public class Enemy : MovingObject
         StopEnemyVelocity();
         GetBloodEffect("Blood");
         animator.SetTrigger("enemyHit");
+        WaitFor(EnemyHitEventHandler, 1f);
     }
 
     private void GetBloodEffect(string tag, string name = null)
@@ -340,5 +333,30 @@ public class Enemy : MovingObject
             bloodFromPool.transform.rotation = transform.rotation;
             bloodFromPool.SetActive(true);
         }
+    }
+
+    public bool IsAttacking()
+    {
+        return isAttacking;
+    }
+    public bool IsWalking()
+    {
+        return animator.GetCurrentAnimatorStateInfo(0).IsTag("walk");
+    }
+    public bool IsHit()
+    {
+        return animator.GetCurrentAnimatorStateInfo(0).IsTag("hit");
+    }
+    public bool IsRunning()
+    {
+        return animator.GetCurrentAnimatorStateInfo(0).IsTag("run");
+    }
+    public bool IsIdle()
+    {
+        if (animator.GetCurrentAnimatorStateInfo(0).Equals(null) || animator.GetCurrentAnimatorStateInfo(0).IsTag("idle"))
+        {
+            return true;
+        }
+        return false;
     }
 }

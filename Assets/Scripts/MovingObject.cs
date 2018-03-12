@@ -78,6 +78,7 @@ public abstract class MovingObject : MonoBehaviour
     protected virtual void AttemptMove<T>(float xDir, float yDir, Transform target, Transform movingObject)
         where T : Component
     {
+        // todo check if in attack range
         RaycastHit2D hit;
         bool canMove = Move(xDir, yDir, out hit, target, movingObject);
 

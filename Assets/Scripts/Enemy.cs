@@ -222,7 +222,7 @@ public class Enemy : MovingObject
             elapsedSprayTime++;
         }
         animator.SetFloat("enemyHitSpeedMultiplier", 1f);
-        if (Random.Range(0, 10) > 9)
+        if (Random.Range(0, 10) > 5)
         {
             // animator.SetBool("enemyDrop", true);
             EnemyDecapitation();

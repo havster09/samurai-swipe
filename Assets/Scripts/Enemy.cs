@@ -222,18 +222,31 @@ public class Enemy : MovingObject
             elapsedSprayTime++;
         }
         animator.SetFloat("enemyHitSpeedMultiplier", 1f);
-        if (Random.Range(0, 10) > 5)
+        int randomDeath = Random.Range(0, 5);
+        if (randomDeath == 0)
         {
             // animator.SetBool("enemyDrop", true);
             EnemyDecapitation();
         }
-        else
+        else if (randomDeath == 1)
         {
             EnemySplitDrop();
-            GetBloodEffect("BodyParts", "HanzoTorsoSplit"); // todo prefix enemy name 
+            string enemyName = Utilities.ReplaceClone(name);
+            GetBloodEffect("BodyParts", enemyName + "TorsoSplit");
+        }
+        else
+        {
+            EnemyDieSplit();
         }
         StartCoroutine(DieStateHandler(5f));
         yield return null;
+    }
+
+    private void EnemyDieSplit()
+    {
+        animator.SetBool("enemyDieSplit", true);
+        GetBloodEffect("Blood", "BloodEffectDiagonal1");
+        WaitFor(() => GetBloodEffect("Blood", "BloodEffectSplit"), .1f);
     }
 
     private void EnemySplitDrop()

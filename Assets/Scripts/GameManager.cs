@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
 
     private static void InitEnemies()
     {
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < 10; i++)
         {
             RespawnEnemyFromPool();
         }

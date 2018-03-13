@@ -7,4 +7,24 @@ AnimatorOverrideController:
   m_PrefabInternal: {fileID: 0}
   m_Name: JubeiACOverride
   m_Controller: {fileID: 9100000, guid: 9910eed7869ac6a4c80bccc57c982e45, type: 2}
-  m_Clips: []
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 31bd5429291893e448fff37a26e39735, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: c7a2e30011367c4469a5328034169922, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: ac56f98ab6bd9764f93ed22dfdecf25a, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 430d9ae7d397ddc40838b2793251faf4, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 9bacdf6450ded0745ba51f9a5ef0c386, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 0b555e412f2a4764eb88e3d38baedadd, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 6a10d6c395f112c4490bbee6e9e3bd3b, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: d8656c048eacee94b829299de12dd2e7, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: dfaa00b62e40af24da1fa49146493458, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: f1c42d20ffb66354b82e5af12711d4ec, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: d0326a51a7abced4995a7008254394a6, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: c1d7e14088270f142915a7e462c47162, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: a10bb90ad0a1c8e44b2fbbf02eba3a34, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 11cad679048e7f04ba1fa41ed7952d7b, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: de60b054d0902e041a7bb482a2d69098, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: e421aeff725e85b4791b86bbb873830b, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: cc256fd954c2a6049aa76131676713c6, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: bc198141ba458754fa17bda68ace6eae, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: f4016963166e7f1458539cd902eefeaa, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: c0f5ec32fb1181645b7b2efa48d70671, type: 2}

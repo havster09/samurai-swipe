@@ -33,7 +33,11 @@ public class Enemy : MovingObject
 
     protected override void OnEnable()
     {
-        GameManager.instance.AddEnemyToList(this);
+        if (Utilities.ReplaceClone(name) != "Jubei")
+        {
+            GameManager.instance.AddEnemyToList(this);
+        }
+        
         target = GameObject.FindGameObjectWithTag("Player").transform;
         animator = GetComponent<Animator>();
 
@@ -178,19 +182,6 @@ public class Enemy : MovingObject
         isAttacking = true;
         canMoveInSmoothMovement = false;
         animator.SetTrigger("enemyAttackOne");
-        // StartCoroutine("CheckAttackFrame");
-    }
-
-    protected IEnumerator CheckAttackFrame()
-    {
-        float frameNormalizedTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
-        while(frameNormalizedTime < 1.0)
-        {
-            Debug.Log(frameNormalizedTime + "attack process");
-            yield return new WaitForSeconds(.1f);
-        }
-        Debug.Log(frameNormalizedTime + "attack complete");
-        yield return null;
     }
 
     public void EnemyDie()
@@ -352,21 +343,9 @@ public class Enemy : MovingObject
     {
         return isAttacking;
     }
-    public bool IsWalking()
+    public bool IsAnimationPlaying(string animationTag)
     {
-        return animator.GetCurrentAnimatorStateInfo(0).IsTag("walk");
-    }
-    public bool IsHit()
-    {
-        return animator.GetCurrentAnimatorStateInfo(0).IsTag("hit");
-    }
-    public bool IsRunning()
-    {
-        return animator.GetCurrentAnimatorStateInfo(0).IsTag("run");
-    }
-    public bool IsIdle()
-    {
-        if (animator.GetCurrentAnimatorStateInfo(0).Equals(null) || animator.GetCurrentAnimatorStateInfo(0).IsTag("idle"))
+        if (animator.GetCurrentAnimatorStateInfo(0).Equals(null) || animator.GetCurrentAnimatorStateInfo(0).IsTag(animationTag))
         {
             return true;
         }

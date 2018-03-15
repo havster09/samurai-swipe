@@ -105,8 +105,11 @@ public class GoapPlanner
 					// not at a solution yet, so test all the remaining actions and branch out the tree
 					HashSet<GoapAction> subset = actionSubset(usableActions, action);
 					bool found = buildGraph(node, leaves, subset, goal);
-					if (found)
-						foundOne = true;
+				    if (found)
+				    {
+				        foundOne = true;
+                    }
+						
 				}
 			}
 		}
@@ -142,8 +145,11 @@ public class GoapPlanner
 					break;
 				}
 			}
-			if (!match)
-				allMatch = false;
+		    if (!match)
+		    {
+		        allMatch = false;
+            }
+				
 		}
 		return allMatch;
 	}

@@ -8,8 +8,8 @@ public class PickUpToolAction : GoapAction
 
     public PickUpToolAction()
     {
-        addPrecondition("hasTool", false); // don't get a tool if we already have one
-        addEffect("hasTool", true); // we now have a tool
+        // addPrecondition("hasTool", false); // don't get a tool if we already have one
+        addEffect("collectLogs", true); // we now have a tool
     }
 
 
@@ -78,10 +78,10 @@ public class PickUpToolAction : GoapAction
             // create the tool and add it to the agent
 
             BackpackComponent backpack = (BackpackComponent)agent.GetComponent(typeof(BackpackComponent));
-            GameObject prefab = Resources.Load<GameObject>(backpack.toolType);
-            GameObject tool = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
-            backpack.tool = tool;
-            tool.transform.parent = transform; // attach the tool
+            //GameObject prefab = Resources.Load<GameObject>(backpack.toolType);
+            //GameObject tool = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
+            //backpack.tool = tool;
+            //tool.transform.parent = transform; // attach the tool
 
             return true;
         }

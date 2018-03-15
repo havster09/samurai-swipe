@@ -45,6 +45,7 @@ public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
         worldData.Add(new KeyValuePair<string, object>("hasLogs", (backpack.numLogs > 0)));
         worldData.Add(new KeyValuePair<string, object>("hasFirewood", (backpack.numFirewood > 0)));
         worldData.Add(new KeyValuePair<string, object>("hasTool", (backpack.tool != null)));
+        worldData.Add(new KeyValuePair<string, object>("destroyPlayer", false));
 
         return worldData;
     }

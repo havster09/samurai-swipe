@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 845989e1142b27a4e81cfc701071bc38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numTools: 100
+  numTools: 2147483647
   numLogs: 0
   numFirewood: 0
   numOre: 0

@@ -10,18 +10,19 @@ public class Enemy : MovingObject
 
     public bool hasWalkAbility;
 
-    private Animator animator;
+    public Animator animator;
     private Transform target;
     private bool enemyFlipX;
     private bool checkingIsInCombatRangeWhileRunning;
     private GameObject headFromPool;
+    private NpcAttributesComponent npcAttributesComponent;
 
     public bool isAttacking { get; private set; }
     public bool isDead { get; set; }
+    public bool canWalk;
 
     private void EnemyAttackOneEventHandler(string stringParameter)
     {
-        Debug.Log(stringParameter);
         isAttacking = false;
         canMoveInSmoothMovement = true;
     }
@@ -31,11 +32,27 @@ public class Enemy : MovingObject
         canMoveInSmoothMovement = true;
     }
 
+    private void EnemyWalkEventHandler()
+    {
+        Debug.Log("walk animation finished");
+        WaitFor(() => canWalk = true, 3f);
+    }
+    private void EnemyWalkBackEventHandler()
+        {
+            Debug.Log("walk back animation finished");
+            WaitFor(() => canWalk = true, 4f);
+        }
+
     protected override void OnEnable()
     {
         if (Utilities.ReplaceClone(name) != "Jubei")
         {
             GameManager.instance.AddEnemyToList(this);
+        }
+
+        if (npcAttributesComponent == null)
+        {
+            npcAttributesComponent = GetComponent<NpcAttributesComponent>();
         }
         
         target = GameObject.FindGameObjectWithTag("Player").transform;
@@ -57,6 +74,22 @@ public class Enemy : MovingObject
         hitEvent.time = hitClip.length;
         hitEvent.functionName = "EnemyHitEventHandler";
         hitClip.AddEvent(hitEvent);
+
+        AnimationClip walkClip;
+        AnimationEvent walkEvent;
+        walkEvent = new AnimationEvent();
+        walkClip = animator.runtimeAnimatorController.animationClips[2];
+        walkEvent.time = walkClip.length;
+        walkEvent.functionName = "EnemyWalkEventHandler";
+        walkClip.AddEvent(walkEvent);
+
+        AnimationClip walkBackClip;
+        AnimationEvent walkBackEvent;
+        walkBackEvent = new AnimationEvent();
+        walkBackClip = animator.runtimeAnimatorController.animationClips[3];
+        walkBackEvent.time = walkBackClip.length;
+        walkBackEvent.functionName = "EnemyWalkBackEventHandler";
+        walkBackClip.AddEvent(walkBackEvent);
 
         base.OnEnable();
     }
@@ -93,6 +126,7 @@ public class Enemy : MovingObject
 
         float xDir = 0;
         float yDir = 0;
+        canWalk = false;
 
         bool walkBackwards = Random.Range(0, 5) < 2 && Utilities.ReplaceClone(name) != "Ukyo";
         if (Mathf.Abs(target.position.x - transform.position.x) < float.Epsilon)
@@ -120,7 +154,7 @@ public class Enemy : MovingObject
             canMoveInSmoothMovement = false;
         }   
 
-        // Debug.DrawLine(target.position, transform.position, Color.red);
+        Debug.DrawLine(target.position, transform.position, Color.red);
         AttemptMove<Player>(xDir, yDir, target, transform);
 
     }
@@ -307,7 +341,7 @@ public class Enemy : MovingObject
     {
         if (collider.gameObject.tag == "Player")
         {
-            health -= 50;
+            health -= 25;
             if (health > 0)
             {
                 EnemyHit();
@@ -323,9 +357,9 @@ public class Enemy : MovingObject
     {
         canMoveInSmoothMovement = false;
         StopEnemyVelocity();
-        GetBloodEffect("Blood");
+        GetBloodEffect("Blood", "BloodEffect1");
         animator.SetTrigger("enemyHit");
-        WaitFor(EnemyHitEventHandler, 1f);
+        WaitFor(EnemyHitEventHandler, 2f);
     }
 
     private void GetBloodEffect(string tag, string name = null)

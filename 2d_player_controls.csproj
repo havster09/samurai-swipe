@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.1.0f3</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -91,9 +93,9 @@
     <Compile Include="Assets\Scripts\Enemy.cs" />
     <Compile Include="Assets\Scripts\EnemyGoap.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
-    <Compile Include="Assets\Scripts\GoapAgentEnemy.cs" />
     <Compile Include="Assets\Scripts\GoapAgentEnemyOne.cs" />
     <Compile Include="Assets\Scripts\GoapEnemyActions\SearchAndDestroyAction.cs" />
+    <Compile Include="Assets\Scripts\GoapEnemyTypes\GoapAgentEnemy.cs" />
     <Compile Include="Assets\Scripts\GoapEnemyTypes\GoapAgentSearchAndDestroy.cs" />
     <Compile Include="Assets\Scripts\KillTargetAction.cs" />
     <Compile Include="Assets\Scripts\MovingObject.cs" />
@@ -104,7 +106,7 @@
     <Compile Include="Assets\Scripts\SimpleAnimatedGameObject.cs" />
     <Compile Include="Assets\Scripts\SimpleMoveAnimation.cs" />
     <Compile Include="Assets\Scripts\SlashRenderer.cs" />
-    <Compile Include="Assets\Scripts\SupplyPileComponent.cs" />
+    <Compile Include="Assets\Scripts\NpcAttributesComponent.cs" />
     <Compile Include="Assets\Scripts\ToolComponent.cs" />
     <Compile Include="Assets\Scripts\TreeComponent.cs" />
     <Compile Include="Assets\Scripts\Utilities.cs" />

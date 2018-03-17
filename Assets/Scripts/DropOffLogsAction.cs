@@ -5,7 +5,7 @@ using UnityEngine;
 public class DropOffLogsAction: GoapAction
 {
 	private bool droppedOffLogs = false;
-	private SupplyPileComponent targetSupplyPile; // where we drop off the logs
+	private NpcAttributesComponent targetNpcAttributes; // where we drop off the logs
 	
 	public DropOffLogsAction () {
 		addPrecondition ("hasLogs", true); // can't drop off logs if we don't already have some
@@ -17,7 +17,7 @@ public class DropOffLogsAction: GoapAction
 	public override void reset ()
 	{
 		droppedOffLogs = false;
-		targetSupplyPile = null;
+		targetNpcAttributes = null;
 	}
 	
 	public override bool isDone ()
@@ -33,11 +33,11 @@ public class DropOffLogsAction: GoapAction
 	public override bool checkProceduralPrecondition (GameObject agent)
 	{
 		// find the nearest supply pile
-		SupplyPileComponent[] supplyPiles = (SupplyPileComponent[]) UnityEngine.GameObject.FindObjectsOfType ( typeof(SupplyPileComponent) );
-		SupplyPileComponent closest = null;
+		NpcAttributesComponent[] npcAttributeses = (NpcAttributesComponent[]) UnityEngine.GameObject.FindObjectsOfType ( typeof(NpcAttributesComponent) );
+		NpcAttributesComponent closest = null;
 		float closestDist = 0;
 		
-		foreach (SupplyPileComponent supply in supplyPiles) {
+		foreach (NpcAttributesComponent supply in npcAttributeses) {
 			if (closest == null) {
 				// first one, so choose it for now
 				closest = supply;
@@ -55,8 +55,8 @@ public class DropOffLogsAction: GoapAction
 		if (closest == null)
 			return false;
 
-		targetSupplyPile = closest;
-		target = targetSupplyPile.gameObject;
+		targetNpcAttributes = closest;
+		target = targetNpcAttributes.gameObject;
 		
 		return closest != null;
 	}
@@ -64,7 +64,7 @@ public class DropOffLogsAction: GoapAction
 	public override bool perform (GameObject agent)
 	{
 		BackpackComponent backpack = (BackpackComponent)agent.GetComponent(typeof(BackpackComponent));
-		targetSupplyPile.numLogs += backpack.numLogs;
+		targetNpcAttributes.numLogs += backpack.numLogs;
 		droppedOffLogs = true;
 		backpack.numLogs = 0;
 		

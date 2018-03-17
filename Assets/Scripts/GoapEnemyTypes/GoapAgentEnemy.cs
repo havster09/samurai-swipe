@@ -14,6 +14,8 @@ public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
     public BackpackComponent backpack;
     public float moveSpeed = 1;
 
+    public Enemy enemyScript;
+
 
     void Start()
     {
@@ -26,6 +28,16 @@ public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
 //            backpack.tool = tool;
 //            tool.transform.parent = transform; // attach the tool
 //        }
+
+        if (enemyScript == null)
+        {
+            enemyScript = GetComponent<Enemy>();
+        }
+    }
+
+    void OnEnable()
+    {
+
     }
 
 
@@ -83,7 +95,7 @@ public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
         Debug.Log("<color=red>Plan Aborted</color> " + GoapAgent.prettyPrint(aborter));
     }
 
-    public bool moveAgent(GoapAction nextAction)
+    public virtual bool moveAgent(GoapAction nextAction)
     {
         // move towards the NextAction's target
         float step = moveSpeed * Time.deltaTime;
@@ -96,7 +108,9 @@ public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
             return true;
         }
         else
+        {
             return false;
+        }
     }
 }
 

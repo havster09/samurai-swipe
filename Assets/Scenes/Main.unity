@@ -181,67 +181,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &615522327
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4067911902567338, guid: 362a8c2da1a99d8499560c0992475f7d, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -3.28
-      objectReference: {fileID: 0}
-    - target: {fileID: 4067911902567338, guid: 362a8c2da1a99d8499560c0992475f7d, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4067911902567338, guid: 362a8c2da1a99d8499560c0992475f7d, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4067911902567338, guid: 362a8c2da1a99d8499560c0992475f7d, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4067911902567338, guid: 362a8c2da1a99d8499560c0992475f7d, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4067911902567338, guid: 362a8c2da1a99d8499560c0992475f7d, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4067911902567338, guid: 362a8c2da1a99d8499560c0992475f7d, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4067911902567338, guid: 362a8c2da1a99d8499560c0992475f7d, type: 2}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114972050434184990, guid: 362a8c2da1a99d8499560c0992475f7d,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114084192740349204, guid: 362a8c2da1a99d8499560c0992475f7d,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114554894308390840, guid: 362a8c2da1a99d8499560c0992475f7d,
-        type: 2}
-      propertyPath: target
-      value: 
-      objectReference: {fileID: 1181631712}
-    m_RemovedComponents:
-    - {fileID: 114972050434184990, guid: 362a8c2da1a99d8499560c0992475f7d, type: 2}
-    - {fileID: 114795932298354158, guid: 362a8c2da1a99d8499560c0992475f7d, type: 2}
-    - {fileID: 114129483433048964, guid: 362a8c2da1a99d8499560c0992475f7d, type: 2}
-    - {fileID: 114964489434614068, guid: 362a8c2da1a99d8499560c0992475f7d, type: 2}
-  m_ParentPrefab: {fileID: 100100000, guid: 362a8c2da1a99d8499560c0992475f7d, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1001 &894762346
 Prefab:
   m_ObjectHideFlags: 0
@@ -281,14 +220,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114226115501201046, guid: 28b49b3a95a2141488429296d386fb62, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 28b49b3a95a2141488429296d386fb62, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1181631712 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1022140559822366, guid: 28b49b3a95a2141488429296d386fb62,
-    type: 2}
-  m_PrefabInternal: {fileID: 894762346}
 --- !u!1 &1270857681
 GameObject:
   m_ObjectHideFlags: 0
@@ -412,7 +347,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1869648003}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9509c0b32bcdd54bbf092f05c827827, type: 3}
   m_Name: 
@@ -440,17 +375,17 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1869648003}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed89a2081aed16248afda20a649344d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemsToPool:
-  - amountToPool: 5
+  - amountToPool: 1
     objectToPool: {fileID: 1662671873553116, guid: 7b17081931e49a046b8c51148a18009b,
       type: 2}
-    shouldExpand: 1
-  - amountToPool: 10
+    shouldExpand: 0
+  - amountToPool: 1
     objectToPool: {fileID: 1603413900680280, guid: 1e3be7b61629bf642ba47e248360ef1f,
       type: 2}
     shouldExpand: 0
@@ -514,7 +449,7 @@ MonoBehaviour:
     objectToPool: {fileID: 1818246317588858, guid: ba43d7216182b0b4cb3d86e76ee224de,
       type: 2}
     shouldExpand: 1
-  - amountToPool: 0
+  - amountToPool: 1
     objectToPool: {fileID: 1748471367380564, guid: 362a8c2da1a99d8499560c0992475f7d,
       type: 2}
     shouldExpand: 1

@@ -8,14 +8,12 @@ public abstract class MovingObject : MonoBehaviour
     public LayerMask blockingLayer;         
     public float maxCombatRange;
     public float maxWalkRange;
-
-    protected SpriteRenderer spriteRenderer;
-
+    public bool canMoveInSmoothMovement = true;
+    public SpriteRenderer spriteRenderer;
 
     private BoxCollider2D boxCollider;      
     protected Rigidbody2D rb2D;             
-    private float inverseMoveTime;          
-    protected bool canMoveInSmoothMovement = true;
+    private float inverseMoveTime;    
 
     protected virtual void Start()
     {
@@ -88,7 +86,7 @@ public abstract class MovingObject : MonoBehaviour
         }
     }
 
-    protected void WaitFor(Action action, float duration)
+    public void WaitFor(Action action, float duration)
     {
         StartCoroutine(WaitForCheck(action, duration));
     }

@@ -115,7 +115,9 @@ public class EnemyGoap : MonoBehaviour, IGoap
             return true;
         }
         else
+        {
             return false;
+        }
     }
 }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 public class PickUpToolAction : GoapAction
 {
     private bool hasTool = false;
-    private SupplyPileComponent targetSupplyPile; // where we get the tool from
+    private NpcAttributesComponent targetNpcAttributes; // where we get the tool from
 
     public PickUpToolAction()
     {
@@ -16,7 +16,7 @@ public class PickUpToolAction : GoapAction
     public override void reset()
     {
         hasTool = false;
-        targetSupplyPile = null;
+        targetNpcAttributes = null;
     }
 
     public override bool isDone()
@@ -32,11 +32,11 @@ public class PickUpToolAction : GoapAction
     public override bool checkProceduralPrecondition(GameObject agent)
     {
         // find the nearest supply pile that has spare tools
-        SupplyPileComponent[] supplyPiles = (SupplyPileComponent[])UnityEngine.GameObject.FindObjectsOfType(typeof(SupplyPileComponent));
-        SupplyPileComponent closest = null;
+        NpcAttributesComponent[] npcAttributeses = (NpcAttributesComponent[])UnityEngine.GameObject.FindObjectsOfType(typeof(NpcAttributesComponent));
+        NpcAttributesComponent closest = null;
         float closestDist = 0;
 
-        foreach (SupplyPileComponent supply in supplyPiles)
+        foreach (NpcAttributesComponent supply in npcAttributeses)
         {
             if (supply.numTools > 0)
             {
@@ -62,17 +62,17 @@ public class PickUpToolAction : GoapAction
         if (closest == null)
             return false;
 
-        targetSupplyPile = closest;
-        target = targetSupplyPile.gameObject;
+        targetNpcAttributes = closest;
+        target = targetNpcAttributes.gameObject;
 
         return closest != null;
     }
 
     public override bool perform(GameObject agent)
     {
-        if (targetSupplyPile.numTools > 0)
+        if (targetNpcAttributes.numTools > 0)
         {
-            targetSupplyPile.numTools -= 1;
+            targetNpcAttributes.numTools -= 1;
             hasTool = true;
 
             // create the tool and add it to the agent

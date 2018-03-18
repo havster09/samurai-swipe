@@ -5,19 +5,20 @@ using UnityEngine;
 
 public class SearchAndDestroyAction : GoapAction
 {
-    private bool npcIsDestroyed = false;
+    private bool npcIsDestroyed;
     public Enemy enemyScript;
     private NpcHeroAttributesComponent targetNpcHeroAttribute;
+    private NpcExperienceComponent npcExperience;
 
     public SearchAndDestroyAction()
     {
-
+        addPrecondition("destroyNpc", false);
+        addEffect("destroyNpc", true);
     }
 
     void OnEnable()
     {
         reset();
-        addEffect("destroyNpc", true);
         if (enemyScript == null)
         {
             enemyScript = GetComponent<Enemy>();
@@ -54,21 +55,18 @@ public class SearchAndDestroyAction : GoapAction
 
         foreach (NpcHeroAttributesComponent npc in npcHeroAttributes)
         {
-            if (npc.health > 0)
+            if (closest == null)
             {
-                if (closest == null)
+                closest = npc;
+                closestDist = (npc.gameObject.transform.position - agent.transform.position).magnitude;
+            }
+            else
+            {
+                float dist = (npc.gameObject.transform.position - agent.transform.position).magnitude;
+                if (dist < closestDist)
                 {
                     closest = npc;
-                    closestDist = (npc.gameObject.transform.position - agent.transform.position).magnitude;
-                }
-                else
-                {
-                    float dist = (npc.gameObject.transform.position - agent.transform.position).magnitude;
-                    if (dist < closestDist)
-                    {
-                        closest = npc;
-                        closestDist = dist;
-                    }
+                    closestDist = dist;
                 }
             }
         }
@@ -91,16 +89,11 @@ public class SearchAndDestroyAction : GoapAction
             {
                 enemyScript.Attack();
                 targetNpcHeroAttribute.health -= 1;
-
-                BackpackComponent backpack = (BackpackComponent)agent.GetComponent(typeof(BackpackComponent));
-                //GameObject prefab = Resources.Load<GameObject>(backpack.toolType);
-                //GameObject tool = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
-                //backpack.tool = tool;
-                //tool.transform.parent = transform; // attach the tool
-
-                return false;
             }
+            npcExperience = (NpcExperienceComponent)agent.GetComponent(typeof(NpcExperienceComponent));
+            npcExperience.killCount += 1;
+            npcIsDestroyed = true;
         }
-        return false;
+        return npcIsDestroyed;
     }
 }

@@ -79,15 +79,15 @@ public class ChopTreeAction : GoapAction
         if (Time.time - startTime > workDuration)
         {
             // finished chopping
-            BackpackComponent backpack = (BackpackComponent)agent.GetComponent(typeof(BackpackComponent));
-            backpack.numLogs += 1;
+            NpcExperienceComponent npcExperience = (NpcExperienceComponent)agent.GetComponent(typeof(NpcExperienceComponent));
+            // npcExperience.numLogs += 1;
             chopped = true;
-            //ToolComponent tool = backpack.tool.GetComponent(typeof(ToolComponent)) as ToolComponent;
+            //ToolComponent tool = NpcExperience.tool.GetComponent(typeof(ToolComponent)) as ToolComponent;
             //tool.use(0.34f);
             //if (tool.destroyed())
             //{
-            //    Destroy(backpack.tool);
-            //    backpack.tool = null;
+            //    Destroy(NpcExperience.tool);
+            //    NpcExperience.tool = null;
             //}
         }
         return true;

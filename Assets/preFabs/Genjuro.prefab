@@ -25,7 +25,6 @@ GameObject:
   - component: {fileID: 61425382213236516}
   - component: {fileID: 114224049523918010}
   - component: {fileID: 114845955523889888}
-  - component: {fileID: 114226115501201046}
   - component: {fileID: 114909287971015834}
   m_Layer: 0
   m_Name: Genjuro
@@ -156,17 +155,6 @@ MonoBehaviour:
   groundCheck: {fileID: 4221162462610658}
   jumpPower: 8
   speed: 0.1
---- !u!114 &114226115501201046
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1022140559822366}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41bbcfa8d3f6bf74b80dddd6bb4bd8a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114845955523889888
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -178,10 +166,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 845989e1142b27a4e81cfc701071bc38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numTools: 2147483647
-  numLogs: 0
-  numFirewood: 0
-  numOre: 0
+  health: 1
+  brave: 100
 --- !u!114 &114909287971015834
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -77,15 +77,15 @@ public class KillTargetAction : GoapAction
         if (Time.time - startTime > workDuration)
         {
             // finished chopping
-            //BackpackComponent backpack = (BackpackComponent)agent.GetComponent(typeof(BackpackComponent));
-            //backpack.numFirewood += 5;
+            //NpcExperienceComponent NpcExperience = (NpcExperienceComponent)agent.GetComponent(typeof(NpcExperienceComponent));
+            //NpcExperience.numFirewood += 5;
             //killedTarget = true;
-            //ToolComponent tool = backpack.tool.GetComponent(typeof(ToolComponent)) as ToolComponent;
+            //ToolComponent tool = NpcExperience.tool.GetComponent(typeof(ToolComponent)) as ToolComponent;
             //tool.use(0.34f);
             //if (tool.destroyed())
             //{
-            //    Destroy(backpack.tool);
-            //    backpack.tool = null;
+            //    Destroy(NpcExperience.tool);
+            //    NpcExperience.tool = null;
             //}
             killedTarget = true;
         }

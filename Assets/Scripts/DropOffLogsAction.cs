@@ -63,10 +63,10 @@ public class DropOffLogsAction: GoapAction
 	
 	public override bool perform (GameObject agent)
 	{
-		BackpackComponent backpack = (BackpackComponent)agent.GetComponent(typeof(BackpackComponent));
-		// targetNpcHeroAttributes.numLogs += backpack.numLogs;
+		NpcExperienceComponent npcExperience = (NpcExperienceComponent)agent.GetComponent(typeof(NpcExperienceComponent));
+		// targetNpcHeroAttributes.numLogs += NpcExperience.numLogs;
 		droppedOffLogs = true;
-		backpack.numLogs = 0;
+		// npcExperience.numLogs = 0;
 		
 		return true;
 	}

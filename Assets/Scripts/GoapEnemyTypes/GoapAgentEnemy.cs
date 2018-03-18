@@ -3,15 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-/**
- * A general labourer class.
- * You should subclass this for specific Labourer classes and implement
- * the createGoalState() method that will populate the goal for the GOAP
- * planner.
- */
 public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
 {
-    public BackpackComponent backpack;
+    public NpcExperienceComponent NpcExperience;
     public float moveSpeed = 1;
 
     public Enemy enemyScript;
@@ -19,15 +13,10 @@ public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
 
     void Start()
     {
-        if (backpack == null)
-            backpack = gameObject.AddComponent<BackpackComponent>() as BackpackComponent;
-//        if (backpack.tool == null)
-//        {
-//            GameObject prefab = Resources.Load<GameObject>(backpack.toolType);
-//            GameObject tool = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
-//            backpack.tool = tool;
-//            tool.transform.parent = transform; // attach the tool
-//        }
+        if (NpcExperience == null)
+        {
+            NpcExperience = gameObject.AddComponent<NpcExperienceComponent>();
+        }
 
         if (enemyScript == null)
         {
@@ -42,11 +31,10 @@ public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
     {
         HashSet<KeyValuePair<string, object>> worldData = new HashSet<KeyValuePair<string, object>>();
 
-        worldData.Add(new KeyValuePair<string, object>("hasOre", (backpack.numOre > 0)));
-        worldData.Add(new KeyValuePair<string, object>("hasLogs", (backpack.numLogs > 0)));
-        worldData.Add(new KeyValuePair<string, object>("hasFirewood", (backpack.numFirewood > 0)));
-        worldData.Add(new KeyValuePair<string, object>("hasTool", (backpack.tool != null)));
-        worldData.Add(new KeyValuePair<string, object>("destroyPlayer", false));
+        worldData.Add(new KeyValuePair<string, object>("hasKills", (NpcExperience.killCount > 0)));
+        worldData.Add(new KeyValuePair<string, object>("hasBrave", (NpcExperience.braveCount > 0)));
+        worldData.Add(new KeyValuePair<string, object>("destroyNpc", false));
+        worldData.Add(new KeyValuePair<string, object>("enemyWin", false));
 
         return worldData;
     }

@@ -10,6 +10,7 @@ public class GoapAgentSearchAndDestroy : GoapAgentEnemy
     {
         HashSet<KeyValuePair<string, object>> goal = new HashSet<KeyValuePair<string, object>>();
         goal.Add(new KeyValuePair<string, object>("destroyNpc", true));
+        goal.Add(new KeyValuePair<string, object>("enemyWin", true));
         return goal;
     }
 
@@ -18,11 +19,11 @@ public class GoapAgentSearchAndDestroy : GoapAgentEnemy
         if (enemyScript.health > 0 && !enemyScript.IsAnimationPlaying("hit"))
         {
             enemyScript.FaceTarget();
-
             if (!enemyScript.IsInWalkRange() && !enemyScript.IsAnimationPlaying("attack") &&
                 !enemyScript.IsAnimationPlaying("walk") && enemyScript.canWalk)
             {
                 GoapAgentSearchAndDestroyRun(nextAction);
+                return false;
             }
             else
             {
@@ -30,6 +31,7 @@ public class GoapAgentSearchAndDestroy : GoapAgentEnemy
                 if (enemyScript.IsAnimationPlaying("idle") && enemyScript.canWalk)
                 {
                     enemyScript.MoveEnemy();
+                    return false;
                 }
                 else if (enemyScript.IsInCombatRange())
                 {

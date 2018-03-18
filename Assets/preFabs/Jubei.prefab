@@ -24,6 +24,8 @@ GameObject:
   - component: {fileID: 114652296853666418}
   - component: {fileID: 114084192740349204}
   - component: {fileID: 114554894308390840}
+  - component: {fileID: 114673203993009612}
+  - component: {fileID: 114579107978402060}
   - component: {fileID: 95448965033597492}
   - component: {fileID: 50268912086583426}
   - component: {fileID: 61787901685713914}
@@ -145,7 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8ca13836d7269f41bc1d346efe35ae7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backpack: {fileID: 0}
+  NpcExperience: {fileID: 0}
   moveSpeed: 2
   enemyScript: {fileID: 0}
 --- !u!114 &114554894308390840
@@ -159,7 +161,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baec37c103c027445968673ebb5a9368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 10
+  cost: 100
+  target: {fileID: 0}
+  enemyScript: {fileID: 0}
+--- !u!114 &114579107978402060
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1748471367380564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87c4fce8b01f15e4d8ecc035f3a2a602, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cost: 2
   target: {fileID: 0}
   enemyScript: {fileID: 0}
 --- !u!114 &114652296853666418
@@ -173,6 +189,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9a07630984c23e48a79079359aca64c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114673203993009612
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1748471367380564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 738ab8143015814438518d349f938b77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NpcExperience: {fileID: 0}
+  moveSpeed: 1
+  enemyScript: {fileID: 0}
 --- !u!212 &212149167326061762
 SpriteRenderer:
   m_ObjectHideFlags: 1

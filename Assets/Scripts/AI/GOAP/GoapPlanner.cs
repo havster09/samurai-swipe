@@ -138,8 +138,6 @@ public class GoapPlanner
 		foreach (KeyValuePair<string,object> t in test) {
 			bool match = false;
 			foreach (KeyValuePair<string,object> s in state) {
-                Debug.Log(t);
-                Debug.Log(s);
                 if (s.Equals(t)) {
 					match = true;
 					break;

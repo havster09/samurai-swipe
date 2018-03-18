@@ -393,10 +393,10 @@ MonoBehaviour:
     objectToPool: {fileID: 1110474289633428, guid: ebd731446439f804ebfdee98622af00f,
       type: 2}
     shouldExpand: 0
-  - amountToPool: 3
+  - amountToPool: 1
     objectToPool: {fileID: 1442982838751068, guid: 66c1ced9e6e7a9b488a3c87f6ab25743,
       type: 2}
-    shouldExpand: 1
+    shouldExpand: 0
   - amountToPool: 1
     objectToPool: {fileID: 1095210163486758, guid: 8e6ef0102aeccc44db62e6cb7354c03a,
       type: 2}
@@ -409,43 +409,43 @@ MonoBehaviour:
     objectToPool: {fileID: 1191569094728292, guid: 04242f215bcc20e45b9d8c5a070892ef,
       type: 2}
     shouldExpand: 1
-  - amountToPool: 3
+  - amountToPool: 1
     objectToPool: {fileID: 1223998317632704, guid: e642536478f5d1047b7f2d14d1860a10,
       type: 2}
-    shouldExpand: 1
+    shouldExpand: 0
   - amountToPool: 1
     objectToPool: {fileID: 1630316498883800, guid: fa20869f78b2ad640b6f90d7934c92ef,
       type: 2}
     shouldExpand: 1
-  - amountToPool: 3
+  - amountToPool: 1
     objectToPool: {fileID: 1177176755723688, guid: 0b3908d8d56352c4091c6cbea3ba5eb7,
       type: 2}
-    shouldExpand: 1
-  - amountToPool: 2
+    shouldExpand: 0
+  - amountToPool: 1
     objectToPool: {fileID: 1186173468415532, guid: fc5ee17f9b41da94d92fbe4f9cedca76,
       type: 2}
     shouldExpand: 1
-  - amountToPool: 3
+  - amountToPool: 1
     objectToPool: {fileID: 1196530104177726, guid: 94c764d6dd683be43a629a2195a17ee8,
       type: 2}
     shouldExpand: 1
-  - amountToPool: 3
+  - amountToPool: 1
     objectToPool: {fileID: 1015582658090036, guid: 16baa6ec42e6fd54a8d78ee882f94a93,
       type: 2}
     shouldExpand: 1
-  - amountToPool: 3
+  - amountToPool: 1
     objectToPool: {fileID: 1265553241579168, guid: 2c3aaff6bda9cb64d9e0b7d8a8060748,
       type: 2}
     shouldExpand: 1
-  - amountToPool: 3
+  - amountToPool: 1
     objectToPool: {fileID: 1265553241579168, guid: 2c3aaff6bda9cb64d9e0b7d8a8060748,
       type: 2}
-    shouldExpand: 1
-  - amountToPool: 3
+    shouldExpand: 0
+  - amountToPool: 1
     objectToPool: {fileID: 1500018463859916, guid: 5df3723a7d390d842af2e032fe611af7,
       type: 2}
     shouldExpand: 1
-  - amountToPool: 3
+  - amountToPool: 1
     objectToPool: {fileID: 1818246317588858, guid: ba43d7216182b0b4cb3d86e76ee224de,
       type: 2}
     shouldExpand: 1
@@ -453,6 +453,10 @@ MonoBehaviour:
     objectToPool: {fileID: 1748471367380564, guid: 362a8c2da1a99d8499560c0992475f7d,
       type: 2}
     shouldExpand: 1
+  - amountToPool: 1
+    objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
+      type: 2}
+    shouldExpand: 0
   pooledObjects: []
   bloodDecapitationEffects: []
 --- !u!114 &1869648007

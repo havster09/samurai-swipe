@@ -15,7 +15,7 @@ public class Enemy : MovingObject
     private bool enemyFlipX;
     private bool checkingIsInCombatRangeWhileRunning;
     private GameObject headFromPool;
-    private NpcAttributesComponent npcAttributesComponent;
+    private NpcHeroAttributesComponent npcHeroAttributesComponent;
 
     public bool isAttacking { get; private set; }
     public bool isDead { get; set; }
@@ -34,14 +34,13 @@ public class Enemy : MovingObject
 
     private void EnemyWalkEventHandler()
     {
-        Debug.Log("walk animation finished");
         WaitFor(() => canWalk = true, 3f);
     }
+
     private void EnemyWalkBackEventHandler()
-        {
-            Debug.Log("walk back animation finished");
-            WaitFor(() => canWalk = true, 4f);
-        }
+    {
+        WaitFor(() => canWalk = true, 4f);
+    }
 
     protected override void OnEnable()
     {
@@ -50,11 +49,11 @@ public class Enemy : MovingObject
             GameManager.instance.AddEnemyToList(this);
         }
 
-        if (npcAttributesComponent == null)
+        if (npcHeroAttributesComponent == null)
         {
-            npcAttributesComponent = GetComponent<NpcAttributesComponent>();
+            npcHeroAttributesComponent = GetComponent<NpcHeroAttributesComponent>();
         }
-        
+
         target = GameObject.FindGameObjectWithTag("Player").transform;
         animator = GetComponent<Animator>();
 
@@ -145,18 +144,16 @@ public class Enemy : MovingObject
                 xDir = target.position.x > transform.position.x ? -.5f : .5f;
                 animator.SetTrigger("enemyWalkBack");
             }
-
         }
 
 
         if (IsAttacking())
         {
             canMoveInSmoothMovement = false;
-        }   
+        }
 
         Debug.DrawLine(target.position, transform.position, Color.red);
         AttemptMove<Player>(xDir, yDir, target, transform);
-
     }
 
     public bool IsInWalkRange()
@@ -184,26 +181,24 @@ public class Enemy : MovingObject
         if (!checkingIsInCombatRangeWhileRunning && gameObject.activeInHierarchy)
         {
             StartCoroutine("CheckIsInCombatRangeWhileRunning");
-        }        
+        }
     }
 
     protected IEnumerator CheckIsInCombatRangeWhileRunning()
     {
-        Debug.Log("check in combat range init");
         checkingIsInCombatRangeWhileRunning = true;
         int checkCount = 0;
-        while(checkingIsInCombatRangeWhileRunning)
+        while (checkingIsInCombatRangeWhileRunning)
         {
             checkCount++;
             if (IsInCombatRange())
             {
                 StopEnemyVelocity();
-                Debug.Log("check in combat range total " + checkCount);
                 checkingIsInCombatRangeWhileRunning = false;
                 yield break;
             }
             yield return new WaitForSeconds(1f);
-        }        
+        }
     }
 
     protected override void OnCantMove<T>(T component)
@@ -226,7 +221,7 @@ public class Enemy : MovingObject
         EnemySpray();
 
         health = 0;
-        isDead = true;        
+        isDead = true;
     }
 
     private void EnemySpray()
@@ -292,7 +287,8 @@ public class Enemy : MovingObject
         string headString = Utilities.ReplaceClone(name) + "Head";
         headFromPool = ObjectPooler.SharedInstance.GetPooledObject("BodyPart", headString);
         int randomDecapitationIndex = Random.Range(0, ObjectPooler.SharedInstance.bloodDecapitationEffects.Length);
-        GetBloodEffect("BloodDecapitation", ObjectPooler.SharedInstance.bloodDecapitationEffects[randomDecapitationIndex]);
+        GetBloodEffect("BloodDecapitation",
+            ObjectPooler.SharedInstance.bloodDecapitationEffects[randomDecapitationIndex]);
         if (headFromPool)
         {
             headFromPool.transform.position = transform.position;
@@ -321,7 +317,7 @@ public class Enemy : MovingObject
         int elapsedDeathTime = 0;
         while (elapsedDeathTime < respawnTime)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(3f);
             elapsedDeathTime++;
         }
         RespawnEnemy();
@@ -341,19 +337,19 @@ public class Enemy : MovingObject
     {
         if (collider.gameObject.tag == "Player")
         {
-            health -= 25;
+            health -= 50;
             if (health > 0)
             {
                 EnemyHit();
             }
-            else if(!isDead)
+            else if (!isDead)
             {
                 EnemyDie();
             }
         }
     }
 
-   private void EnemyHit()
+    private void EnemyHit()
     {
         canMoveInSmoothMovement = false;
         StopEnemyVelocity();
@@ -377,9 +373,11 @@ public class Enemy : MovingObject
     {
         return isAttacking;
     }
+
     public bool IsAnimationPlaying(string animationTag)
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).Equals(null) || animator.GetCurrentAnimatorStateInfo(0).IsTag(animationTag))
+        if (animator.GetCurrentAnimatorStateInfo(0).Equals(null) ||
+            animator.GetCurrentAnimatorStateInfo(0).IsTag(animationTag))
         {
             return true;
         }

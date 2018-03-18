@@ -1,15 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GoapAgentSearchAndDestroy : GoapAgentEnemy
 {
-    
+    private Enemy[] enemies;
 
     public override HashSet<KeyValuePair<string, object>> createGoalState()
     {
         HashSet<KeyValuePair<string, object>> goal = new HashSet<KeyValuePair<string, object>>();
-
         goal.Add(new KeyValuePair<string, object>("destroyNpc", true));
         return goal;
     }
@@ -18,14 +17,12 @@ public class GoapAgentSearchAndDestroy : GoapAgentEnemy
     {
         if (enemyScript.health > 0 && !enemyScript.IsAnimationPlaying("hit"))
         {
-
             enemyScript.FaceTarget();
 
-            if (!enemyScript.IsInWalkRange() && !enemyScript.IsAnimationPlaying("attack") && !enemyScript.IsAnimationPlaying("walk"))
+            if (!enemyScript.IsInWalkRange() && !enemyScript.IsAnimationPlaying("attack") &&
+                !enemyScript.IsAnimationPlaying("walk") && enemyScript.canWalk)
             {
-
-                enemyScript.WaitFor(() => GoapAgentSearchAndDestroyRun(nextAction), .5f);
-                
+                GoapAgentSearchAndDestroyRun(nextAction);
             }
             else
             {
@@ -39,13 +36,6 @@ public class GoapAgentSearchAndDestroy : GoapAgentEnemy
                     nextAction.setInRange(true);
                     return true;
                 }
-            }
-
-            if (gameObject.transform.position.Equals(nextAction.target.transform.position))
-            {
-                nextAction.setInRange(true);
-                enemyScript.animator.SetBool("enemyRun", false);
-                return true;
             }
             return false;
         }
@@ -61,6 +51,14 @@ public class GoapAgentSearchAndDestroy : GoapAgentEnemy
         gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, nextAction.target.transform.position, step);
         enemyScript.animator.SetBool("enemyRun", true);
     }
+
+    public int CheckActiveCount()
+    {
+        enemies = (Enemy[])UnityEngine.GameObject.FindObjectsOfType(typeof(Enemy));
+        enemies.Select(e => e.gameObject.activeInHierarchy && !e.isDead);
+        return enemies.Length;
+    }
+
 }
 
 

@@ -21,7 +21,6 @@ public class SimpleAnimatedGameObject : MonoBehaviour {
 
     private void SimpleAnimatedObjectEndEventHandler(string stringParameter)
     {
-        Debug.Log(stringParameter);
         if (holdLastFrameInSeconds > 0)
         {
             StartCoroutine(HoldLastFrameInSeconds());

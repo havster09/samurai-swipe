@@ -4,7 +4,7 @@ using UnityEngine;
 public class PickUpToolAction : GoapAction
 {
     private bool hasTool = false;
-    private NpcAttributesComponent targetNpcAttributes; // where we get the tool from
+    private NpcHeroAttributesComponent targetNpcHeroAttributes; // where we get the tool from
 
     public PickUpToolAction()
     {
@@ -16,7 +16,7 @@ public class PickUpToolAction : GoapAction
     public override void reset()
     {
         hasTool = false;
-        targetNpcAttributes = null;
+        targetNpcHeroAttributes = null;
     }
 
     public override bool isDone()
@@ -32,13 +32,13 @@ public class PickUpToolAction : GoapAction
     public override bool checkProceduralPrecondition(GameObject agent)
     {
         // find the nearest supply pile that has spare tools
-        NpcAttributesComponent[] npcAttributeses = (NpcAttributesComponent[])UnityEngine.GameObject.FindObjectsOfType(typeof(NpcAttributesComponent));
-        NpcAttributesComponent closest = null;
+        NpcHeroAttributesComponent[] npcHeroAttributeses = (NpcHeroAttributesComponent[])UnityEngine.GameObject.FindObjectsOfType(typeof(NpcHeroAttributesComponent));
+        NpcHeroAttributesComponent closest = null;
         float closestDist = 0;
 
-        foreach (NpcAttributesComponent supply in npcAttributeses)
+        foreach (NpcHeroAttributesComponent supply in npcHeroAttributeses)
         {
-            if (supply.numTools > 0)
+            if (supply.health > 0)
             {
                 if (closest == null)
                 {
@@ -62,17 +62,17 @@ public class PickUpToolAction : GoapAction
         if (closest == null)
             return false;
 
-        targetNpcAttributes = closest;
-        target = targetNpcAttributes.gameObject;
+        targetNpcHeroAttributes = closest;
+        target = targetNpcHeroAttributes.gameObject;
 
         return closest != null;
     }
 
     public override bool perform(GameObject agent)
     {
-        if (targetNpcAttributes.numTools > 0)
+        if (targetNpcHeroAttributes.health > 0)
         {
-            targetNpcAttributes.numTools -= 1;
+            targetNpcHeroAttributes.health -= 1;
             hasTool = true;
 
             // create the tool and add it to the agent

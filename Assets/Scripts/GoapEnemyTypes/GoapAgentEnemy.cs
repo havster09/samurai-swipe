@@ -35,17 +35,6 @@ public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
         }
     }
 
-    void OnEnable()
-    {
-
-    }
-
-
-    void Update()
-    {
-
-    }
-
     /**
 	 * Key-Value data that will feed the GOAP actions and system while planning.
 	 */

@@ -1,16 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SearchAndDestroyAction : GoapAction
 {
-    private bool hasTool = false;
+    private bool npcIsDestroyed = false;
     public Enemy enemyScript;
-    private NpcAttributesComponent targetNpcAttributes; 
+    private NpcHeroAttributesComponent targetNpcHeroAttribute;
 
     public SearchAndDestroyAction()
     {
-        
+
     }
 
     void OnEnable()
@@ -26,13 +27,13 @@ public class SearchAndDestroyAction : GoapAction
 
     public override void reset()
     {
-        hasTool = false;
-        targetNpcAttributes = null;
+        npcIsDestroyed = false;
+        targetNpcHeroAttribute = null;
     }
 
     public override bool isDone()
     {
-        return hasTool;
+        return npcIsDestroyed;
     }
 
     public override bool requiresInRange()
@@ -42,13 +43,18 @@ public class SearchAndDestroyAction : GoapAction
 
     public override bool checkProceduralPrecondition(GameObject agent)
     {
-        NpcAttributesComponent[] npcAttributeses = (NpcAttributesComponent[])UnityEngine.GameObject.FindObjectsOfType(typeof(NpcAttributesComponent));
-        NpcAttributesComponent closest = null;
+        return FindNpcTarget(agent);
+    }
+
+    public virtual bool FindNpcTarget(GameObject agent)
+    {
+        NpcHeroAttributesComponent[] npcHeroAttributes = (NpcHeroAttributesComponent[])UnityEngine.GameObject.FindObjectsOfType(typeof(NpcHeroAttributesComponent));
+        NpcHeroAttributesComponent closest = null;
         float closestDist = 0;
 
-        foreach (NpcAttributesComponent npc in npcAttributeses)
+        foreach (NpcHeroAttributesComponent npc in npcHeroAttributes)
         {
-            if (npc.numTools > 0)
+            if (npc.health > 0)
             {
                 if (closest == null)
                 {
@@ -70,34 +76,31 @@ public class SearchAndDestroyAction : GoapAction
         {
             return false;
         }
-            
 
-        targetNpcAttributes = closest;
-        target = targetNpcAttributes.gameObject;
+        targetNpcHeroAttribute = closest;
+        target = targetNpcHeroAttribute.gameObject;
 
         return closest != null;
     }
 
     public override bool perform(GameObject agent)
     {
-        if (targetNpcAttributes.health > 0)
-            {
-            enemyScript.Attack();
-            targetNpcAttributes.health -= 1;
-            
-            BackpackComponent backpack = (BackpackComponent)agent.GetComponent(typeof(BackpackComponent));
-            //GameObject prefab = Resources.Load<GameObject>(backpack.toolType);
-            //GameObject tool = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
-            //backpack.tool = tool;
-            //tool.transform.parent = transform; // attach the tool
-
-            return targetNpcAttributes.health < 1;
-        }
-        else
+        if (targetNpcHeroAttribute != null)
         {
-            // cannot perform action npc is dead
-            return false;
-        }
-    }
+            if (targetNpcHeroAttribute.health > 0)
+            {
+                enemyScript.Attack();
+                targetNpcHeroAttribute.health -= 1;
 
+                BackpackComponent backpack = (BackpackComponent)agent.GetComponent(typeof(BackpackComponent));
+                //GameObject prefab = Resources.Load<GameObject>(backpack.toolType);
+                //GameObject tool = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
+                //backpack.tool = tool;
+                //tool.transform.parent = transform; // attach the tool
+
+                return false;
+            }
+        }
+        return false;
+    }
 }

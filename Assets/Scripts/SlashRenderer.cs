@@ -46,18 +46,13 @@ public class SlashRenderer : MonoBehaviour {
 
 	    if (Input.GetMouseButtonDown(0))
 	    {
-
-	        Debug.Log("clicked");
             mouseDownPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, slashZPosition);
         }
 
 	    if (Input.GetMouseButtonUp(0))
 	    {
-	        Debug.Log("click released");
 	        RemoveSlash();
             mouseUpPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, slashZPosition);
-            Debug.Log(mouseDownPos);
-	        Debug.Log(mouseUpPos);
 	        AddMouseSlash();
 	    }
     }

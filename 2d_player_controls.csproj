@@ -106,7 +106,7 @@
     <Compile Include="Assets\Scripts\SimpleAnimatedGameObject.cs" />
     <Compile Include="Assets\Scripts\SimpleMoveAnimation.cs" />
     <Compile Include="Assets\Scripts\SlashRenderer.cs" />
-    <Compile Include="Assets\Scripts\NpcAttributesComponent.cs" />
+    <Compile Include="Assets\Scripts\NpcHeroAttributesComponent.cs" />
     <Compile Include="Assets\Scripts\ToolComponent.cs" />
     <Compile Include="Assets\Scripts\TreeComponent.cs" />
     <Compile Include="Assets\Scripts\Utilities.cs" />

@@ -5,7 +5,7 @@ using UnityEngine;
 public class DropOffLogsAction: GoapAction
 {
 	private bool droppedOffLogs = false;
-	private NpcAttributesComponent targetNpcAttributes; // where we drop off the logs
+	private NpcHeroAttributesComponent targetNpcHeroAttributes; // where we drop off the logs
 	
 	public DropOffLogsAction () {
 		addPrecondition ("hasLogs", true); // can't drop off logs if we don't already have some
@@ -17,7 +17,7 @@ public class DropOffLogsAction: GoapAction
 	public override void reset ()
 	{
 		droppedOffLogs = false;
-		targetNpcAttributes = null;
+		targetNpcHeroAttributes = null;
 	}
 	
 	public override bool isDone ()
@@ -33,11 +33,11 @@ public class DropOffLogsAction: GoapAction
 	public override bool checkProceduralPrecondition (GameObject agent)
 	{
 		// find the nearest supply pile
-		NpcAttributesComponent[] npcAttributeses = (NpcAttributesComponent[]) UnityEngine.GameObject.FindObjectsOfType ( typeof(NpcAttributesComponent) );
-		NpcAttributesComponent closest = null;
+		NpcHeroAttributesComponent[] npcHeroAttributeses = (NpcHeroAttributesComponent[]) UnityEngine.GameObject.FindObjectsOfType ( typeof(NpcHeroAttributesComponent) );
+		NpcHeroAttributesComponent closest = null;
 		float closestDist = 0;
 		
-		foreach (NpcAttributesComponent supply in npcAttributeses) {
+		foreach (NpcHeroAttributesComponent supply in npcHeroAttributeses) {
 			if (closest == null) {
 				// first one, so choose it for now
 				closest = supply;
@@ -55,8 +55,8 @@ public class DropOffLogsAction: GoapAction
 		if (closest == null)
 			return false;
 
-		targetNpcAttributes = closest;
-		target = targetNpcAttributes.gameObject;
+		targetNpcHeroAttributes = closest;
+		target = targetNpcHeroAttributes.gameObject;
 		
 		return closest != null;
 	}
@@ -64,7 +64,7 @@ public class DropOffLogsAction: GoapAction
 	public override bool perform (GameObject agent)
 	{
 		BackpackComponent backpack = (BackpackComponent)agent.GetComponent(typeof(BackpackComponent));
-		targetNpcAttributes.numLogs += backpack.numLogs;
+		// targetNpcHeroAttributes.numLogs += backpack.numLogs;
 		droppedOffLogs = true;
 		backpack.numLogs = 0;
 		

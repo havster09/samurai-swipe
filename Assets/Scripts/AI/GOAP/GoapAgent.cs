@@ -83,10 +83,6 @@ public sealed class GoapAgent : MonoBehaviour {
 				dataProvider.planFailed(goal);
 				fsm.popState (); // move back to IdleAction state
 				fsm.pushState (idleState);
-                Debug.Log(new ArrayList()
-                {
-                    gameObject, availableActions, worldState, goal
-                });
 			}
 
 		};

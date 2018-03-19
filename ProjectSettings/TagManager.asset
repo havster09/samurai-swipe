@@ -9,6 +9,7 @@ TagManager:
   - BloodDecapitation
   - Background
   - BodyParts
+  - SlashCollider
   layers:
   - Default
   - TransparentFX

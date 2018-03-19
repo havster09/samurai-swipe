@@ -483,6 +483,7 @@ MonoBehaviour:
   slashMaterial: {fileID: 2100000, guid: f40a2815b9f92aa4ea9d9d84d8c33bf5, type: 2}
   c1: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   c2: {r: 1, g: 0, b: 0, a: 1}
+  slashCollider: {fileID: 0}
 --- !u!1 &2139275455
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,6 +16,7 @@ public class Enemy : MovingObject
     private bool checkingIsInCombatRangeWhileRunning;
     private GameObject headFromPool;
     private NpcHeroAttributesComponent npcHeroAttributesComponent;
+    private SlashRenderer _slashRenderer;
 
     public bool isAttacking { get; private set; }
     public bool isDead { get; set; }
@@ -30,6 +31,7 @@ public class Enemy : MovingObject
     private void EnemyHitEventHandler()
     {
         canMoveInSmoothMovement = true;
+        _slashRenderer.RemoveSlash();
     }
 
     private void EnemyWalkEventHandler()
@@ -52,6 +54,11 @@ public class Enemy : MovingObject
         if (npcHeroAttributesComponent == null)
         {
             npcHeroAttributesComponent = GetComponent<NpcHeroAttributesComponent>();
+        }
+
+        if (_slashRenderer == null)
+        {
+            _slashRenderer = GameObject.FindObjectOfType<SlashRenderer>();
         }
 
         target = GameObject.FindGameObjectWithTag("Player").transform;
@@ -341,7 +348,7 @@ public class Enemy : MovingObject
 
     protected virtual void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == "Player")
+        if (collider.gameObject.tag == "SlashCollider")
         {
             health -= 50;
             if (health > 0)

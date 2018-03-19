@@ -15,6 +15,8 @@ public class SlashRenderer : MonoBehaviour
     private Vector3 mouseDownPos;
     private Vector3 mouseUpPos;
 
+    public BoxCollider2D slashCollider;
+
     void Start()
     {
         slashGO = new GameObject("Line");
@@ -60,17 +62,13 @@ public class SlashRenderer : MonoBehaviour
         }
     }
 
-    private void RemoveSlash()
+    public void RemoveSlash()
     {
         lineRenderer.positionCount = 0;
         linePoints = 0;
 
-        BoxCollider2D[] lineColliders = slashGO.GetComponents<BoxCollider2D>();
-
-        foreach (BoxCollider2D b in lineColliders)
-        {
-            Destroy(b);
-        }
+        GameObject slashCollider = GameObject.FindGameObjectWithTag("SlashCollider");
+        Destroy(slashCollider);
     }
 
     private void AddSlash()
@@ -95,15 +93,16 @@ public class SlashRenderer : MonoBehaviour
 
     private void AddColliderToLine(LineRenderer line, Vector3 startPoint, Vector3 endPoint)
     {
-        BoxCollider2D lineCollider = new GameObject("LineCollider").AddComponent<BoxCollider2D>();
-        lineCollider.transform.position = new Vector3(0f, 0f, 0f);
+        slashCollider = new GameObject("SlashCollider").AddComponent<BoxCollider2D>();
+        slashCollider.tag = "SlashCollider";
+        slashCollider.transform.position = new Vector3(0f, 0f, 0f);
         float lineWidth = .1f;
         float lineLength = Vector2.Distance(startPoint, endPoint);
-        lineCollider.size = new Vector2(lineLength, lineWidth);
+        slashCollider.size = new Vector2(lineLength, lineWidth);
         Vector2 midPoint = (startPoint + endPoint) / 2;
-        lineCollider.transform.position = midPoint;
+        slashCollider.transform.position = midPoint;
         float angle = Mathf.Atan2((endPoint.y - startPoint.y), (endPoint.x - startPoint.x));
         angle *= Mathf.Rad2Deg;
-        lineCollider.transform.Rotate(0, 0, angle);
+        slashCollider.transform.Rotate(0, 0, angle);
     }
 }

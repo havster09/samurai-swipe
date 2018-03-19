@@ -5,6 +5,7 @@ using UnityEngine;
 public class GoapAgentSearchAndDestroy : GoapAgentEnemy
 {
     private Enemy[] enemies;
+    private NpcHeroAttributesComponent npcHeroAttributesComponent;
 
     public override HashSet<KeyValuePair<string, object>> createGoalState()
     {
@@ -16,7 +17,8 @@ public class GoapAgentSearchAndDestroy : GoapAgentEnemy
 
     public override bool moveAgent(GoapAction nextAction)
     {
-        if (enemyScript.health > 0 && !enemyScript.IsAnimationPlaying("hit"))
+        npcHeroAttributesComponent = nextAction.target.GetComponent<NpcHeroAttributesComponent>();
+        if (enemyScript.health > 0 && npcHeroAttributesComponent.health > 0 && !enemyScript.IsAnimationPlaying("hit"))
         {
             enemyScript.FaceTarget();
             if (!enemyScript.IsInWalkRange() && !enemyScript.IsAnimationPlaying("attack") &&
@@ -41,10 +43,20 @@ public class GoapAgentSearchAndDestroy : GoapAgentEnemy
             }
             return false;
         }
+        else if (npcHeroAttributesComponent.health < 1)
+        {
+            return AbortMove(nextAction);
+        }
         else
         {
             return false;
         }
+    }
+
+    private static bool AbortMove(GoapAction nextAction)
+    {
+        nextAction.setInRange(true);
+        return true;
     }
 
     private void GoapAgentSearchAndDestroyRun(GoapAction nextAction)

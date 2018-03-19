@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlashRenderer : MonoBehaviour {
+public class SlashRenderer : MonoBehaviour
+{
     private const int slashZPosition = 3;
     public Material slashMaterial;
     public Color c1 = Color.yellow;
@@ -14,7 +15,8 @@ public class SlashRenderer : MonoBehaviour {
     private Vector3 mouseDownPos;
     private Vector3 mouseUpPos;
 
-    void Start () {
+    void Start()
+    {
         slashGO = new GameObject("Line");
         slashGO.AddComponent<LineRenderer>();
         lineRenderer = slashGO.GetComponent<LineRenderer>();
@@ -27,13 +29,14 @@ public class SlashRenderer : MonoBehaviour {
         lineRenderer.positionCount = 0;
         lineRenderer.sortingLayerName = "Slash";
     }
-	
-	void Update () {
-	    if (Input.touchCount > 0)
-	    {
-	        Touch touch = Input.GetTouch(0);
 
-	        if (touch.phase == TouchPhase.Moved)
+    void Update()
+    {
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            if (touch.phase == TouchPhase.Moved)
             {
                 AddSlash();
             }
@@ -42,19 +45,19 @@ public class SlashRenderer : MonoBehaviour {
             {
                 RemoveSlash();
             }
-	    }
+        }
 
-	    if (Input.GetMouseButtonDown(0))
-	    {
+        if (Input.GetMouseButtonDown(0))
+        {
             mouseDownPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, slashZPosition);
         }
 
-	    if (Input.GetMouseButtonUp(0))
-	    {
-	        RemoveSlash();
+        if (Input.GetMouseButtonUp(0))
+        {
+            RemoveSlash();
             mouseUpPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, slashZPosition);
-	        AddMouseSlash();
-	    }
+            AddMouseSlash();
+        }
     }
 
     private void RemoveSlash()
@@ -87,9 +90,20 @@ public class SlashRenderer : MonoBehaviour {
         lineRenderer.positionCount = 2;
         lineRenderer.SetPosition(0, Camera.main.ScreenToWorldPoint(mouseDownPos));
         lineRenderer.SetPosition(1, Camera.main.ScreenToWorldPoint(mouseUpPos));
+        AddColliderToLine(lineRenderer, Camera.main.ScreenToWorldPoint(mouseDownPos), Camera.main.ScreenToWorldPoint(mouseUpPos));
+    }
 
-        BoxCollider2D bc = slashGO.AddComponent<BoxCollider2D>();
-        bc.transform.position = lineRenderer.transform.position;
-        bc.size = new Vector2(1f, 1f);
+    private void AddColliderToLine(LineRenderer line, Vector3 startPoint, Vector3 endPoint)
+    {
+        BoxCollider2D lineCollider = new GameObject("LineCollider").AddComponent<BoxCollider2D>();
+        lineCollider.transform.position = new Vector3(0f, 0f, 0f);
+        float lineWidth = .1f;
+        float lineLength = Vector2.Distance(startPoint, endPoint);
+        lineCollider.size = new Vector2(lineLength, lineWidth);
+        Vector2 midPoint = (startPoint + endPoint) / 2;
+        lineCollider.transform.position = midPoint;
+        float angle = Mathf.Atan2((endPoint.y - startPoint.y), (endPoint.x - startPoint.x));
+        angle *= Mathf.Rad2Deg;
+        lineCollider.transform.Rotate(0, 0, angle);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 
 public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
@@ -45,11 +46,9 @@ public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
     public abstract HashSet<KeyValuePair<string, object>> createGoalState();
 
 
-    public void planFailed(HashSet<KeyValuePair<string, object>> failedGoal)
+    public virtual void planFailed(HashSet<KeyValuePair<string, object>> failedGoal)
     {
-        // Not handling this here since we are making sure our goals will always succeed.
-        // But normally you want to make sure the world state has changed before running
-        // the same goal again, or else it will just fail.
+        Debug.Log("Unhandled plan Failed");
     }
 
     public void planFound(HashSet<KeyValuePair<string, object>> goal, Queue<GoapAction> actions)

@@ -74,6 +74,10 @@ public class SearchAndDestroyAction : GoapAction
         {
             return false;
         }
+        else if (closest.health < 1)
+        {
+            return false;
+        }
 
         targetNpcHeroAttribute = closest;
         target = targetNpcHeroAttribute.gameObject;
@@ -85,14 +89,18 @@ public class SearchAndDestroyAction : GoapAction
     {
         if (targetNpcHeroAttribute != null)
         {
-            if (targetNpcHeroAttribute.health > 0)
+            if (targetNpcHeroAttribute.health > 0 && !enemyScript.IsAnimationPlaying("attack"))
             {
                 enemyScript.Attack();
                 targetNpcHeroAttribute.health -= 1;
             }
             npcExperience = (NpcExperienceComponent)agent.GetComponent(typeof(NpcExperienceComponent));
-            npcExperience.killCount += 1;
-            npcIsDestroyed = true;
+            npcExperience.attackCount += 1;
+            // npcExperience.killCount += 1;
+            if (targetNpcHeroAttribute.health < 1)
+            {
+                npcIsDestroyed = true;
+            }
         }
         return npcIsDestroyed;
     }

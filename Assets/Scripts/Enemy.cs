@@ -333,6 +333,12 @@ public class Enemy : MovingObject
         GameManager.RespawnEnemyFromPool();
     }
 
+    public void NpcCelebrate()
+    {
+        animator.SetTrigger("enemyWin");
+        WaitFor(() => animator.SetBool("enemyWinCelebrate", true), 5f);
+    }
+
     protected virtual void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.tag == "Player")

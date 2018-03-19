@@ -7,5 +7,6 @@ using System.Collections;
 public class NpcExperienceComponent : MonoBehaviour
 {
     public int killCount;
+    public int attackCount;
     public int braveCount;
 }

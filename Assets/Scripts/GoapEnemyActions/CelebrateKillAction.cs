@@ -45,7 +45,7 @@ public class CelebrateKillAction : GoapAction
 
     public override bool perform(GameObject agent)
     {
-        enemyScript.animator.SetTrigger("enemyWin");
+        enemyScript.NpcCelebrate();
         npcHasCelebrated = true;
         return npcHasCelebrated;
     }

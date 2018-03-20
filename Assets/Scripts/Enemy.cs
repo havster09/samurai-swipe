@@ -3,19 +3,19 @@ using System.Collections;
 
 public class Enemy : MovingObject
 {
-    public int playerDamage;
-    public float runSpeed;
+    public int _playerDamage;
+    public float _runSpeed;
 
-    public int health = 100;
+    public int _health = 100;
 
-    public bool hasWalkAbility;
+    public bool _hasWalkAbility;
 
-    public Animator animator;
-    private Transform target;
-    private bool enemyFlipX;
-    private bool checkingIsInCombatRangeWhileRunning;
+    public Animator _animator;
+    private Transform _target;
+    private bool _enemyFlipX;
+    private bool _checkingIsInCombatRangeWhileRunning;
     private GameObject headFromPool;
-    private NpcHeroAttributesComponent npcHeroAttributesComponent;
+    private NpcHeroAttributesComponent _npcHeroAttributesComponent;
     private SlashRenderer _slashRenderer;
 
     public bool isAttacking { get; private set; }
@@ -51,9 +51,9 @@ public class Enemy : MovingObject
             GameManager.instance.AddEnemyToList(this);
         }
 
-        if (npcHeroAttributesComponent == null)
+        if (_npcHeroAttributesComponent == null)
         {
-            npcHeroAttributesComponent = GetComponent<NpcHeroAttributesComponent>();
+            _npcHeroAttributesComponent = GetComponent<NpcHeroAttributesComponent>();
         }
 
         if (_slashRenderer == null)
@@ -61,13 +61,13 @@ public class Enemy : MovingObject
             _slashRenderer = GameObject.FindObjectOfType<SlashRenderer>();
         }
 
-        target = GameObject.FindGameObjectWithTag("Player").transform;
-        animator = GetComponent<Animator>();
+        _target = GameObject.FindGameObjectWithTag("Player").transform;
+        _animator = GetComponent<Animator>();
 
         AnimationClip attackOneClip;
         AnimationEvent attackOneEvent;
         attackOneEvent = new AnimationEvent();
-        attackOneClip = animator.runtimeAnimatorController.animationClips[1];
+        attackOneClip = _animator.runtimeAnimatorController.animationClips[1];
         attackOneEvent.time = attackOneClip.length;
         attackOneEvent.stringParameter = "end";
         attackOneEvent.functionName = "EnemyAttackOneEventHandler";
@@ -76,7 +76,7 @@ public class Enemy : MovingObject
         AnimationClip hitClip;
         AnimationEvent hitEvent;
         hitEvent = new AnimationEvent();
-        hitClip = animator.runtimeAnimatorController.animationClips[7];
+        hitClip = _animator.runtimeAnimatorController.animationClips[7];
         hitEvent.time = hitClip.length;
         hitEvent.functionName = "EnemyHitEventHandler";
         hitClip.AddEvent(hitEvent);
@@ -84,7 +84,7 @@ public class Enemy : MovingObject
         AnimationClip walkClip;
         AnimationEvent walkEvent;
         walkEvent = new AnimationEvent();
-        walkClip = animator.runtimeAnimatorController.animationClips[2];
+        walkClip = _animator.runtimeAnimatorController.animationClips[2];
         walkEvent.time = walkClip.length;
         walkEvent.functionName = "EnemyWalkEventHandler";
         walkClip.AddEvent(walkEvent);
@@ -92,7 +92,7 @@ public class Enemy : MovingObject
         AnimationClip walkBackClip;
         AnimationEvent walkBackEvent;
         walkBackEvent = new AnimationEvent();
-        walkBackClip = animator.runtimeAnimatorController.animationClips[3];
+        walkBackClip = _animator.runtimeAnimatorController.animationClips[3];
         walkBackEvent.time = walkBackClip.length;
         walkBackEvent.functionName = "EnemyWalkBackEventHandler";
         walkBackClip.AddEvent(walkBackEvent);
@@ -103,17 +103,17 @@ public class Enemy : MovingObject
 
     public void FaceTarget()
     {
-        float enemyDistance = target.position.x - transform.position.x;
+        float enemyDistance = _target.position.x - transform.position.x;
 
-        if (enemyDistance < 0 && enemyFlipX == false)
+        if (enemyDistance < 0 && _enemyFlipX == false)
         {
             transform.localRotation = Quaternion.Euler(0, 180, 0);
-            enemyFlipX = true;
+            _enemyFlipX = true;
         }
-        else if (enemyDistance > 0 && enemyFlipX == true)
+        else if (enemyDistance > 0 && _enemyFlipX == true)
         {
             transform.localRotation = Quaternion.Euler(0, 0, 0);
-            enemyFlipX = false;
+            _enemyFlipX = false;
         }
     }
 
@@ -124,7 +124,7 @@ public class Enemy : MovingObject
 
     public void MoveEnemy()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsTag("attack"))
+        if (_animator.GetCurrentAnimatorStateInfo(0).IsTag("attack"))
         {
             Debug.Log("is Attacking");
             return;
@@ -135,21 +135,21 @@ public class Enemy : MovingObject
         canWalk = false;
 
         bool walkBackwards = Random.Range(0, 5) < 2 && Utilities.ReplaceClone(name) != "Ukyo";
-        if (Mathf.Abs(target.position.x - transform.position.x) < float.Epsilon)
+        if (Mathf.Abs(_target.position.x - transform.position.x) < float.Epsilon)
         {
-            yDir = target.position.y > transform.position.y ? 1f : -1f;
+            yDir = _target.position.y > transform.position.y ? 1f : -1f;
         }
         else
         {
             if (!walkBackwards)
             {
-                xDir = target.position.x > transform.position.x ? .5f : -.5f;
-                animator.SetTrigger("enemyWalk");
+                xDir = _target.position.x > transform.position.x ? .5f : -.5f;
+                _animator.SetTrigger("enemyWalk");
             }
             else
             {
-                xDir = target.position.x > transform.position.x ? -.5f : .5f;
-                animator.SetTrigger("enemyWalkBack");
+                xDir = _target.position.x > transform.position.x ? -.5f : .5f;
+                _animator.SetTrigger("enemyWalkBack");
             }
         }
 
@@ -159,33 +159,33 @@ public class Enemy : MovingObject
             canMoveInSmoothMovement = false;
         }
 
-        Debug.DrawLine(target.position, transform.position, Color.red);
-        AttemptMove<Player>(xDir, yDir, target, transform);
+        Debug.DrawLine(_target.position, transform.position, Color.red);
+        AttemptMove<Player>(xDir, yDir, _target, transform);
     }
 
     public bool IsInWalkRange()
     {
-        return Mathf.Abs(Vector3.Distance(target.transform.position, transform.position)) < maxWalkRange;
+        return Mathf.Abs(Vector3.Distance(_target.transform.position, transform.position)) < maxWalkRange;
     }
 
     public bool IsInCombatRange()
     {
-        return Mathf.Abs(Vector3.Distance(target.transform.position, transform.position)) < maxCombatRange;
+        return Mathf.Abs(Vector3.Distance(_target.transform.position, transform.position)) < maxCombatRange;
     }
 
     public void StopEnemyVelocity()
     {
-        animator.SetBool("enemyRun", false);
+        _animator.SetBool("enemyRun", false);
         rb2D.velocity = new Vector2(0f, rb2D.velocity.y);
     }
 
     public void RunEnemy()
     {
         FaceTarget();
-        animator.SetBool("enemyRun", true);
-        runSpeed = target.position.x > transform.position.x ? 2f : -2f;
-        rb2D.velocity = new Vector2(runSpeed, rb2D.velocity.y);
-        if (!checkingIsInCombatRangeWhileRunning && gameObject.activeInHierarchy)
+        _animator.SetBool("enemyRun", true);
+        _runSpeed = _target.position.x > transform.position.x ? 2f : -2f;
+        rb2D.velocity = new Vector2(_runSpeed, rb2D.velocity.y);
+        if (!_checkingIsInCombatRangeWhileRunning && gameObject.activeInHierarchy)
         {
             StartCoroutine("CheckIsInCombatRangeWhileRunning");
         }
@@ -193,15 +193,15 @@ public class Enemy : MovingObject
 
     protected IEnumerator CheckIsInCombatRangeWhileRunning()
     {
-        checkingIsInCombatRangeWhileRunning = true;
+        _checkingIsInCombatRangeWhileRunning = true;
         int checkCount = 0;
-        while (checkingIsInCombatRangeWhileRunning)
+        while (_checkingIsInCombatRangeWhileRunning)
         {
             checkCount++;
             if (IsInCombatRange())
             {
                 StopEnemyVelocity();
-                checkingIsInCombatRangeWhileRunning = false;
+                _checkingIsInCombatRangeWhileRunning = false;
                 yield break;
             }
             yield return new WaitForSeconds(1f);
@@ -210,14 +210,14 @@ public class Enemy : MovingObject
 
     protected override void OnCantMove<T>(T component)
     {
-        animator.SetTrigger("enemyAttackOne");
+        _animator.SetTrigger("enemyAttackOne");
     }
 
     public void Attack(string attackType)
     {
         isAttacking = true;
         canMoveInSmoothMovement = false;
-        animator.SetTrigger(attackType);
+        _animator.SetTrigger(attackType);
     }
 
     public void EnemyDie()
@@ -227,15 +227,15 @@ public class Enemy : MovingObject
 
         EnemySpray();
 
-        health = 0;
+        _health = 0;
         isDead = true;
     }
 
     private void EnemySpray()
     {
         canMoveInSmoothMovement = false;
-        animator.SetFloat("enemyHitSpeedMultiplier", 0f);
-        animator.Play("enemyHit", 0, 1f);
+        _animator.SetFloat("enemyHitSpeedMultiplier", 0f);
+        _animator.Play("enemyHit", 0, 1f);
         GetBloodEffect("Blood", "BloodEffectSpray");
         StartCoroutine(SprayBlood(3));
     }
@@ -248,11 +248,11 @@ public class Enemy : MovingObject
             yield return new WaitForSeconds(1f);
             elapsedSprayTime++;
         }
-        animator.SetFloat("enemyHitSpeedMultiplier", 1f);
+        _animator.SetFloat("enemyHitSpeedMultiplier", 1f);
         int randomDeath = Random.Range(0, 5);
         if (randomDeath == 0)
         {
-            // animator.SetBool("enemyDrop", true);
+            // _animator.SetBool("enemyDrop", true);
             EnemyDecapitation();
         }
         else if (randomDeath == 1)
@@ -271,14 +271,14 @@ public class Enemy : MovingObject
 
     private void EnemyDieSplit()
     {
-        animator.SetBool("enemyDieSplit", true);
+        _animator.SetBool("enemyDieSplit", true);
         GetBloodEffect("Blood", "BloodEffectDiagonal1");
         WaitFor(() => GetBloodEffect("Blood", "BloodEffectSplit"), .1f);
     }
 
     private void EnemySplitDrop()
     {
-        animator.SetBool("enemySplitDrop", true);
+        _animator.SetBool("enemySplitDrop", true);
         GetBloodEffect("Blood", "BloodEffectDiagonal1");
         WaitFor(() => GetBloodEffect("Blood", "BloodEffectSplit"), .1f);
     }
@@ -286,9 +286,9 @@ public class Enemy : MovingObject
     private void EnemyDecapitation()
     {
         canMoveInSmoothMovement = false;
-        animator.SetBool("enemyDecapitationBody", true);
+        _animator.SetBool("enemyDecapitationBody", true);
         Vector2 start = transform.position;
-        float distance = enemyFlipX ? .25f : -.25f;
+        float distance = _enemyFlipX ? .25f : -.25f;
         Vector2 end = start + new Vector2(distance, 0);
         StartCoroutine(SmoothMovement(end));
         string headString = Utilities.ReplaceClone(name) + "Head";
@@ -334,7 +334,7 @@ public class Enemy : MovingObject
     private void RespawnEnemy()
     {
         gameObject.SetActive(false);
-        health = 100;
+        _health = 100;
         isDead = false;
         canMoveInSmoothMovement = true;
         GameManager.RespawnEnemyFromPool();
@@ -342,16 +342,16 @@ public class Enemy : MovingObject
 
     public void NpcCelebrate()
     {
-        animator.SetTrigger("enemyWin");
-        WaitFor(() => animator.SetBool("enemyWinCelebrate", true), 5f);
+        _animator.SetTrigger("enemyWin");
+        WaitFor(() => _animator.SetBool("enemyWinCelebrate", true), 5f);
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.tag == "SlashCollider")
         {
-            health -= 50;
-            if (health > 0)
+            _health -= 50;
+            if (_health > 0)
             {
                 EnemyHit();
             }
@@ -367,7 +367,7 @@ public class Enemy : MovingObject
         canMoveInSmoothMovement = false;
         StopEnemyVelocity();
         GetBloodEffect("Blood", "BloodEffect1");
-        animator.SetTrigger("enemyHit");
+        _animator.SetTrigger("enemyHit");
         WaitFor(EnemyHitEventHandler, 2f);
     }
 
@@ -389,8 +389,8 @@ public class Enemy : MovingObject
 
     public bool IsAnimationPlaying(string animationTag)
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).Equals(null) ||
-            animator.GetCurrentAnimatorStateInfo(0).IsTag(animationTag))
+        if (_animator.GetCurrentAnimatorStateInfo(0).Equals(null) ||
+            _animator.GetCurrentAnimatorStateInfo(0).IsTag(animationTag))
         {
             return true;
         }

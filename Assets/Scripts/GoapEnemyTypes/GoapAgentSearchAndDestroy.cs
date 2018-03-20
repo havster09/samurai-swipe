@@ -18,7 +18,7 @@ public class GoapAgentSearchAndDestroy : GoapAgentEnemy
     public override bool moveAgent(GoapAction nextAction)
     {
         _npcHeroAttributesComponent = nextAction.target.GetComponent<NpcHeroAttributesComponent>();
-        if (_enemyScript.health > 0 && _npcHeroAttributesComponent.health > 0 && !_enemyScript.IsAnimationPlaying("hit"))
+        if (_enemyScript._health > 0 && _npcHeroAttributesComponent.health > 0 && !_enemyScript.IsAnimationPlaying("hit"))
         {
 
             _enemyScript.FaceTarget();
@@ -32,7 +32,7 @@ public class GoapAgentSearchAndDestroy : GoapAgentEnemy
 
                 if (distanceFromTarget < 1f)
                 {
-                    _enemyScript.animator.SetBool("enemyRun", false);
+                    _enemyScript._animator.SetBool("enemyRun", false);
                     nextAction.setInRange(true);
                     return true;
                 }
@@ -50,7 +50,7 @@ public class GoapAgentSearchAndDestroy : GoapAgentEnemy
             }
             else
             {
-                _enemyScript.animator.SetBool("enemyRun", false);
+                _enemyScript._animator.SetBool("enemyRun", false);
                 if (_enemyScript.IsAnimationPlaying("idle") && _enemyScript.canWalk)
                 {
                     _enemyScript.MoveEnemy();
@@ -66,6 +66,7 @@ public class GoapAgentSearchAndDestroy : GoapAgentEnemy
         }
         else if (_npcHeroAttributesComponent.health < 1)
         {
+            _enemyScript._animator.SetBool("enemyRun", false);
             return false;
         }
         else
@@ -78,7 +79,7 @@ public class GoapAgentSearchAndDestroy : GoapAgentEnemy
     {
         float step = _moveSpeed * 2 * Time.deltaTime;
         gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, nextAction.target.transform.position, step);
-        _enemyScript.animator.SetBool("enemyRun", true);
+        _enemyScript._animator.SetBool("enemyRun", true);
     }
 
     public int CheckActiveCount()

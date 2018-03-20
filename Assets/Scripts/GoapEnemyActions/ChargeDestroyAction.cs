@@ -17,9 +17,8 @@ public class ChargeDestroyAction : GoapAction
         addEffect("destroyNpc", true);
     }
 
-    void OnEnable()
+    void Start()
     {
-        reset();
         if (_enemyScript == null)
         {
             _enemyScript = GetComponent<Enemy>();
@@ -28,6 +27,11 @@ public class ChargeDestroyAction : GoapAction
         {
             _npcAttributes = GetComponent<NpcAttributesComponent>();
         }
+    }
+
+    void OnEnable()
+    {
+        reset();
     }
 
 

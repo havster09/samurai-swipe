@@ -12,6 +12,18 @@ public class NpcAttributesComponent : MonoBehaviour
 
     public NpcAttributesComponent()
     {
-        braveCount = 100;
+        reset();
+    }
+
+    void OnEnable()
+    {
+        reset();
+    }
+
+    private void reset()
+    {
+        killCount = 0;
+        attackCount = 0;
+        braveCount = 0;
     }
 }

@@ -122,12 +122,12 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < enemies.Count; i++)
         {
-            if (enemies[i].health > 0)
+            if (enemies[i]._health > 0)
             {
                 enemies[i].FaceTarget();
             }
             
-            if (!enemies[i].gameObject.activeInHierarchy || enemies[i].health < 1)
+            if (!enemies[i].gameObject.activeInHierarchy || enemies[i]._health < 1)
             {
                 yield return new WaitForSeconds(.1f);
             }
@@ -148,7 +148,7 @@ public class GameManager : MonoBehaviour
                 }
                 else if (enemies[i].IsAnimationPlaying("idle"))
                 {
-                    if (enemies[i].hasWalkAbility && !enemies[i].IsAnimationPlaying("run") && !enemies[i].isAttacking)
+                    if (enemies[i]._hasWalkAbility && !enemies[i].IsAnimationPlaying("run") && !enemies[i].isAttacking)
                     {
                         enemies[i].MoveEnemy();
                     }

@@ -213,11 +213,11 @@ public class Enemy : MovingObject
         animator.SetTrigger("enemyAttackOne");
     }
 
-    public void Attack()
+    public void Attack(string attackType)
     {
         isAttacking = true;
         canMoveInSmoothMovement = false;
-        animator.SetTrigger("enemyAttackOne");
+        animator.SetTrigger(attackType);
     }
 
     public void EnemyDie()

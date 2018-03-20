@@ -59,7 +59,7 @@ public sealed class GoapAgent : MonoBehaviour {
 		return currentActions.Count > 0;
 	}
 
-	private void createIdleState() {
+	public void createIdleState() {
 		idleState = (fsm, gameObj) => {
 			// GOAP planning
 

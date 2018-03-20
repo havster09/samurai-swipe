@@ -79,7 +79,7 @@ public class ChopTreeAction : GoapAction
         if (Time.time - startTime > workDuration)
         {
             // finished chopping
-            NpcExperienceComponent npcExperience = (NpcExperienceComponent)agent.GetComponent(typeof(NpcExperienceComponent));
+            NpcAttributesComponent npcExperience = (NpcAttributesComponent)agent.GetComponent(typeof(NpcAttributesComponent));
             // npcExperience.numLogs += 1;
             chopped = true;
             //ToolComponent tool = NpcExperience.tool.GetComponent(typeof(ToolComponent)) as ToolComponent;

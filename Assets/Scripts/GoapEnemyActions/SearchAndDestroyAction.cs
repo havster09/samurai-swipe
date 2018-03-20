@@ -5,13 +5,14 @@ using UnityEngine;
 
 public class SearchAndDestroyAction : GoapAction
 {
-    private bool npcIsDestroyed;
-    public Enemy enemyScript;
-    private NpcHeroAttributesComponent targetNpcHeroAttribute;
-    private NpcExperienceComponent npcExperience;
+    private bool _npcIsDestroyed;
+    public Enemy _enemyScript;
+    private NpcHeroAttributesComponent _targetNpcHeroAttribute;
+    private NpcAttributesComponent _npcAttributes;
 
     public SearchAndDestroyAction()
     {
+        addPrecondition("hasBrave", false);
         addPrecondition("destroyNpc", false);
         addEffect("destroyNpc", true);
     }
@@ -19,22 +20,26 @@ public class SearchAndDestroyAction : GoapAction
     void OnEnable()
     {
         reset();
-        if (enemyScript == null)
+        if (_enemyScript == null)
         {
-            enemyScript = GetComponent<Enemy>();
+            _enemyScript = GetComponent<Enemy>();
+        }
+        if (_npcAttributes == null)
+        {
+            _npcAttributes = GetComponent<NpcAttributesComponent>();
         }
     }
 
 
     public override void reset()
     {
-        npcIsDestroyed = false;
-        targetNpcHeroAttribute = null;
+        _npcIsDestroyed = false;
+        _targetNpcHeroAttribute = null;
     }
 
     public override bool isDone()
     {
-        return npcIsDestroyed;
+        return _npcIsDestroyed;
     }
 
     public override bool requiresInRange()
@@ -79,29 +84,28 @@ public class SearchAndDestroyAction : GoapAction
             return false;
         }
 
-        targetNpcHeroAttribute = closest;
-        target = targetNpcHeroAttribute.gameObject;
+        _targetNpcHeroAttribute = closest;
+        target = _targetNpcHeroAttribute.gameObject;
 
         return closest != null;
     }
 
     public override bool perform(GameObject agent)
     {
-        if (targetNpcHeroAttribute != null)
+        if (_targetNpcHeroAttribute != null)
         {
-            if (targetNpcHeroAttribute.health > 0 && !enemyScript.IsAnimationPlaying("attack"))
+            if (_targetNpcHeroAttribute.health > 0 && !_enemyScript.IsAnimationPlaying("attack"))
             {
-                enemyScript.Attack();
-                targetNpcHeroAttribute.health -= 1;
-            }
-            npcExperience = (NpcExperienceComponent)agent.GetComponent(typeof(NpcExperienceComponent));
-            npcExperience.attackCount += 1;
-            // npcExperience.killCount += 1;
-            if (targetNpcHeroAttribute.health < 1)
+                _enemyScript.Attack("enemyAttackOne");
+                _targetNpcHeroAttribute.health -= 1;
+            }            
+            _npcAttributes.attackCount += 1;
+            if (_targetNpcHeroAttribute.health < 1)
             {
-                npcIsDestroyed = true;
+                _npcIsDestroyed = true;
+                _npcAttributes.killCount += 1;
             }
         }
-        return npcIsDestroyed;
+        return _npcIsDestroyed;
     }
 }

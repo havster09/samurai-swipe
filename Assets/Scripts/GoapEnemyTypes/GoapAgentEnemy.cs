@@ -6,22 +6,28 @@ using System.Linq;
 
 public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
 {
-    public NpcExperienceComponent NpcExperience;
-    public float moveSpeed = 1;
+    public NpcAttributesComponent _npcAttributes;
+    public float _moveSpeed = 1;
 
-    public Enemy enemyScript;
+    public Enemy _enemyScript;
+    public GoapAgent _goapAgentScript;
 
 
     void Start()
     {
-        if (NpcExperience == null)
+        if (_npcAttributes == null)
         {
-            NpcExperience = gameObject.AddComponent<NpcExperienceComponent>();
+            _npcAttributes = gameObject.AddComponent<NpcAttributesComponent>();
         }
 
-        if (enemyScript == null)
+        if (_enemyScript == null)
         {
-            enemyScript = GetComponent<Enemy>();
+            _enemyScript = GetComponent<Enemy>();
+        }
+
+        if (_goapAgentScript == null)
+        {
+            _goapAgentScript = GetComponent<GoapAgent>();
         }
     }
 
@@ -32,8 +38,8 @@ public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
     {
         HashSet<KeyValuePair<string, object>> worldData = new HashSet<KeyValuePair<string, object>>();
 
-        worldData.Add(new KeyValuePair<string, object>("hasKills", (NpcExperience.killCount > 0)));
-        worldData.Add(new KeyValuePair<string, object>("hasBrave", (NpcExperience.braveCount > 0)));
+        worldData.Add(new KeyValuePair<string, object>("hasKills", (_npcAttributes.killCount > 0)));
+        worldData.Add(new KeyValuePair<string, object>("hasBrave", (_npcAttributes.braveCount > 0)));
         worldData.Add(new KeyValuePair<string, object>("destroyNpc", false));
         worldData.Add(new KeyValuePair<string, object>("enemyWin", false));
 
@@ -49,6 +55,7 @@ public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
     public virtual void planFailed(HashSet<KeyValuePair<string, object>> failedGoal)
     {
         Debug.Log("Unhandled plan Failed");
+        _goapAgentScript.createIdleState();
     }
 
     public void planFound(HashSet<KeyValuePair<string, object>> goal, Queue<GoapAction> actions)
@@ -74,7 +81,7 @@ public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
     public virtual bool moveAgent(GoapAction nextAction)
     {
         // move towards the NextAction's target
-        float step = moveSpeed * Time.deltaTime;
+        float step = _moveSpeed * Time.deltaTime;
         gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, nextAction.target.transform.position, step);
 
         if (gameObject.transform.position.Equals(nextAction.target.transform.position))

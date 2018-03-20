@@ -143,7 +143,7 @@ public class GameManager : MonoBehaviour
                 if (enemies[i].IsInCombatRange())
                 {
                     enemies[i].StopEnemyVelocity();
-                    enemies[i].Attack();
+                    enemies[i].Attack("enemyAttackOne");
                     yield return new WaitForSeconds(.2f);
                 }
                 else if (enemies[i].IsAnimationPlaying("idle"))

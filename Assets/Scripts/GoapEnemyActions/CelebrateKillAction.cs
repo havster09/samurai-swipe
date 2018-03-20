@@ -6,10 +6,10 @@ using UnityEngine;
 
 public class CelebrateKillAction : GoapAction
 {
-    private bool npcHasCelebrated = false;
-    public Enemy enemyScript;
-    private NpcHeroAttributesComponent targetNpcHeroAttribute;
-    private NpcExperienceComponent npcExperience;
+    private bool _npcHasCelebrated = false;
+    public Enemy _enemyScript;
+    private NpcHeroAttributesComponent _targetNpcHeroAttribute;
+    private NpcAttributesComponent _npcAttributes;
 
     public CelebrateKillAction()
     {
@@ -20,22 +20,22 @@ public class CelebrateKillAction : GoapAction
     void OnEnable()
     {
         reset();
-        if (enemyScript == null)
+        if (_enemyScript == null)
         {
-            enemyScript = GetComponent<Enemy>();
+            _enemyScript = GetComponent<Enemy>();
         }
     }
 
 
     public override void reset()
     {
-        npcHasCelebrated = false;
-        targetNpcHeroAttribute = null;
+        _npcHasCelebrated = false;
+        _targetNpcHeroAttribute = null;
     }
 
     public override bool isDone()
     {
-        return npcHasCelebrated;
+        return _npcHasCelebrated;
     }
 
     public override bool requiresInRange()
@@ -45,9 +45,9 @@ public class CelebrateKillAction : GoapAction
 
     public override bool perform(GameObject agent)
     {
-        enemyScript.NpcCelebrate();
-        npcHasCelebrated = true;
-        return npcHasCelebrated;
+        _enemyScript.NpcCelebrate();
+        _npcHasCelebrated = true;
+        return _npcHasCelebrated;
     }
 
     public override bool checkProceduralPrecondition(GameObject agent)

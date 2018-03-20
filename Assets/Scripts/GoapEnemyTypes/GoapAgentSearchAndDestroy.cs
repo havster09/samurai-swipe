@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GoapAgentSearchAndDestroy : GoapAgentEnemy
 {
-    private Enemy[] enemies;
-    private NpcHeroAttributesComponent npcHeroAttributesComponent;
+    private Enemy[] _enemies;
+    private NpcHeroAttributesComponent _npcHeroAttributesComponent;
 
     public override HashSet<KeyValuePair<string, object>> createGoalState()
     {
@@ -17,25 +17,46 @@ public class GoapAgentSearchAndDestroy : GoapAgentEnemy
 
     public override bool moveAgent(GoapAction nextAction)
     {
-        npcHeroAttributesComponent = nextAction.target.GetComponent<NpcHeroAttributesComponent>();
-        if (enemyScript.health > 0 && npcHeroAttributesComponent.health > 0 && !enemyScript.IsAnimationPlaying("hit"))
+        _npcHeroAttributesComponent = nextAction.target.GetComponent<NpcHeroAttributesComponent>();
+        if (_enemyScript.health > 0 && _npcHeroAttributesComponent.health > 0 && !_enemyScript.IsAnimationPlaying("hit"))
         {
-            enemyScript.FaceTarget();
-            if (!enemyScript.IsInWalkRange() && !enemyScript.IsAnimationPlaying("attack") &&
-                !enemyScript.IsAnimationPlaying("walk") && enemyScript.canWalk)
+
+            _enemyScript.FaceTarget();
+
+            if (_npcAttributes.braveCount > 0)
+            {
+                _enemyScript.FaceTarget();
+                GoapAgentSearchAndDestroyRun(nextAction);
+
+                float distanceFromTarget = (gameObject.transform.position - nextAction.target.transform.position).magnitude;
+
+                if (distanceFromTarget < 1f)
+                {
+                    _enemyScript.animator.SetBool("enemyRun", false);
+                    nextAction.setInRange(true);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            if (!_enemyScript.IsInWalkRange() && !_enemyScript.IsAnimationPlaying("attack") &&
+                !_enemyScript.IsAnimationPlaying("walk") && _enemyScript.canWalk)
             {
                 GoapAgentSearchAndDestroyRun(nextAction);
                 return false;
             }
             else
             {
-                enemyScript.animator.SetBool("enemyRun", false);
-                if (enemyScript.IsAnimationPlaying("idle") && enemyScript.canWalk)
+                _enemyScript.animator.SetBool("enemyRun", false);
+                if (_enemyScript.IsAnimationPlaying("idle") && _enemyScript.canWalk)
                 {
-                    enemyScript.MoveEnemy();
+                    _enemyScript.MoveEnemy();
                     return false;
                 }
-                else if (enemyScript.IsInCombatRange())
+                else if (_enemyScript.IsInCombatRange())
                 {
                     nextAction.setInRange(true);
                     return true;
@@ -43,9 +64,9 @@ public class GoapAgentSearchAndDestroy : GoapAgentEnemy
             }
             return false;
         }
-        else if (npcHeroAttributesComponent.health < 1)
+        else if (_npcHeroAttributesComponent.health < 1)
         {
-            return AbortMove(nextAction);
+            return false;
         }
         else
         {
@@ -53,24 +74,18 @@ public class GoapAgentSearchAndDestroy : GoapAgentEnemy
         }
     }
 
-    private static bool AbortMove(GoapAction nextAction)
-    {
-        nextAction.setInRange(true);
-        return true;
-    }
-
     private void GoapAgentSearchAndDestroyRun(GoapAction nextAction)
     {
-        float step = moveSpeed * Time.deltaTime;
+        float step = _moveSpeed * 2 * Time.deltaTime;
         gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, nextAction.target.transform.position, step);
-        enemyScript.animator.SetBool("enemyRun", true);
+        _enemyScript.animator.SetBool("enemyRun", true);
     }
 
     public int CheckActiveCount()
     {
-        enemies = (Enemy[])UnityEngine.GameObject.FindObjectsOfType(typeof(Enemy));
-        enemies.Select(e => e.gameObject.activeInHierarchy && !e.isDead);
-        return enemies.Length;
+        _enemies = (Enemy[])UnityEngine.GameObject.FindObjectsOfType(typeof(Enemy));
+        _enemies.Select(e => e.gameObject.activeInHierarchy && !e.isDead);
+        return _enemies.Length;
     }
 
 }

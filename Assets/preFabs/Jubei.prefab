@@ -165,7 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   killCount: 0
   attackCount: 0
-  braveCount: 1
+  braveCount: 0
   health: 100
 --- !u!114 &114554894308390840
 MonoBehaviour:
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1748471367380564}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: baec37c103c027445968673ebb5a9368, type: 3}
   m_Name: 
@@ -229,7 +229,6 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -245,7 +244,6 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class SearchAndDestroyAction : GoapAction
 {
+    private float _moveSpeed = 1;
     private bool _npcIsDestroyed;
     public Enemy _enemyScript;
     private NpcHeroAttributesComponent _targetNpcHeroAttribute;
@@ -17,19 +18,48 @@ public class SearchAndDestroyAction : GoapAction
         addEffect("destroyNpc", true);
     }
 
-    void OnEnable()
+    void Awake()
     {
         reset();
-        if (_enemyScript == null)
-        {
-            _enemyScript = GetComponent<Enemy>();
-        }
-        if (_npcAttributes == null)
-        {
-            _npcAttributes = GetComponent<NpcAttributesComponent>();
-        }
+        _enemyScript = GetComponent<Enemy>();
+        _npcAttributes = GetComponent<NpcAttributesComponent>();
     }
 
+
+    public override bool Move()
+    {
+        _enemyScript.FaceTarget();
+        float distanceFromTarget = Vector2.Distance(gameObject.transform.position, target.transform.position);
+        if (distanceFromTarget > 2 &&
+            !_enemyScript.IsAnimationPlaying("attack") &&
+            !_enemyScript.IsAnimationPlaying("walk") && _enemyScript.canWalk)
+        {
+            GoapAgentSearchAndDestroyRun();
+            return false;
+        }
+        else
+        {
+            _enemyScript._animator.SetBool("enemyRun", false);
+            if (distanceFromTarget < 1)
+            {
+                setInRange(true);
+                return true;
+            }
+            else if (_enemyScript.IsAnimationPlaying("idle") && _enemyScript.canWalk)
+            {
+                _enemyScript.MoveEnemy();
+                return false;
+            }
+        }
+        return false;
+    }
+
+    protected void GoapAgentSearchAndDestroyRun()
+    {
+        float step = (_moveSpeed * 2) * Time.deltaTime;
+        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, target.transform.position, step);
+        _enemyScript._animator.SetBool("enemyRun", true);
+    }
 
     public override void reset()
     {

@@ -13,22 +13,11 @@ public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
     public GoapAgent _goapAgentScript;
 
 
-    void Start()
+    void Awake()
     {
-        if (_npcAttributes == null)
-        {
-            _npcAttributes = gameObject.GetComponent<NpcAttributesComponent>();
-        }
-
-        if (_enemyScript == null)
-        {
-            _enemyScript = GetComponent<Enemy>();
-        }
-
-        if (_goapAgentScript == null)
-        {
-            _goapAgentScript = GetComponent<GoapAgent>();
-        }
+        _npcAttributes = gameObject.GetComponent<NpcAttributesComponent>();
+        _enemyScript = GetComponent<Enemy>();
+        _goapAgentScript = GetComponent<GoapAgent>();
     }
 
     /**

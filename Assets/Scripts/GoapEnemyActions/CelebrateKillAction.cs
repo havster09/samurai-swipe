@@ -27,6 +27,11 @@ public class CelebrateKillAction : GoapAction
     }
 
 
+    public override bool Move()
+    {
+        return true;
+    }
+
     public override void reset()
     {
         _npcHasCelebrated = false;

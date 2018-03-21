@@ -100,11 +100,14 @@ public sealed class GoapAgent : MonoBehaviour {
 				fsm.pushState(idleState);
 				return;
 			}
-
-			// get the agent to move itself
-			if ( dataProvider.moveAgent(action) ) {
-				fsm.popState();
-			}
+            
+		    if (action.Move())
+		    {
+		        fsm.popState();
+		    }
+			//if ( dataProvider.moveAgent(action) ) {
+			//	fsm.popState();
+			//}
 
 			/*MovableComponent movable = (MovableComponent) gameObj.GetComponent(typeof(MovableComponent));
 			if (movable == null) {

@@ -25,7 +25,7 @@ public class NpcAttributesComponent : MonoBehaviour
     {
         killCount = 0;
         attackCount = 0;
-        braveCount = 0;
+        braveCount = 100;
         health = 100;
     }
 }

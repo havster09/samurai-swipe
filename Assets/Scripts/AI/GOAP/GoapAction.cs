@@ -30,6 +30,8 @@ public abstract class GoapAction : MonoBehaviour {
 		reset ();
 	}
 
+    public abstract bool Move();
+
 	/**
 	 * Reset any variables that need to be reset before planning happens again.
 	 */

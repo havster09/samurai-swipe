@@ -22,6 +22,11 @@ public class Enemy : MovingObject
     public bool isDead { get; set; }
     public bool canWalk;
 
+    void Awake()
+    {
+        _npcAttributes = GetComponent<NpcAttributesComponent>();
+    }
+
     private void EnemyAttackOneEventHandler(string stringParameter)
     {
         isAttacking = false;
@@ -140,7 +145,7 @@ public class Enemy : MovingObject
         float yDir = 0;
         canWalk = false;
 
-        bool walkBackwards = Random.Range(0, 5) < 4 && Utilities.ReplaceClone(name) != "Ukyo";
+        bool walkBackwards = Random.Range(0, 5) < 2 && Utilities.ReplaceClone(name) != "Ukyo";
         if (Mathf.Abs(_target.position.x - transform.position.x) < float.Epsilon)
         {
             yDir = _target.position.y > transform.position.y ? 1f : -1f;

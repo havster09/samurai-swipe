@@ -12,9 +12,14 @@ public class DropOffLogsAction: GoapAction
 		addEffect ("hasLogs", false); // we now have no logs
 		addEffect ("collectLogs", true); // we collected logs
 	}
-	
-	
-	public override void reset ()
+
+    public override bool Move()
+    {
+        return true;
+    }
+
+
+    public override void reset ()
 	{
 		droppedOffLogs = false;
 		targetNpcHeroAttributes = null;

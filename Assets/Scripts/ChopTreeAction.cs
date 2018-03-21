@@ -17,6 +17,11 @@ public class ChopTreeAction : GoapAction
         addEffect("hasLogs", true);
     }
 
+    public override bool Move()
+    {
+        return true;
+    }
+
 
     public override void reset()
     {

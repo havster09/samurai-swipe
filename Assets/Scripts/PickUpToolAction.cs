@@ -13,6 +13,11 @@ public class PickUpToolAction : GoapAction
     }
 
 
+    public override bool Move()
+    {
+        return true;
+    }
+
     public override void reset()
     {
         hasTool = false;

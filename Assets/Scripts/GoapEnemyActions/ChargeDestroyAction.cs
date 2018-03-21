@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ChargeDestroyAction : GoapAction
 {
+    private float _moveSpeed = 1;
     private bool _npcIsDestroyed;
     public Enemy _enemyScript;
     private NpcHeroAttributesComponent _targetNpcHeroAttribute;
@@ -17,21 +18,37 @@ public class ChargeDestroyAction : GoapAction
         addEffect("destroyNpc", true);
     }
 
-    void Start()
+    void Awake()
     {
-        if (_enemyScript == null)
-        {
-            _enemyScript = GetComponent<Enemy>();
-        }
-        if (_npcAttributes == null)
-        {
-            _npcAttributes = GetComponent<NpcAttributesComponent>();
-        }
+        _enemyScript = GetComponent<Enemy>();
+        _npcAttributes = GetComponent<NpcAttributesComponent>();
     }
 
     void OnEnable()
     {
         reset();
+    }
+
+    public override bool Move()
+    {
+        _enemyScript.FaceTarget();
+        float distanceFromTarget = Vector2.Distance(gameObject.transform.position, target.transform.position);
+
+        if (distanceFromTarget >= 1)
+        {
+            float step = (_moveSpeed * 2) * Time.deltaTime;
+            gameObject.transform.position =
+                Vector3.MoveTowards(gameObject.transform.position, target.transform.position, step);
+            _enemyScript._animator.SetBool("enemyRun", true);
+
+        }
+        else
+        {
+            _enemyScript._animator.SetBool("enemyRun", false);
+            setInRange(true);
+            return true;
+        }
+        return false;
     }
 
 
@@ -99,7 +116,7 @@ public class ChargeDestroyAction : GoapAction
     {
         if (_targetNpcHeroAttribute != null)
         {
-            if (_targetNpcHeroAttribute.health > 0 && !_enemyScript.IsAnimationPlaying("attack"))
+            if (!_enemyScript.IsAnimationPlaying("attack"))
             {
                 _enemyScript.Attack("enemyAttackTwo");
                 _targetNpcHeroAttribute.health -= 1;

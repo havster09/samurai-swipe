@@ -6,8 +6,6 @@ public class Enemy : MovingObject
     public int _playerDamage;
     public float _runSpeed;
 
-    public int _health = 100;
-
     public bool _hasWalkAbility;
 
     public Animator _animator;
@@ -17,6 +15,8 @@ public class Enemy : MovingObject
     private GameObject headFromPool;
     private NpcHeroAttributesComponent _npcHeroAttributesComponent;
     private SlashRenderer _slashRenderer;
+    public NpcAttributesComponent _npcAttributes;
+    
 
     public bool isAttacking { get; private set; }
     public bool isDead { get; set; }
@@ -59,6 +59,11 @@ public class Enemy : MovingObject
         if (_slashRenderer == null)
         {
             _slashRenderer = GameObject.FindObjectOfType<SlashRenderer>();
+        }
+
+        if (_npcAttributes == null)
+        {
+            _npcAttributes = gameObject.GetComponent<NpcAttributesComponent>();
         }
 
         _target = GameObject.FindGameObjectWithTag("Player").transform;
@@ -124,6 +129,7 @@ public class Enemy : MovingObject
 
     public void MoveEnemy()
     {
+        _animator.SetBool("enemyRun", false);
         if (_animator.GetCurrentAnimatorStateInfo(0).IsTag("attack"))
         {
             Debug.Log("is Attacking");
@@ -134,7 +140,7 @@ public class Enemy : MovingObject
         float yDir = 0;
         canWalk = false;
 
-        bool walkBackwards = Random.Range(0, 5) < 2 && Utilities.ReplaceClone(name) != "Ukyo";
+        bool walkBackwards = Random.Range(0, 5) < 4 && Utilities.ReplaceClone(name) != "Ukyo";
         if (Mathf.Abs(_target.position.x - transform.position.x) < float.Epsilon)
         {
             yDir = _target.position.y > transform.position.y ? 1f : -1f;
@@ -150,6 +156,7 @@ public class Enemy : MovingObject
             {
                 xDir = _target.position.x > transform.position.x ? -.5f : .5f;
                 _animator.SetTrigger("enemyWalkBack");
+                _npcAttributes.braveCount += 1;
             }
         }
 
@@ -227,7 +234,7 @@ public class Enemy : MovingObject
 
         EnemySpray();
 
-        _health = 0;
+        _npcAttributes.health = 0;
         isDead = true;
     }
 
@@ -334,7 +341,7 @@ public class Enemy : MovingObject
     private void RespawnEnemy()
     {
         gameObject.SetActive(false);
-        _health = 100;
+        _npcAttributes.health = 100;
         isDead = false;
         canMoveInSmoothMovement = true;
         GameManager.RespawnEnemyFromPool();
@@ -350,8 +357,8 @@ public class Enemy : MovingObject
     {
         if (collider.gameObject.tag == "SlashCollider")
         {
-            _health -= 50;
-            if (_health > 0)
+            _npcAttributes.health -= 50;
+            if (_npcAttributes.health > 0)
             {
                 EnemyHit();
             }

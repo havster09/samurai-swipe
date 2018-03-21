@@ -18,9 +18,8 @@ public class GoapAgentSearchAndDestroy : GoapAgentEnemy
     public override bool moveAgent(GoapAction nextAction)
     {
         _npcHeroAttributesComponent = nextAction.target.GetComponent<NpcHeroAttributesComponent>();
-        if (_enemyScript._health > 0 && _npcHeroAttributesComponent.health > 0 && !_enemyScript.IsAnimationPlaying("hit"))
+        if (_npcAttributes.health > 0 && _npcHeroAttributesComponent.health > 0 && !_enemyScript.IsAnimationPlaying("hit"))
         {
-
             _enemyScript.FaceTarget();
 
             if (_npcAttributes.braveCount > 0)
@@ -77,7 +76,7 @@ public class GoapAgentSearchAndDestroy : GoapAgentEnemy
 
     private void GoapAgentSearchAndDestroyRun(GoapAction nextAction)
     {
-        float step = _moveSpeed * 2 * Time.deltaTime;
+        float step = (_moveSpeed * 2) * Time.deltaTime;
         gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, nextAction.target.transform.position, step);
         _enemyScript._animator.SetBool("enemyRun", true);
     }

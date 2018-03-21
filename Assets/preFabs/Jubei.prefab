@@ -20,9 +20,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4067911902567338}
   - component: {fileID: 212149167326061762}
-  - component: {fileID: 114056332087221468}
+  - component: {fileID: 114131345742230622}
   - component: {fileID: 114652296853666418}
   - component: {fileID: 114084192740349204}
+  - component: {fileID: 114056332087221468}
   - component: {fileID: 114554894308390840}
   - component: {fileID: 114677643092321032}
   - component: {fileID: 114579107978402060}
@@ -130,11 +131,11 @@ MonoBehaviour:
   maxWalkRange: 3
   canMoveInSmoothMovement: 1
   spriteRenderer: {fileID: 0}
-  playerDamage: 10
-  runSpeed: 0
-  health: 100
-  hasWalkAbility: 1
-  animator: {fileID: 0}
+  _playerDamage: 0
+  _runSpeed: 0
+  _hasWalkAbility: 0
+  _animator: {fileID: 0}
+  _npcAttributes: {fileID: 0}
   canWalk: 1
 --- !u!114 &114084192740349204
 MonoBehaviour:
@@ -151,6 +152,21 @@ MonoBehaviour:
   _moveSpeed: 1
   _enemyScript: {fileID: 0}
   _goapAgentScript: {fileID: 0}
+--- !u!114 &114131345742230622
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1748471367380564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eb470dd52a1bf44bb46e758c65d14d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  killCount: 0
+  attackCount: 0
+  braveCount: 1
+  health: 100
 --- !u!114 &114554894308390840
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -213,6 +229,7 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -228,6 +245,7 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5

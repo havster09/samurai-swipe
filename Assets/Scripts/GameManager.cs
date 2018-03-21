@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-    public float levelStartDelay = 2f;                      
+    public float levelStartDelay = 5f;                      
     public float turnDelay = 0.1f;      
     public int playerFoodPoints = 100;  
     public static GameManager instance = null;
@@ -122,12 +122,12 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < enemies.Count; i++)
         {
-            if (enemies[i]._health > 0)
+            if (enemies[i]._npcAttributes)
             {
                 enemies[i].FaceTarget();
             }
             
-            if (!enemies[i].gameObject.activeInHierarchy || enemies[i]._health < 1)
+            if (!enemies[i].gameObject.activeInHierarchy)
             {
                 yield return new WaitForSeconds(.1f);
             }

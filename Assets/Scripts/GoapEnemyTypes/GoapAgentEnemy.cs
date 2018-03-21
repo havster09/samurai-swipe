@@ -7,7 +7,7 @@ using System.Linq;
 public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
 {
     public NpcAttributesComponent _npcAttributes;
-    public float _moveSpeed = 1;
+    public float _moveSpeed = 2;
 
     public Enemy _enemyScript;
     public GoapAgent _goapAgentScript;
@@ -17,7 +17,7 @@ public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
     {
         if (_npcAttributes == null)
         {
-            _npcAttributes = gameObject.AddComponent<NpcAttributesComponent>();
+            _npcAttributes = gameObject.GetComponent<NpcAttributesComponent>();
         }
 
         if (_enemyScript == null)

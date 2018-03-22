@@ -31,6 +31,7 @@ public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
         worldData.Add(new KeyValuePair<string, object>("hasBrave", (_npcAttributes.braveCount > 0)));
         worldData.Add(new KeyValuePair<string, object>("destroyNpc", false));
         worldData.Add(new KeyValuePair<string, object>("enemyWin", false));
+        worldData.Add(new KeyValuePair<string, object>("getBrave", false));
 
         return worldData;
     }

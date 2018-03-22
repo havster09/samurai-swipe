@@ -4,16 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class CelebrateKillAction : GoapAction
+public class CelebrateKillAction : GoapEnemyAction
 {
     private bool _npcHasCelebrated = false;
-    public Enemy _enemyScript;
-    private NpcHeroAttributesComponent _targetNpcHeroAttribute;
-    private NpcAttributesComponent _npcAttributes;
 
     public CelebrateKillAction()
     {
         addPrecondition("enemyWin", false);
+        addPrecondition("destroyNpc", true);
         addEffect("enemyWin", true);
     }
 

@@ -53,7 +53,7 @@ public class Enemy : MovingObject
     {
         if (Utilities.ReplaceClone(name) != "Jubei")
         {
-            GameManager.instance.AddEnemyToList(this);
+            // GameManager.instance.AddEnemyToList(this);
         }
 
         if (_npcHeroAttributesComponent == null)
@@ -223,6 +223,11 @@ public class Enemy : MovingObject
     protected override void OnCantMove<T>(T component)
     {
         _animator.SetTrigger("enemyAttackOne");
+    }
+
+    public void Taunt()
+    {
+        _animator.SetTrigger("enemyTaunt");
     }
 
     public void Attack(string attackType)

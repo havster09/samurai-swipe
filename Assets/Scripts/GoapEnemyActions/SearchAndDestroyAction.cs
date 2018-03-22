@@ -3,28 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class SearchAndDestroyAction : GoapAction
+public class SearchAndDestroyAction : GoapEnemyAction
 {
-    private float _moveSpeed = 1;
-    private bool _npcIsDestroyed;
-    public Enemy _enemyScript;
-    private NpcHeroAttributesComponent _targetNpcHeroAttribute;
-    private NpcAttributesComponent _npcAttributes;
-
     public SearchAndDestroyAction()
     {
         addPrecondition("hasBrave", false);
         addPrecondition("destroyNpc", false);
         addEffect("destroyNpc", true);
     }
-
-    void Awake()
-    {
-        reset();
-        _enemyScript = GetComponent<Enemy>();
-        _npcAttributes = GetComponent<NpcAttributesComponent>();
-    }
-
 
     public override bool Move()
     {
@@ -80,44 +66,6 @@ public class SearchAndDestroyAction : GoapAction
     public override bool checkProceduralPrecondition(GameObject agent)
     {
         return FindNpcTarget(agent);
-    }
-
-    public virtual bool FindNpcTarget(GameObject agent)
-    {
-        NpcHeroAttributesComponent[] npcHeroAttributes = (NpcHeroAttributesComponent[])UnityEngine.GameObject.FindObjectsOfType(typeof(NpcHeroAttributesComponent));
-        NpcHeroAttributesComponent closest = null;
-        float closestDist = 0;
-
-        foreach (NpcHeroAttributesComponent npc in npcHeroAttributes)
-        {
-            if (closest == null)
-            {
-                closest = npc;
-                closestDist = (npc.gameObject.transform.position - agent.transform.position).magnitude;
-            }
-            else
-            {
-                float dist = (npc.gameObject.transform.position - agent.transform.position).magnitude;
-                if (dist < closestDist)
-                {
-                    closest = npc;
-                    closestDist = dist;
-                }
-            }
-        }
-        if (closest == null)
-        {
-            return false;
-        }
-        else if (closest.health < 1)
-        {
-            return false;
-        }
-
-        _targetNpcHeroAttribute = closest;
-        target = _targetNpcHeroAttribute.gameObject;
-
-        return closest != null;
     }
 
     public override bool perform(GameObject agent)

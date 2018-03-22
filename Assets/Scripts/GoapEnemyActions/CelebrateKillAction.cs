@@ -18,9 +18,9 @@ public class CelebrateKillAction : GoapEnemyAction
     void OnEnable()
     {
         reset();
-        if (_enemyScript == null)
+        if (EnemyScript == null)
         {
-            _enemyScript = GetComponent<Enemy>();
+            EnemyScript = GetComponent<Enemy>();
         }
     }
 
@@ -33,7 +33,7 @@ public class CelebrateKillAction : GoapEnemyAction
     public override void reset()
     {
         _npcHasCelebrated = false;
-        _targetNpcHeroAttribute = null;
+        TargetNpcHeroAttribute = null;
     }
 
     public override bool isDone()
@@ -48,7 +48,7 @@ public class CelebrateKillAction : GoapEnemyAction
 
     public override bool perform(GameObject agent)
     {
-        _enemyScript.NpcCelebrate();
+        EnemyScript.NpcCelebrate();
         _npcHasCelebrated = true;
         return _npcHasCelebrated;
     }

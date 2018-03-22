@@ -18,9 +18,9 @@ public class Enemy : MovingObject
     public NpcAttributesComponent _npcAttributes;
     
 
-    public bool isAttacking { get; private set; }
-    public bool isDead { get; set; }
-    public bool canWalk;
+    public bool _isAttacking { get; private set; }
+    public bool IsDead { get; set; }
+    public bool CanWalk = true;
 
     void Awake()
     {
@@ -29,7 +29,7 @@ public class Enemy : MovingObject
 
     private void EnemyAttackOneEventHandler(string stringParameter)
     {
-        isAttacking = false;
+        _isAttacking = false;
         canMoveInSmoothMovement = true;
     }
 
@@ -41,12 +41,12 @@ public class Enemy : MovingObject
 
     private void EnemyWalkEventHandler()
     {
-        WaitFor(() => canWalk = true, 3f);
+        WaitFor(() => CanWalk = true, 3f);
     }
 
     private void EnemyWalkBackEventHandler()
     {
-        WaitFor(() => canWalk = true, 4f);
+        WaitFor(() => CanWalk = true, 4f);
     }
 
     protected override void OnEnable()
@@ -143,7 +143,7 @@ public class Enemy : MovingObject
 
         float xDir = 0;
         float yDir = 0;
-        canWalk = false;
+        CanWalk = false;
 
         bool walkBackwards = Random.Range(0, 5) < 2 && Utilities.ReplaceClone(name) != "Ukyo";
         if (Mathf.Abs(_target.position.x - transform.position.x) < float.Epsilon)
@@ -161,7 +161,7 @@ public class Enemy : MovingObject
             {
                 xDir = _target.position.x > transform.position.x ? -.5f : .5f;
                 _animator.SetTrigger("enemyWalkBack");
-                _npcAttributes.braveCount += 1;
+                _npcAttributes.brave += 1;
             }
         }
 
@@ -225,14 +225,14 @@ public class Enemy : MovingObject
         _animator.SetTrigger("enemyAttackOne");
     }
 
-    public void Taunt()
+    public void Taunt(bool state)
     {
-        _animator.SetTrigger("enemyTaunt");
+        _animator.SetBool("enemyTaunting", state);
     }
 
     public void Attack(string attackType)
     {
-        isAttacking = true;
+        _isAttacking = true;
         canMoveInSmoothMovement = false;
         _animator.SetTrigger(attackType);
     }
@@ -245,7 +245,7 @@ public class Enemy : MovingObject
         EnemySpray();
 
         _npcAttributes.health = 0;
-        isDead = true;
+        IsDead = true;
     }
 
     private void EnemySpray()
@@ -352,7 +352,7 @@ public class Enemy : MovingObject
     {
         gameObject.SetActive(false);
         _npcAttributes.health = 100;
-        isDead = false;
+        IsDead = false;
         canMoveInSmoothMovement = true;
         GameManager.RespawnEnemyFromPool();
     }
@@ -372,7 +372,7 @@ public class Enemy : MovingObject
             {
                 EnemyHit();
             }
-            else if (!isDead)
+            else if (!IsDead)
             {
                 EnemyDie();
             }
@@ -401,7 +401,7 @@ public class Enemy : MovingObject
 
     public bool IsAttacking()
     {
-        return isAttacking;
+        return _isAttacking;
     }
 
     public bool IsAnimationPlaying(string animationTag)

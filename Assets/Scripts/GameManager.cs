@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
 
     private static void InitEnemies()
     {
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < 2; i++)
         {
             RespawnEnemyFromPool();
         }
@@ -134,7 +134,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                if (!enemies[i].IsInWalkRange() && !enemies[i].IsAnimationPlaying("run") && !enemies[i].isAttacking)
+                if (!enemies[i].IsInWalkRange() && !enemies[i].IsAnimationPlaying("run") && !enemies[i]._isAttacking)
             {
                 enemies[i].RunEnemy();
                 yield return new WaitForSeconds(enemies[i].moveTime * moveTimeMultiplier);
@@ -149,7 +149,7 @@ public class GameManager : MonoBehaviour
                 }
                 else if (enemies[i].IsAnimationPlaying("idle"))
                 {
-                    if (enemies[i]._hasWalkAbility && !enemies[i].IsAnimationPlaying("run") && !enemies[i].isAttacking)
+                    if (enemies[i]._hasWalkAbility && !enemies[i].IsAnimationPlaying("run") && !enemies[i]._isAttacking)
                     {
                         enemies[i].MoveEnemy();
                     }

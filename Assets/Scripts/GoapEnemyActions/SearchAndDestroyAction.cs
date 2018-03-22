@@ -14,26 +14,31 @@ public class SearchAndDestroyAction : GoapEnemyAction
 
     public override bool Move()
     {
-        _enemyScript.FaceTarget();
+        if (IsPerforming)
+        {
+            return false;
+        }
+
+        EnemyScript.FaceTarget();
         float distanceFromTarget = Vector2.Distance(gameObject.transform.position, target.transform.position);
         if (distanceFromTarget > 2 &&
-            !_enemyScript.IsAnimationPlaying("attack") &&
-            !_enemyScript.IsAnimationPlaying("walk") && _enemyScript.canWalk)
+            !EnemyScript.IsAnimationPlaying("attack") &&
+            !EnemyScript.IsAnimationPlaying("walk") && EnemyScript.CanWalk)
         {
             GoapAgentSearchAndDestroyRun();
             return false;
         }
         else
         {
-            _enemyScript._animator.SetBool("enemyRun", false);
+            EnemyScript._animator.SetBool("enemyRun", false);
             if (distanceFromTarget < 1)
             {
                 setInRange(true);
                 return true;
             }
-            else if (_enemyScript.IsAnimationPlaying("idle") && _enemyScript.canWalk)
+            else if (EnemyScript.IsAnimationPlaying("idle") && EnemyScript.CanWalk)
             {
-                _enemyScript.MoveEnemy();
+                EnemyScript.MoveEnemy();
                 return false;
             }
         }
@@ -42,15 +47,15 @@ public class SearchAndDestroyAction : GoapEnemyAction
 
     protected void GoapAgentSearchAndDestroyRun()
     {
-        float step = (_moveSpeed * 2) * Time.deltaTime;
+        float step = (MoveSpeed * 2) * Time.deltaTime;
         gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, target.transform.position, step);
-        _enemyScript._animator.SetBool("enemyRun", true);
+        EnemyScript._animator.SetBool("enemyRun", true);
     }
 
     public override void reset()
     {
         _npcIsDestroyed = false;
-        _targetNpcHeroAttribute = null;
+        TargetNpcHeroAttribute = null;
     }
 
     public override bool isDone()
@@ -70,18 +75,21 @@ public class SearchAndDestroyAction : GoapEnemyAction
 
     public override bool perform(GameObject agent)
     {
-        if (_targetNpcHeroAttribute != null)
+        
+        if (TargetNpcHeroAttribute != null)
         {
-            if (_targetNpcHeroAttribute.health > 0 && !_enemyScript.IsAnimationPlaying("attack"))
+            if (TargetNpcHeroAttribute.health > 0 && !EnemyScript.IsAnimationPlaying("attack"))
             {
-                _enemyScript.Attack("enemyAttackOne");
-                _targetNpcHeroAttribute.health -= 1;
+                IsPerforming = true;
+                EnemyScript.Attack("enemyAttackOne");
+                EnemyScript.WaitFor(() => IsPerforming = false, 1f);
+                TargetNpcHeroAttribute.health -= 10;
             }            
-            _npcAttributes.attackCount += 1;
-            if (_targetNpcHeroAttribute.health < 1)
+            NpcAttributes.attackCount += 1;
+            if (TargetNpcHeroAttribute.health < 1)
             {
                 _npcIsDestroyed = true;
-                _npcAttributes.killCount += 1;
+                NpcAttributes.killCount += 1;
             }
         }
         return _npcIsDestroyed;

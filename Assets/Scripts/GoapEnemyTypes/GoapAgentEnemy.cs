@@ -27,8 +27,8 @@ public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
     {
         HashSet<KeyValuePair<string, object>> worldData = new HashSet<KeyValuePair<string, object>>();
 
-        worldData.Add(new KeyValuePair<string, object>("hasKills", (_npcAttributes.killCount > 0)));
-        worldData.Add(new KeyValuePair<string, object>("hasBrave", (_npcAttributes.braveCount > 0)));
+        worldData.Add(new KeyValuePair<string, object>("hasKills", (_npcAttributes.killCount > 2)));
+        worldData.Add(new KeyValuePair<string, object>("hasBrave", (_npcAttributes.brave > 0)));
         worldData.Add(new KeyValuePair<string, object>("destroyNpc", false));
         worldData.Add(new KeyValuePair<string, object>("enemyWin", false));
         worldData.Add(new KeyValuePair<string, object>("getBrave", false));

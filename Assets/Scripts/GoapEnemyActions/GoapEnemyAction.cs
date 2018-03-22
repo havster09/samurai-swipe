@@ -5,22 +5,23 @@ using UnityEngine;
 
 public class GoapEnemyAction : GoapAction
 {
-    protected float _moveSpeed = 1;
-    protected float _distanceToTargetThreshold = 1;
+    protected float MoveSpeed = 1;
+    protected float DistanceToTargetThreshold = 1;
     protected bool _npcIsDestroyed;
-    protected Enemy _enemyScript;
-    protected NpcHeroAttributesComponent _targetNpcHeroAttribute;
-    protected NpcAttributesComponent _npcAttributes;
+    protected Enemy EnemyScript;
+    protected NpcHeroAttributesComponent TargetNpcHeroAttribute;
+    protected NpcAttributesComponent NpcAttributes;
+    protected bool IsPerforming;
 
     public GoapEnemyAction()
     {
-        addEffect("destroyNpc", true);
+        
     }
 
     void Awake()
     {
-        _enemyScript = GetComponent<Enemy>();
-        _npcAttributes = GetComponent<NpcAttributesComponent>();
+        EnemyScript = GetComponent<Enemy>();
+        NpcAttributes = GetComponent<NpcAttributesComponent>();
     }
 
     void OnEnable()
@@ -30,20 +31,25 @@ public class GoapEnemyAction : GoapAction
 
     public override bool Move()
     {
-        _enemyScript.FaceTarget();
+        if (IsPerforming)
+        {
+            return false;
+        }
+
+        EnemyScript.FaceTarget();
         float distanceFromTarget = Vector2.Distance(gameObject.transform.position, target.transform.position);
 
-        if (distanceFromTarget >= _distanceToTargetThreshold)
+        if (distanceFromTarget >= DistanceToTargetThreshold)
         {
-            float step = (_moveSpeed * 2) * Time.deltaTime;
+            float step = (MoveSpeed * 2) * Time.deltaTime;
             gameObject.transform.position =
                 Vector3.MoveTowards(gameObject.transform.position, target.transform.position, step);
-            _enemyScript._animator.SetBool("enemyRun", true);
+            EnemyScript._animator.SetBool("enemyRun", true);
 
         }
         else
         {
-            _enemyScript._animator.SetBool("enemyRun", false);
+            EnemyScript._animator.SetBool("enemyRun", false);
             setInRange(true);
             return true;
         }
@@ -54,7 +60,7 @@ public class GoapEnemyAction : GoapAction
     public override void reset()
     {
         _npcIsDestroyed = false;
-        _targetNpcHeroAttribute = null;
+        TargetNpcHeroAttribute = null;
     }
 
     public override bool isDone()
@@ -105,17 +111,19 @@ public class GoapEnemyAction : GoapAction
             return false;
         }
 
-        _targetNpcHeroAttribute = closest;
-        target = _targetNpcHeroAttribute.gameObject;
+        TargetNpcHeroAttribute = closest;
+        target = TargetNpcHeroAttribute.gameObject;
 
         return closest != null;
     }
 
     public override bool perform(GameObject agent)
     {
-        if (_targetNpcHeroAttribute != null)
+        IsPerforming = true;
+        if (TargetNpcHeroAttribute != null)
         {
             _npcIsDestroyed = true;
+            IsPerforming = false;
         }
         return _npcIsDestroyed;
     }    

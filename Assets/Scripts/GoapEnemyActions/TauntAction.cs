@@ -1,21 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TauntAction : GoapEnemyAction
 {
     private bool _npcHasTaunted;
     public TauntAction()
     {
-        addEffect("getBrave", true);
-        _distanceToTargetThreshold = 2;
+        addPrecondition("hasBrave", false);
+        addEffect("hasBrave", true);
+        DistanceToTargetThreshold = 2;
     }
 
     public override void reset()
     {
         _npcHasTaunted = false;
-        _targetNpcHeroAttribute = null;
+        TargetNpcHeroAttribute = null;
     }
 
     public override bool isDone()
@@ -35,12 +33,23 @@ public class TauntAction : GoapEnemyAction
 
     public override bool perform(GameObject agent)
     {
-        if (_targetNpcHeroAttribute != null)
+        if (TargetNpcHeroAttribute != null)
         {
-            if (!_enemyScript.IsAnimationPlaying("taunt"))
+            if (!EnemyScript.IsAnimationPlaying("taunt"))
             {
-                _enemyScript.Taunt();
-                _npcHasTaunted = true;
+                IsPerforming = true;
+                EnemyScript.Taunt(true);
+                EnemyScript.WaitFor(() =>
+                {
+                    NpcAttributes.brave += 1;
+                    EnemyScript.Taunt(false);
+                    IsPerforming = false;
+                }, 2f);
+
+                if (NpcAttributes.brave > 3)
+                {
+                    _npcHasTaunted = true;
+                }
             }            
         }
         return _npcHasTaunted;

@@ -17,7 +17,7 @@ public class GoapAgentSearchAndDestroy : GoapAgentEnemy
     public int CheckActiveCount()
     {
         _enemies = (Enemy[])UnityEngine.GameObject.FindObjectsOfType(typeof(Enemy));
-        _enemies.Select(e => e.gameObject.activeInHierarchy && !e.isDead);
+        _enemies.Select(e => e.gameObject.activeInHierarchy && !e.IsDead);
         return _enemies.Length;
     }
 

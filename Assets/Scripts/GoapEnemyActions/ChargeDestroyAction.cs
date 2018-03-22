@@ -15,7 +15,7 @@ public class ChargeDestroyAction : GoapEnemyAction
     public override void reset()
     {
         _npcIsDestroyed = false;
-        _targetNpcHeroAttribute = null;
+        TargetNpcHeroAttribute = null;
     }
 
     public override bool isDone()
@@ -35,18 +35,20 @@ public class ChargeDestroyAction : GoapEnemyAction
 
     public override bool perform(GameObject agent)
     {
-        if (_targetNpcHeroAttribute != null)
+        if (TargetNpcHeroAttribute != null)
         {
-            if (!_enemyScript.IsAnimationPlaying("attack"))
+            if (!EnemyScript.IsAnimationPlaying("attack"))
             {
-                _enemyScript.Attack("enemyAttackTwo");
-                _targetNpcHeroAttribute.health -= 1;
+                IsPerforming = true;
+                EnemyScript.Attack("enemyAttackTwo");
+                EnemyScript.WaitFor(() => IsPerforming = false, 1f);
+                TargetNpcHeroAttribute.health -= 10;
             }
-            _npcAttributes.attackCount += 1;
-            if (_targetNpcHeroAttribute.health < 1)
+            NpcAttributes.attackCount += 1;
+            if (TargetNpcHeroAttribute.health < 1)
             {
                 _npcIsDestroyed = true;
-                _npcAttributes.killCount += 1;
+                NpcAttributes.killCount += 1;
             }
         }
         return _npcIsDestroyed;

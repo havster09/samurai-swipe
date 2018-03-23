@@ -16,72 +16,42 @@ public class Enemy : MovingObject
     private NpcHeroAttributesComponent _npcHeroAttributesComponent;
     private SlashRenderer _slashRenderer;
     public NpcAttributesComponent _npcAttributes;
-    
 
-    public bool _isAttacking { get; private set; }
+
+    public bool _isAttacking { get; set; }
     public bool IsDead { get; set; }
     public bool CanWalk = true;
 
     void Awake()
     {
         _npcAttributes = GetComponent<NpcAttributesComponent>();
-    }
-
-    private void EnemyAttackOneEventHandler(string stringParameter)
-    {
-        _isAttacking = false;
-        canMoveInSmoothMovement = true;
-    }
-
-    private void EnemyHitEventHandler()
-    {
-        canMoveInSmoothMovement = true;
-        _slashRenderer.RemoveSlash();
-    }
-
-    private void EnemyWalkEventHandler()
-    {
-        WaitFor(() => CanWalk = true, 3f);
-    }
-
-    private void EnemyWalkBackEventHandler()
-    {
-        WaitFor(() => CanWalk = true, 4f);
-    }
-
-    protected override void OnEnable()
-    {
-        if (Utilities.ReplaceClone(name) != "Jubei")
-        {
-            // GameManager.instance.AddEnemyToList(this);
-        }
-
-        if (_npcHeroAttributesComponent == null)
-        {
-            _npcHeroAttributesComponent = GetComponent<NpcHeroAttributesComponent>();
-        }
-
-        if (_slashRenderer == null)
-        {
-            _slashRenderer = GameObject.FindObjectOfType<SlashRenderer>();
-        }
-
-        if (_npcAttributes == null)
-        {
-            _npcAttributes = gameObject.GetComponent<NpcAttributesComponent>();
-        }
-
+        _npcHeroAttributesComponent = GetComponent<NpcHeroAttributesComponent>();
+        _slashRenderer = GameObject.FindObjectOfType<SlashRenderer>();
+        _npcAttributes = gameObject.GetComponent<NpcAttributesComponent>();
         _target = GameObject.FindGameObjectWithTag("Player").transform;
         _animator = GetComponent<Animator>();
+        AttachAnimationClipEvents();
+    }
 
+    private void AttachAnimationClipEvents()
+    {
         AnimationClip attackOneClip;
         AnimationEvent attackOneEvent;
         attackOneEvent = new AnimationEvent();
         attackOneClip = _animator.runtimeAnimatorController.animationClips[1];
         attackOneEvent.time = attackOneClip.length;
-        attackOneEvent.stringParameter = "end";
+        attackOneEvent.stringParameter = "attackOneEvent end";
         attackOneEvent.functionName = "EnemyAttackOneEventHandler";
         attackOneClip.AddEvent(attackOneEvent);
+
+        AnimationClip attackTwoClip;
+        AnimationEvent attackTwoEvent;
+        attackTwoEvent = new AnimationEvent();
+        attackTwoClip = _animator.runtimeAnimatorController.animationClips[12];
+        attackTwoEvent.time = attackTwoClip.length;
+        attackTwoEvent.stringParameter = "attackTwoEvent end";
+        attackTwoEvent.functionName = "EnemyAttackTwoEventHandler";
+        attackTwoClip.AddEvent(attackTwoEvent);
 
         AnimationClip hitClip;
         AnimationEvent hitEvent;
@@ -106,7 +76,44 @@ public class Enemy : MovingObject
         walkBackEvent.time = walkBackClip.length;
         walkBackEvent.functionName = "EnemyWalkBackEventHandler";
         walkBackClip.AddEvent(walkBackEvent);
+    }
 
+    private void EnemyAttackOneEventHandler(string stringParameter)
+    {
+        _isAttacking = false;
+        canMoveInSmoothMovement = true;
+        Debug.Log(stringParameter);
+    }
+
+    private void EnemyAttackTwoEventHandler(string stringParameter)
+    {
+        _isAttacking = false;
+        canMoveInSmoothMovement = true;
+        Debug.Log(stringParameter);
+    }
+
+    private void EnemyHitEventHandler()
+    {
+        canMoveInSmoothMovement = true;
+        _slashRenderer.RemoveSlash();
+    }
+
+    private void EnemyWalkEventHandler()
+    {
+        WaitFor(() => CanWalk = true, 3f);
+    }
+
+    private void EnemyWalkBackEventHandler()
+    {
+        WaitFor(() => CanWalk = true, 4f);
+    }
+
+    protected override void OnEnable()
+    {
+        if (Utilities.ReplaceClone(name) != "Jubei")
+        {
+            // GameManager.instance.AddEnemyToList(this);
+        }
         base.OnEnable();
     }
 
@@ -228,6 +235,16 @@ public class Enemy : MovingObject
     public void Taunt(bool state)
     {
         _animator.SetBool("enemyTaunting", state);
+    }
+
+    public void Block(bool state)
+    {
+        _animator.SetBool("enemyBlock", state);
+    }
+
+    public void AttackGrounded()
+    {
+        _animator.SetTrigger("enemyAttackGrounded");
     }
 
     public void Attack(string attackType)

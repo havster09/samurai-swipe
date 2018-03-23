@@ -14,7 +14,7 @@ public class SearchAndDestroyAction : GoapEnemyAction
 
     public override bool Move()
     {
-        if (IsPerforming)
+        if (EnemyScript._isAttacking)
         {
             return false;
         }
@@ -80,10 +80,7 @@ public class SearchAndDestroyAction : GoapEnemyAction
         {
             if (TargetNpcHeroAttribute.health > 0 && !EnemyScript.IsAnimationPlaying("attack"))
             {
-                IsPerforming = true;
                 EnemyScript.Attack("enemyAttackOne");
-                EnemyScript.WaitFor(() => IsPerforming = false, 1f);
-                TargetNpcHeroAttribute.health -= 10;
             }            
             NpcAttributes.attackCount += 1;
             if (TargetNpcHeroAttribute.health < 1)

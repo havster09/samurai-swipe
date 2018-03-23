@@ -11,7 +11,6 @@ public class GoapEnemyAction : GoapAction
     protected Enemy EnemyScript;
     protected NpcHeroAttributesComponent TargetNpcHeroAttribute;
     protected NpcAttributesComponent NpcAttributes;
-    protected bool IsPerforming;
 
     public GoapEnemyAction()
     {
@@ -31,7 +30,7 @@ public class GoapEnemyAction : GoapAction
 
     public override bool Move()
     {
-        if (IsPerforming)
+        if (EnemyScript._isAttacking)
         {
             return false;
         }
@@ -108,7 +107,7 @@ public class GoapEnemyAction : GoapAction
         }
         else if (closest.health < 1)
         {
-            return false;
+            // return false;
         }
 
         TargetNpcHeroAttribute = closest;
@@ -119,11 +118,9 @@ public class GoapEnemyAction : GoapAction
 
     public override bool perform(GameObject agent)
     {
-        IsPerforming = true;
         if (TargetNpcHeroAttribute != null)
         {
             _npcIsDestroyed = true;
-            IsPerforming = false;
         }
         return _npcIsDestroyed;
     }    

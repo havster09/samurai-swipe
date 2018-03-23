@@ -39,9 +39,7 @@ public class ChargeDestroyAction : GoapEnemyAction
         {
             if (!EnemyScript.IsAnimationPlaying("attack"))
             {
-                IsPerforming = true;
                 EnemyScript.Attack("enemyAttackTwo");
-                EnemyScript.WaitFor(() => IsPerforming = false, 1f);
                 TargetNpcHeroAttribute.health -= 10;
             }
             NpcAttributes.attackCount += 1;

@@ -7,7 +7,7 @@ public class TauntAction : GoapEnemyAction
     {
         addPrecondition("hasBrave", false);
         addEffect("hasBrave", true);
-        DistanceToTargetThreshold = 2;
+        DistanceToTargetThreshold = 3;
     }
 
     public override void reset()
@@ -37,13 +37,11 @@ public class TauntAction : GoapEnemyAction
         {
             if (!EnemyScript.IsAnimationPlaying("taunt"))
             {
-                IsPerforming = true;
                 EnemyScript.Taunt(true);
                 EnemyScript.WaitFor(() =>
                 {
                     NpcAttributes.brave += 1;
                     EnemyScript.Taunt(false);
-                    IsPerforming = false;
                 }, 2f);
 
                 if (NpcAttributes.brave > 3)

@@ -93,20 +93,17 @@ public class Enemy : MovingObject
     private void EnemyAttackOneEventHandler(string stringParameter)
     {
         IsAttacking = false;
-        Debug.Log(stringParameter);
     }
 
     private void EnemyAttackTwoEventHandler(string stringParameter)
     {
         IsAttacking = false;
-        Debug.Log(stringParameter);
     }
 
     private void TauntEventHandler(string stringParameter)
     {
         IsTaunting = false;
         NpcAnimator.SetFloat("enemyTauntSpeedMultiplier", 1f);
-        Debug.Log(stringParameter);
     }
 
     private void TauntEventEndFrameHandler()
@@ -116,7 +113,6 @@ public class Enemy : MovingObject
     private void WinEventHandler(string stringParameter)
     {
         EnemyCelebrate();
-        Debug.Log(stringParameter);
     }
 
     private void EnemyCelebrate()
@@ -235,7 +231,7 @@ public class Enemy : MovingObject
 
     public void JumpAttack()
     {
-        rb2D.velocity = new Vector2(_enemyFlipX ? -1f : 1f, 5f);
+        rb2D.velocity = new Vector2(_enemyFlipX ? -1f : 1f, 8f);
         NpcAnimator.SetFloat("enemyAttackJumpVertical", 1f);
         StartCoroutine("EnemyAttackJumpVertical");
     }
@@ -253,7 +249,7 @@ public class Enemy : MovingObject
     {
         while (transform.position.y > 0)
         {
-            rb2D.velocity = new Vector2(rb2D.velocity.x, -6f);
+            rb2D.velocity = new Vector2(rb2D.velocity.x, -10f);
             yield return new WaitForFixedUpdate();
         }
         rb2D.velocity = new Vector2(0, 0);
@@ -481,5 +477,14 @@ public class Enemy : MovingObject
             return true;
         }
         return false;
+    }
+
+    void OnDisable()
+    {
+        IsAttacking = false;
+        IsTaunting = false;
+        IsDead = false;
+        IsCelebrating = false;
+        IsHit = false;
     }
 }

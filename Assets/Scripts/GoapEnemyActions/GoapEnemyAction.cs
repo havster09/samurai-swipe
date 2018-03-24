@@ -103,10 +103,6 @@ public class GoapEnemyAction : GoapAction
         {
             return false;
         }
-        else if (closest.health < 1)
-        {
-            // return false;
-        }
 
         TargetNpcHeroAttribute = closest;
         target = TargetNpcHeroAttribute.gameObject;

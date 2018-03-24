@@ -2,9 +2,9 @@
 
 namespace Assets.Scripts.GoapEnemyActions
 {
-    public class JumpDestroyAction : GoapEnemyAction
+    public class AttackJumpAction : GoapEnemyAction
     {
-        public JumpDestroyAction()
+        public AttackJumpAction()
         {
             addPrecondition("hasBrave", true);
             addPrecondition("hasStamina", true);

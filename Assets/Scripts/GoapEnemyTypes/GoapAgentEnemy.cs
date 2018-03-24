@@ -71,13 +71,11 @@ public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
 
     public virtual bool moveAgent(GoapAction nextAction)
     {
-        // move towards the NextAction's target
         float step = _moveSpeed * Time.deltaTime;
         gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, nextAction.target.transform.position, step);
 
         if (gameObject.transform.position.Equals(nextAction.target.transform.position))
         {
-            // we are at the target location, we are done
             nextAction.setInRange(true);
             return true;
         }

@@ -20,7 +20,8 @@ public sealed class GoapAgent : MonoBehaviour {
 	private GoapPlanner planner;
 
 
-	void Start () {
+
+    void Start () {
 		stateMachine = new FSM ();
 		availableActions = new HashSet<GoapAction> ();
 		currentActions = new Queue<GoapAction> ();
@@ -32,6 +33,11 @@ public sealed class GoapAgent : MonoBehaviour {
 		stateMachine.pushState (idleState);
 		loadActions ();
 	}
+
+    void OnEnable()
+    {
+        
+    }
 	
 
 	void Update () {

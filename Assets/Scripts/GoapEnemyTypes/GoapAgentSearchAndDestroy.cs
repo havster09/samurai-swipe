@@ -10,7 +10,6 @@ public class GoapAgentSearchAndDestroy : GoapAgentEnemy
     {
         HashSet<KeyValuePair<string, object>> goal = new HashSet<KeyValuePair<string, object>>();
         goal.Add(new KeyValuePair<string, object>("destroyNpc", true));
-        goal.Add(new KeyValuePair<string, object>("enemyAttackGrounded", true));
         goal.Add(new KeyValuePair<string, object>("enemyWin", true));
         return goal;
     }

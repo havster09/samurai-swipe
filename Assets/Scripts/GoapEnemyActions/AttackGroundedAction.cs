@@ -1,51 +1,46 @@
 ﻿using UnityEngine;
 
-public class AttackGroundedAction : GoapEnemyAction
+namespace Assets.Scripts.GoapEnemyActions
 {
-    private bool _npcHasAttackGroundedAction = false;
-
-    public AttackGroundedAction()
+    public class AttackGroundedAction : GoapEnemyAction
     {
-        addPrecondition("enemyAttackGounded", false);
-        addPrecondition("destroyNpc", true);
-        addEffect("enemyAttackGounded", true);
-        DistanceToTargetThreshold = .1f;
-    }
+        private bool _npcHasAttackGroundedAction;
 
-    void OnEnable()
-    {
-        reset();
-        if (EnemyScript == null)
+        public AttackGroundedAction()
         {
-            EnemyScript = GetComponent<Enemy>();
+            addPrecondition("destroyNpc", true);
+            addEffect("enemyAttackGounded", true);
+            DistanceToTargetThreshold = .3f;
         }
-    }
 
-    public override void reset()
-    {
-        _npcHasAttackGroundedAction = false;
-        TargetNpcHeroAttribute = null;
-    }
+        public override void reset()
+        {
+            _npcHasAttackGroundedAction = false;
+            TargetNpcHeroAttribute = null;
+        }
 
-    public override bool isDone()
-    {
-        return _npcHasAttackGroundedAction;
-    }
+        public override bool isDone()
+        {
+            return _npcHasAttackGroundedAction;
+        }
 
-    public override bool requiresInRange()
-    {
-        return true;
-    }
+        public override bool requiresInRange()
+        {
+            return true;
+        }
 
-    public override bool perform(GameObject agent)
-    {
-        EnemyScript.AttackGrounded();
-        _npcHasAttackGroundedAction = true;
-        return _npcHasAttackGroundedAction;
-    }
+        public override bool perform(GameObject agent)
+        {
+            EnemyScript.IsAttacking = true;
+            EnemyScript.AttackGrounded();
+            EnemyScript.WaitFor(() => EnemyScript.IsAttacking = false, 12f);
+            _npcHasAttackGroundedAction = true;
+            return _npcHasAttackGroundedAction;
+        }
 
-    public override bool checkProceduralPrecondition(GameObject agent)
-    {
-        return true;
+        public override bool checkProceduralPrecondition(GameObject agent)
+        {
+            return FindNpcTarget(agent);
+        }
     }
 }

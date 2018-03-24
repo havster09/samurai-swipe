@@ -1,56 +1,60 @@
 ﻿using UnityEngine;
 
-public class CelebrateKillAction : GoapEnemyAction
+namespace Assets.Scripts.GoapEnemyActions
 {
-    private bool _npcHasCelebrated = false;
-
-    public CelebrateKillAction()
+    public class CelebrateKillAction : GoapEnemyAction
     {
-        addPrecondition("enemyWin", false);
-        addPrecondition("destroyNpc", true);
-        addEffect("enemyWin", true);
-    }
+        private bool _npcHasCelebrated = false;
 
-    void OnEnable()
-    {
-        reset();
-        if (EnemyScript == null)
+        public CelebrateKillAction()
         {
-            EnemyScript = GetComponent<Enemy>();
+            addPrecondition("enemyWin", false);
+            addPrecondition("destroyNpc", true);
+            addPrecondition("enemyAttackGounded", true);
+            addEffect("enemyWin", true);
         }
-    }
+
+        void OnEnable()
+        {
+            reset();
+            if (EnemyScript == null)
+            {
+                EnemyScript = GetComponent<Enemy>();
+            }
+        }
 
 
-    public override bool Move()
-    {
-        return true;
-    }
+        public override bool Move()
+        {
+            return true;
+        }
 
-    public override void reset()
-    {
-        _npcHasCelebrated = false;
-        TargetNpcHeroAttribute = null;
-    }
+        public override void reset()
+        {
+            _npcHasCelebrated = false;
+            TargetNpcHeroAttribute = null;
+        }
 
-    public override bool isDone()
-    {
-        return _npcHasCelebrated;
-    }
+        public override bool isDone()
+        {
+            return _npcHasCelebrated;
+        }
 
-    public override bool requiresInRange()
-    {
-        return false;
-    }
+        public override bool requiresInRange()
+        {
+            return false;
+        }
 
-    public override bool perform(GameObject agent)
-    {
-        EnemyScript.NpcCelebrate();
-        _npcHasCelebrated = true;
-        return _npcHasCelebrated;
-    }
+        public override bool perform(GameObject agent)
+        {
+            EnemyScript.NpcCelebrate();
+            _npcHasCelebrated = true;
+            return _npcHasCelebrated;
+        }
 
-    public override bool checkProceduralPrecondition(GameObject agent)
-    {
-        return true;
+        public override bool checkProceduralPrecondition(GameObject agent)
+        {
+            return true;
+        }
     }
 }

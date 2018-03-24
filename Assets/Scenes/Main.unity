@@ -260,11 +260,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4625522247668538, guid: 25c290f4617816345a92fb14c9aa947a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -1.75
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4625522247668538, guid: 25c290f4617816345a92fb14c9aa947a, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -2.79
+      value: -2.9
       objectReference: {fileID: 0}
     - target: {fileID: 4625522247668538, guid: 25c290f4617816345a92fb14c9aa947a, type: 2}
       propertyPath: m_LocalPosition.z
@@ -289,6 +289,11 @@ Prefab:
     - target: {fileID: 4625522247668538, guid: 25c290f4617816345a92fb14c9aa947a, type: 2}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 61912551527691644, guid: 25c290f4617816345a92fb14c9aa947a,
+        type: 2}
+      propertyPath: m_Size.x
+      value: 34.22
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 25c290f4617816345a92fb14c9aa947a, type: 2}
@@ -383,7 +388,7 @@ MonoBehaviour:
   - amountToPool: 1
     objectToPool: {fileID: 1662671873553116, guid: 7b17081931e49a046b8c51148a18009b,
       type: 2}
-    shouldExpand: 1
+    shouldExpand: 0
   - amountToPool: 1
     objectToPool: {fileID: 1603413900680280, guid: 1e3be7b61629bf642ba47e248360ef1f,
       type: 2}
@@ -451,11 +456,11 @@ MonoBehaviour:
   - amountToPool: 1
     objectToPool: {fileID: 1748471367380564, guid: 362a8c2da1a99d8499560c0992475f7d,
       type: 2}
-    shouldExpand: 1
+    shouldExpand: 0
   - amountToPool: 1
     objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
       type: 2}
-    shouldExpand: 0
+    shouldExpand: 1
   pooledObjects: []
   bloodDecapitationEffects: []
 --- !u!114 &1869648007

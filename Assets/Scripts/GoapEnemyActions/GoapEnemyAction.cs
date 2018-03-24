@@ -7,10 +7,12 @@ public class GoapEnemyAction : GoapAction
 {
     protected float MoveSpeed = 1;
     protected float DistanceToTargetThreshold = 1;
-    protected bool _npcIsDestroyed;
+    protected bool NpcIsDestroyed;
     protected Enemy EnemyScript;
     protected NpcHeroAttributesComponent TargetNpcHeroAttribute;
     protected NpcAttributesComponent NpcAttributes;
+
+    protected bool IsPerforming { get; set; }
 
     public GoapEnemyAction()
     {
@@ -30,41 +32,37 @@ public class GoapEnemyAction : GoapAction
 
     public override bool Move()
     {
-        if (EnemyScript._isAttacking)
+        if (EnemyScript.IsFrozenPosition() == false)
         {
-            return false;
-        }
+            EnemyScript.FaceTarget();
+            float distanceFromTarget = Vector2.Distance(gameObject.transform.position, target.transform.position);
 
-        EnemyScript.FaceTarget();
-        float distanceFromTarget = Vector2.Distance(gameObject.transform.position, target.transform.position);
-
-        if (distanceFromTarget >= DistanceToTargetThreshold)
-        {
-            float step = (MoveSpeed * 2) * Time.deltaTime;
-            gameObject.transform.position =
-                Vector3.MoveTowards(gameObject.transform.position, target.transform.position, step);
-            EnemyScript._animator.SetBool("enemyRun", true);
-
-        }
-        else
-        {
-            EnemyScript._animator.SetBool("enemyRun", false);
-            setInRange(true);
-            return true;
+            if (distanceFromTarget >= DistanceToTargetThreshold)
+            {
+                float step = (MoveSpeed * 2) * Time.deltaTime;
+                gameObject.transform.position =
+                    Vector3.MoveTowards(gameObject.transform.position, target.transform.position, step);
+                EnemyScript.NpcAnimator.SetBool("enemyRun", true);
+            }
+            else
+            {
+                EnemyScript.NpcAnimator.SetBool("enemyRun", false);
+                setInRange(true);
+                return true;
+            }
         }
         return false;
     }
 
-
     public override void reset()
     {
-        _npcIsDestroyed = false;
+        NpcIsDestroyed = false;
         TargetNpcHeroAttribute = null;
     }
 
     public override bool isDone()
     {
-        return _npcIsDestroyed;
+        return NpcIsDestroyed;
     }
 
     public override bool requiresInRange()
@@ -120,8 +118,8 @@ public class GoapEnemyAction : GoapAction
     {
         if (TargetNpcHeroAttribute != null)
         {
-            _npcIsDestroyed = true;
+            NpcIsDestroyed = true;
         }
-        return _npcIsDestroyed;
+        return NpcIsDestroyed;
     }    
 }

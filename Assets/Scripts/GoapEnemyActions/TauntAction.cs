@@ -1,55 +1,54 @@
 ﻿using UnityEngine;
 
-public class TauntAction : GoapEnemyAction
+namespace Assets.Scripts.GoapEnemyActions
 {
-    private bool _npcHasTaunted;
-    public TauntAction()
+    public class TauntAction : GoapEnemyAction
     {
-        addPrecondition("hasBrave", false);
-        addEffect("hasBrave", true);
-        DistanceToTargetThreshold = 3;
-    }
-
-    public override void reset()
-    {
-        _npcHasTaunted = false;
-        TargetNpcHeroAttribute = null;
-    }
-
-    public override bool isDone()
-    {
-        return _npcHasTaunted;
-    }
-
-    public override bool requiresInRange()
-    {
-        return true;
-    }
-
-    public override bool checkProceduralPrecondition(GameObject agent)
-    {
-        return FindNpcTarget(agent);
-    }
-
-    public override bool perform(GameObject agent)
-    {
-        if (TargetNpcHeroAttribute != null)
+        private bool _npcHasTaunted;
+        public TauntAction()
         {
-            if (!EnemyScript.IsAnimationPlaying("taunt"))
-            {
-                EnemyScript.Taunt(true);
-                EnemyScript.WaitFor(() =>
-                {
-                    NpcAttributes.brave += 1;
-                    EnemyScript.Taunt(false);
-                }, 2f);
-
-                if (NpcAttributes.brave > 3)
-                {
-                    _npcHasTaunted = true;
-                }
-            }            
+            addPrecondition("hasBrave", false);
+            addEffect("hasBrave", true);
+            DistanceToTargetThreshold = 3;
         }
-        return _npcHasTaunted;
+
+        public override void reset()
+        {
+            _npcHasTaunted = false;
+            TargetNpcHeroAttribute = null;
+        }
+
+        public override bool isDone()
+        {
+            return _npcHasTaunted;
+        }
+
+        public override bool requiresInRange()
+        {
+            return true;
+        }
+
+        public override bool checkProceduralPrecondition(GameObject agent)
+        {
+            return FindNpcTarget(agent);
+        }
+
+        public override bool perform(GameObject agent)
+        {
+            if (TargetNpcHeroAttribute != null)
+            {
+                if (EnemyScript.IsTaunting == false)
+                {
+                    EnemyScript.Taunt();
+                    EnemyScript.IsTaunting = true;
+                    NpcAttributes.brave += 1;
+                    if (NpcAttributes.brave > 0)
+                    {
+                        _npcHasTaunted = true;
+                    }
+                }            
+            }
+            return _npcHasTaunted;
+        }
     }
 }

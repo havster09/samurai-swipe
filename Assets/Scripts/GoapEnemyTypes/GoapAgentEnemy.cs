@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 
 public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
@@ -27,6 +25,7 @@ public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
     {
         HashSet<KeyValuePair<string, object>> worldData = new HashSet<KeyValuePair<string, object>>();
 
+        worldData.Add(new KeyValuePair<string, object>("hasStamina", (_npcAttributes.stamina > 0)));
         worldData.Add(new KeyValuePair<string, object>("hasKills", (_npcAttributes.killCount > 0)));
         worldData.Add(new KeyValuePair<string, object>("hasBrave", (_npcAttributes.brave > 3)));
         worldData.Add(new KeyValuePair<string, object>("enemyAttackGrounded", false));
@@ -67,6 +66,7 @@ public abstract class GoapAgentEnemy : MonoBehaviour, IGoap
         // Take note of what happened and make sure if you run the same goal again
         // that it can succeed.
         Debug.Log("<color=red>Plan Aborted</color> " + GoapAgent.prettyPrint(aborter));
+        _goapAgentScript.createIdleState();
     }
 
     public virtual bool moveAgent(GoapAction nextAction)

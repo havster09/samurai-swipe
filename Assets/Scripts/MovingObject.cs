@@ -8,7 +8,6 @@ public abstract class MovingObject : MonoBehaviour
     public LayerMask blockingLayer;         
     public float maxCombatRange;
     public float maxWalkRange;
-    public bool canMoveInSmoothMovement = true;
     public SpriteRenderer spriteRenderer;
 
     private BoxCollider2D boxCollider;      
@@ -58,13 +57,13 @@ public abstract class MovingObject : MonoBehaviour
 
     protected IEnumerator SmoothMovement(Vector3 end)
     {
-        if (!canMoveInSmoothMovement)
+        if (IsFrozenPosition())
         {
             yield break;
         }
         float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
 
-        while (sqrRemainingDistance > float.Epsilon && canMoveInSmoothMovement)
+        while (sqrRemainingDistance > float.Epsilon && !IsFrozenPosition())
         {
             Vector3 newPostion = Vector3.MoveTowards(rb2D.position, end, inverseMoveTime * Time.deltaTime);
             rb2D.MovePosition(newPostion);
@@ -85,6 +84,8 @@ public abstract class MovingObject : MonoBehaviour
             OnCantMove(target);
         }
     }
+
+    public abstract bool IsFrozenPosition(); 
 
     public void WaitFor(Action action, float duration)
     {

@@ -28,6 +28,7 @@ GameObject:
   - component: {fileID: 114677643092321032}
   - component: {fileID: 114579107978402060}
   - component: {fileID: 114241555484489498}
+  - component: {fileID: 114370461207348216}
   - component: {fileID: 95448965033597492}
   - component: {fileID: 50268912086583426}
   - component: {fileID: 61787901685713914}
@@ -70,7 +71,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &61787901685713914
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -130,14 +131,14 @@ MonoBehaviour:
     m_Bits: 0
   maxCombatRange: 1
   maxWalkRange: 3
-  canMoveInSmoothMovement: 1
   spriteRenderer: {fileID: 0}
-  _playerDamage: 0
-  _runSpeed: 0
-  _hasWalkAbility: 0
-  _animator: {fileID: 0}
-  _npcAttributes: {fileID: 0}
-  canWalk: 1
+  PlayerDamage: 0
+  RunSpeed: 0
+  HasWalkAbility: 0
+  NpcAnimator: {fileID: 0}
+  NpcAttributes: {fileID: 0}
+  CanWalk: 1
+  IsCelebrating: 0
 --- !u!114 &114084192740349204
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -166,7 +167,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   killCount: 0
   attackCount: 0
-  braveCount: 0
+  brave: 0
   health: 100
 --- !u!114 &114241555484489498
 MonoBehaviour:
@@ -177,6 +178,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37b3ff0e02b81534ea4c447d6161f25c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cost: 1
+  target: {fileID: 0}
+--- !u!114 &114370461207348216
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1748471367380564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b5da349cb5733b42b1fed12606d01b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cost: 1

@@ -10,6 +10,7 @@ public class NpcAttributesComponent : MonoBehaviour
     public int attackCount;
     public int brave;
     public int health;
+    public int stamina;
 
     public NpcAttributesComponent()
     {
@@ -25,6 +26,7 @@ public class NpcAttributesComponent : MonoBehaviour
     {
         killCount = 0;
         attackCount = 0;
+        stamina = 100;
         brave = 0;
         health = 100;
     }

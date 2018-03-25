@@ -1,14 +1,20 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class NpcHeroAttributesComponent : MonoBehaviour
+namespace Assets.Scripts.GoapAttributeComponents
 {
-    public int health;
-    public int brave;
-
-    public NpcHeroAttributesComponent()
+    public class NpcHeroAttributesComponent : MonoBehaviour
     {
-        health = 100;
-        brave = 100;
+        public int Health;
+        public int Brave;
+        public int AttackCount;
+        public int KillCount;
+
+        public NpcHeroAttributesComponent()
+        {
+            Health = 100;
+            Brave = 100;
+            AttackCount = 0;
+            KillCount = 0;
+        }
     }
 }

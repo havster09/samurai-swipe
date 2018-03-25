@@ -41,8 +41,8 @@ namespace Assets.Scripts.GoapEnemyActions
                 {
                     EnemyScript.Taunt();
                     EnemyScript.IsTaunting = true;
-                    NpcAttributes.brave += 1;
-                    if (NpcAttributes.brave > 0)
+                    NpcAttributes.Brave += 1;
+                    if (NpcAttributes.Brave > 0)
                     {
                         _npcHasTaunted = true;
                     }

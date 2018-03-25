@@ -20,17 +20,15 @@ GameObject:
   m_Component:
   - component: {fileID: 4082432236622114}
   - component: {fileID: 212617807016556368}
+  - component: {fileID: 114446266854294874}
+  - component: {fileID: 114582323766579276}
+  - component: {fileID: 114567955020767244}
+  - component: {fileID: 114219458371729736}
   - component: {fileID: 114264782463166122}
-  - component: {fileID: 114716536644344724}
-  - component: {fileID: 114862215141419180}
-  - component: {fileID: 114626267818115220}
-  - component: {fileID: 114199985038723218}
-  - component: {fileID: 114853048560537138}
-  - component: {fileID: 114601995466951470}
-  - component: {fileID: 114443055856388568}
   - component: {fileID: 95816508937588166}
   - component: {fileID: 50049763523117944}
   - component: {fileID: 61078574902650286}
+  - component: {fileID: 114155218341992806}
   m_Layer: 0
   m_Name: GenjuroHero
   m_TagString: Player
@@ -113,7 +111,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114199985038723218
+--- !u!114 &114155218341992806
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -121,7 +119,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1858916847192298}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b5da349cb5733b42b1fed12606d01b1, type: 3}
+  m_Script: {fileID: 11500000, guid: 15b0ddab0c701e94ab295f7b63dc0970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cost: 1
+  target: {fileID: 0}
+--- !u!114 &114219458371729736
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1858916847192298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8180ccc0456347247972a46d60682abf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cost: 1
@@ -137,9 +148,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 845989e1142b27a4e81cfc701071bc38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
-  brave: 100
---- !u!114 &114443055856388568
+  Health: 100
+  Brave: 100
+  AttackCount: 0
+  KillCount: 0
+--- !u!114 &114446266854294874
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -147,12 +160,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1858916847192298}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b5da349cb5733b42b1fed12606d01b1, type: 3}
+  m_Script: {fileID: 11500000, guid: a9a07630984c23e48a79079359aca64c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 1
-  target: {fileID: 0}
---- !u!114 &114601995466951470
+--- !u!114 &114567955020767244
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -160,12 +171,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1858916847192298}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37b3ff0e02b81534ea4c447d6161f25c, type: 3}
+  m_Script: {fileID: 11500000, guid: 58d919c3bd3a0c64a844413b82c54407, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 1
-  target: {fileID: 0}
---- !u!114 &114626267818115220
+  moveTime: 0.1
+  blockingLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  maxCombatRange: 0
+  maxWalkRange: 0
+  spriteRenderer: {fileID: 0}
+  NpcHeroAnimator: {fileID: 0}
+  NpcHeroAttributes: {fileID: 0}
+--- !u!114 &114582323766579276
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -173,50 +191,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1858916847192298}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: baec37c103c027445968673ebb5a9368, type: 3}
+  m_Script: {fileID: 11500000, guid: 7e5b1be9be9aef84abc3c03d50c46fef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 10
-  target: {fileID: 0}
---- !u!114 &114716536644344724
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1858916847192298}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a1369889c7fd184fb8dc523555ad9b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cost: 1
-  target: {fileID: 0}
---- !u!114 &114853048560537138
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1858916847192298}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87c4fce8b01f15e4d8ecc035f3a2a602, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cost: 1
-  target: {fileID: 0}
---- !u!114 &114862215141419180
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1858916847192298}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e125747e22ac7744c908a7c6d516e282, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cost: 10
-  target: {fileID: 0}
+  MoveSpeed: 2
+  GoapAgentScript: {fileID: 0}
 --- !u!212 &212617807016556368
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -246,8 +225,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1935513169
-  m_SortingLayer: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: 020be887088aaa94ea8da8180d069d58, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

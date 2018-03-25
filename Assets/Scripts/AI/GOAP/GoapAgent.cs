@@ -38,6 +38,7 @@ public sealed class GoapAgent : MonoBehaviour {
     {
         
     }
+
 	
 
 	void Update () {
@@ -94,7 +95,7 @@ public sealed class GoapAgent : MonoBehaviour {
 		};
 	}
 	
-	private void createMoveToState() {
+	public void createMoveToState() {
 		moveToState = (fsm, gameObj) => {
 			// move the game object
 

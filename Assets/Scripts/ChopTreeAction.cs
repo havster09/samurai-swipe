@@ -1,5 +1,6 @@
 ﻿
 using System;
+using Assets.Scripts.GoapAttributeComponents;
 using UnityEngine;
 
 public class ChopTreeAction : GoapAction

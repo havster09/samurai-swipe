@@ -40,13 +40,13 @@ namespace Assets.Scripts.GoapEnemyActions
                 if (!EnemyScript.IsAnimationPlaying("attack"))
                 {
                     EnemyScript.Attack("enemyAttackTwo");
-                    TargetNpcHeroAttribute.health -= 30;
-                }
-                NpcAttributes.attackCount += 1;
-                if (TargetNpcHeroAttribute.health < 1)
-                {
-                    NpcIsDestroyed = true;
-                    NpcAttributes.killCount += 1;
+                    TargetNpcHeroAttribute.Health -= 1;
+                    NpcAttributes.AttackCount += 1;
+                    if (TargetNpcHeroAttribute.Health < 1)
+                    {
+                        NpcIsDestroyed = true;
+                        NpcAttributes.KillCount += 1;
+                    }
                 }
             }
             return NpcIsDestroyed;

@@ -26,7 +26,6 @@ GameObject:
   - component: {fileID: 114560837887276944}
   - component: {fileID: 114694377834436292}
   - component: {fileID: 114636809072535518}
-  - component: {fileID: 114318756759249064}
   - component: {fileID: 114172263393424522}
   - component: {fileID: 114440178695945674}
   - component: {fileID: 114127162461347048}
@@ -48,7 +47,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1662671873553116}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.325001, y: 0, z: 0}
+  m_LocalPosition: {x: -5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -167,19 +166,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 1
   target: {fileID: 0}
---- !u!114 &114318756759249064
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1662671873553116}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b5da349cb5733b42b1fed12606d01b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cost: 1
-  target: {fileID: 0}
 --- !u!114 &114323605483184488
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -270,10 +256,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8ca13836d7269f41bc1d346efe35ae7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _npcAttributes: {fileID: 0}
-  _moveSpeed: 1
-  _enemyScript: {fileID: 0}
-  _goapAgentScript: {fileID: 0}
+  NpcAttributes: {fileID: 0}
+  MoveSpeed: 2
+  EnemyScript: {fileID: 0}
+  GoapAgentScript: {fileID: 0}
 --- !u!212 &212770613706250732
 SpriteRenderer:
   m_ObjectHideFlags: 1

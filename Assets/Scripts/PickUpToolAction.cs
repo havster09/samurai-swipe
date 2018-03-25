@@ -1,4 +1,5 @@
 ﻿using System;
+using Assets.Scripts.GoapAttributeComponents;
 using UnityEngine;
 
 public class PickUpToolAction : GoapAction
@@ -43,7 +44,7 @@ public class PickUpToolAction : GoapAction
 
         foreach (NpcHeroAttributesComponent supply in npcHeroAttributeses)
         {
-            if (supply.health > 0)
+            if (supply.Health > 0)
             {
                 if (closest == null)
                 {
@@ -75,9 +76,9 @@ public class PickUpToolAction : GoapAction
 
     public override bool perform(GameObject agent)
     {
-        if (targetNpcHeroAttributes.health > 0)
+        if (targetNpcHeroAttributes.Health > 0)
         {
-            targetNpcHeroAttributes.health -= 1;
+            targetNpcHeroAttributes.Health -= 1;
             hasTool = true;
 
             // create the tool and add it to the agent

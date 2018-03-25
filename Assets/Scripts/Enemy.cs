@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Scripts.GoapEnemyActions;
 
 public class Enemy : MovingObject
 {
@@ -9,11 +10,10 @@ public class Enemy : MovingObject
     public bool HasWalkAbility;
 
     public Animator NpcAnimator;
-    private Transform _target;
+    private GoapEnemyAction _goapEnemyAction;
     private bool _enemyFlipX;
     private bool _checkingIsInCombatRangeWhileRunning;
     private GameObject _headFromPool;
-    private NpcHeroAttributesComponent _npcHeroAttributesComponent;
     private SlashRenderer _slashRenderer;
     public NpcAttributesComponent NpcAttributes;
     public bool IsHit { get; set; }
@@ -26,10 +26,8 @@ public class Enemy : MovingObject
 
     void Awake()
     {
-        _npcHeroAttributesComponent = GetComponent<NpcHeroAttributesComponent>();
         _slashRenderer = GameObject.FindObjectOfType<SlashRenderer>();
-        _target = GameObject.FindGameObjectWithTag("Player").transform;
-
+        _goapEnemyAction = gameObject.GetComponent<GoapEnemyAction>();
         NpcAttributes = gameObject.GetComponent<NpcAttributesComponent>();
         NpcAnimator = GetComponent<Animator>();
         AttachAnimationClipEvents();
@@ -145,7 +143,7 @@ public class Enemy : MovingObject
 
     public void FaceTarget()
     {
-        float enemyDistance = _target.position.x - transform.position.x;
+        float enemyDistance = _goapEnemyAction.target.transform.position.x - transform.position.x;
 
         if (enemyDistance < 0 && _enemyFlipX == false)
         {
@@ -177,38 +175,31 @@ public class Enemy : MovingObject
         CanWalk = false;
 
         bool walkBackwards = Random.Range(0, 5) < 2 && Utilities.ReplaceClone(name) != "Ukyo";
-        if (Mathf.Abs(_target.position.x - transform.position.x) < float.Epsilon)
+        if (!walkBackwards)
         {
-            yDir = _target.position.y > transform.position.y ? 1f : -1f;
+            xDir = _goapEnemyAction.target.transform.position.x > transform.position.x ? .5f : -.5f;
+            NpcAnimator.SetTrigger("enemyWalk");
         }
         else
         {
-            if (!walkBackwards)
-            {
-                xDir = _target.position.x > transform.position.x ? .5f : -.5f;
-                NpcAnimator.SetTrigger("enemyWalk");
-            }
-            else
-            {
-                xDir = _target.position.x > transform.position.x ? -.5f : .5f;
-                NpcAnimator.SetTrigger("enemyWalkBack");
-                NpcAttributes.brave += 1;
-            }
+            xDir = _goapEnemyAction.target.transform.position.x > transform.position.x ? -.5f : .5f;
+            NpcAnimator.SetTrigger("enemyWalkBack");
+            NpcAttributes.brave += 1;
         }
 
 
-        Debug.DrawLine(_target.position, transform.position, Color.red);
-        AttemptMove<Player>(xDir, yDir, _target, transform);
+        Debug.DrawLine(_goapEnemyAction.target.transform.position, transform.position, Color.red);
+        AttemptMove<Player>(xDir, yDir, _goapEnemyAction.target.transform, transform);
     }
 
     public bool IsInWalkRange()
     {
-        return Mathf.Abs(Vector3.Distance(_target.transform.position, transform.position)) < maxWalkRange;
+        return Mathf.Abs(Vector3.Distance(_goapEnemyAction.target.transform.transform.position, transform.position)) < maxWalkRange;
     }
 
     public bool IsInCombatRange()
     {
-        return Mathf.Abs(Vector3.Distance(_target.transform.position, transform.position)) < maxCombatRange;
+        return Mathf.Abs(Vector3.Distance(_goapEnemyAction.target.transform.transform.position, transform.position)) < maxCombatRange;
     }
 
     public void StopEnemyVelocity()
@@ -221,7 +212,7 @@ public class Enemy : MovingObject
     {
         FaceTarget();
         NpcAnimator.SetBool("enemyRun", true);
-        RunSpeed = _target.position.x > transform.position.x ? 2f : -2f;
+        RunSpeed = _goapEnemyAction.target.transform.position.x > transform.position.x ? 2f : -2f;
         rb2D.velocity = new Vector2(RunSpeed, rb2D.velocity.y);
         if (!_checkingIsInCombatRangeWhileRunning && gameObject.activeInHierarchy)
         {
@@ -231,7 +222,7 @@ public class Enemy : MovingObject
 
     public void JumpAttack()
     {
-        rb2D.velocity = new Vector2(_enemyFlipX ? -1f : 1f, 8f);
+        rb2D.velocity = new Vector2(_enemyFlipX ? -2f : 2f, 8f);
         NpcAnimator.SetFloat("enemyAttackJumpVertical", 1f);
         StartCoroutine("EnemyAttackJumpVertical");
     }

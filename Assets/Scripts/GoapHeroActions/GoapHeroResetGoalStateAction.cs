@@ -34,7 +34,7 @@ namespace Assets.Scripts.GoapHeroActions
         }
         public override bool perform(GameObject agent)
         {
-            if (HeroScript.NpcHeroAnimator.GetBool("heroBloodCover") == false)
+            /*if (HeroScript.NpcHeroAnimator.GetBool("heroBloodCover") == false)
             {
                 HeroScript.NpcHeroAnimator.SetBool("heroBloodCover", true);
                 HeroScript.WaitFor(() =>
@@ -42,7 +42,8 @@ namespace Assets.Scripts.GoapHeroActions
                     HeroScript.NpcHeroAnimator.SetBool("heroBloodCover", false);
                     NpcIsDestroyedReset = true;
                 }, 2f);
-            }
+            }*/
+            NpcIsDestroyedReset = true;
             return NpcIsDestroyedReset;
         }
     }

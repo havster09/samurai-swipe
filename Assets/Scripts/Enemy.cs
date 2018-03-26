@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Assets.Scripts.GoapAttributeComponents;
 using Assets.Scripts.GoapEnemyActions;
+using Assets.Scripts.GoapHeroActions;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -9,6 +10,7 @@ namespace Assets.Scripts
     {
         public int PlayerDamage;
         public float RunSpeed;
+        private GoapHeroAction _goapHeroActionScript;
 
         public bool HasWalkAbility;
 
@@ -27,6 +29,7 @@ namespace Assets.Scripts
 
         void Awake()
         {
+            _goapHeroActionScript = GameObject.FindObjectOfType<GoapHeroAction>();
             _slashRenderer = GameObject.FindObjectOfType<SlashRenderer>();
             _goapEnemyAction = gameObject.GetComponent<GoapEnemyAction>();
             NpcAttributes = gameObject.GetComponent<NpcAttributesComponent>();
@@ -122,7 +125,6 @@ namespace Assets.Scripts
 
         private void EnemyHitEventHandler()
         {
-            _slashRenderer.RemoveSlash();
             IsHit = false;
         }
 
@@ -385,20 +387,16 @@ namespace Assets.Scripts
         {
             if (collider.gameObject.tag == "SlashCollider")
             {
-                NpcAttributes.Health -= 50;
                 if (NpcAttributes.Health > 0)
                 {
-                    EnemyHit();
-                }
-                else if (!IsDead)
-                {
-                    EnemyDie();
+                    _goapHeroActionScript.NpcTargetAttributes.Add(NpcAttributes);
                 }
             }
         }
 
         public void EnemyHitSuccess()
         {
+            _slashRenderer.RemoveSlash();
             NpcAttributes.Health -= 50;
             if (NpcAttributes.Health > 0)
             {
@@ -416,7 +414,6 @@ namespace Assets.Scripts
             GetBloodEffect("Blood", "BloodEffect1");
             NpcAnimator.SetTrigger("enemyHit");
             IsHit = true;
-            // WaitFor(EnemyHitEventHandler, 2f);
         }
 
         private void GetBloodEffect(string tag, string name = null)

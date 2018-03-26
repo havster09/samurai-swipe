@@ -1,11 +1,13 @@
 ﻿using System.Linq;
 using Assets.Scripts.GoapAttributeComponents;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace Assets.Scripts.GoapHeroActions
 {
     public class GoapHeroAction : GoapAction
     {
+        public List<NpcAttributesComponent> NpcTargetAttributes;
         protected float MoveSpeed = 2;
         protected float DistanceToTargetThreshold = 1;
         protected float InRangeToTargetThreshold = 5f;
@@ -23,11 +25,12 @@ namespace Assets.Scripts.GoapHeroActions
         {
             HeroScript = GetComponent<Hero>();
             NpcHeroAttributes = GetComponent<NpcHeroAttributesComponent>();
+            
         }
 
         public override bool Move()
         {
-            if (HeroScript.IsFrozenPosition() == false)
+            if (HeroScript.IsFrozenPosition() == false && HeroScript.IsAnimationPlaying("attack") == false)
             {
                 HeroScript.FaceTarget();
                 float distanceFromTarget = Vector2.Distance(new Vector2(gameObject.transform.position.x, 0), new Vector2(target.transform.position.x, 0));
@@ -71,11 +74,10 @@ namespace Assets.Scripts.GoapHeroActions
 
         public virtual bool FindNpcTarget(GameObject agent)
         {
-            NpcAttributesComponent[] npcAttributes = (NpcAttributesComponent[])UnityEngine.GameObject.FindObjectsOfType(typeof(NpcAttributesComponent));;
             NpcAttributesComponent closest = null;
             float closestDist = 5f;
 
-            foreach (NpcAttributesComponent npc in npcAttributes)
+            foreach (NpcAttributesComponent npc in NpcTargetAttributes)
             {
                 float dist = (npc.gameObject.transform.position - agent.transform.position).magnitude;
                 if (dist < closestDist && npc.Health > 0)

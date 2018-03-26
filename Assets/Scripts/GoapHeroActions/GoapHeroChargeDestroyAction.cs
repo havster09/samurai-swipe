@@ -39,7 +39,11 @@ namespace Assets.Scripts.GoapHeroActions
         {
             Debug.Log("Hero Perform");
             Enemy enemyScript = target.GetComponent<Enemy>();
-            if (!HeroScript.IsAnimationPlaying("attack") && !enemyScript.IsDead)
+            if (
+                !HeroScript.IsAnimationPlaying("attack") &&
+                !HeroScript.IsAnimationPlaying("rest") &&
+                !enemyScript.IsDead
+                )
             {
                 var heroAttacks = new string[]
                 {
@@ -59,7 +63,6 @@ namespace Assets.Scripts.GoapHeroActions
             {
                 NpcIsDestroyed = true;
                 NpcHeroAttributes.KillCount += 1;
-                reset();
             }
             return NpcIsDestroyed;
         }

@@ -101,7 +101,6 @@
     <Compile Include="Assets\Scripts\GoapEnemyTypes\GoapAgentEnemy.cs" />
     <Compile Include="Assets\Scripts\GoapEnemyTypes\GoapAgentSearchAndDestroy.cs" />
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroAction.cs" />
-    <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroBloodCoverAction.cs" />
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroChargeDestroyAction.cs" />
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroResetGoalStateAction.cs" />
     <Compile Include="Assets\Scripts\GoapHeroTypes\GoapAgentHero.cs" />

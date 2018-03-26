@@ -32,10 +32,17 @@ namespace Assets.Scripts.GoapHeroActions
         {
             return true;
         }
-
         public override bool perform(GameObject agent)
         {
-            NpcIsDestroyedReset = true;
+            if (HeroScript.NpcHeroAnimator.GetBool("heroBloodCover") == false)
+            {
+                HeroScript.NpcHeroAnimator.SetBool("heroBloodCover", true);
+                HeroScript.WaitFor(() =>
+                {
+                    HeroScript.NpcHeroAnimator.SetBool("heroBloodCover", false);
+                    NpcIsDestroyedReset = true;
+                }, 2f);
+            }
             return NpcIsDestroyedReset;
         }
     }

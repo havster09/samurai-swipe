@@ -62,3 +62,6 @@ TagManager:
   - name: Slash
     uniqueID: 4036345693
     locked: 0
+  - name: Hero
+    uniqueID: 2261873115
+    locked: 0

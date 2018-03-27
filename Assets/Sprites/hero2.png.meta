@@ -1,41 +1,42 @@
 fileFormatVersion: 2
-guid: 5cce10e60317e48e1b3f015fa0f09a0b
-timeCreated: 1504528634
-licenseType: Store
+guid: 8ca4714749149164aa1a03b88ec085ed
+timeCreated: 1522155969
+licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: turn-0001
-    21300002: turn-0002
-    21300004: turn-0003
-    21300006: turn-0004
-    21300008: turn-0005
-    21300010: turn-0006
-    21300012: turn-0007
-    21300014: turn-0008
-    21300016: turn-0009
-    21300018: turn-0010
-    21300020: turn-0011
-    21300022: turn-0012
-    21300024: walk-0001
-    21300026: walk-0002
-    21300028: walk-0003
-    21300030: walk-0004
-    21300032: walk-0005
-    21300034: walk-0006
-    21300036: walk-0007
-    21300038: walk-0008
-    21300040: walk-0009
-    21300042: walk-0010
-    21300044: walk-0011
-    21300046: walk-0012
-    21300048: walk-0013
-    21300050: walk-0014
-    21300052: walk-0015
-    21300054: walk-0016
+    21300000: 144_0_0
+    21300002: 144_1_0
+    21300004: 144_2_0
+    21300006: 144_3_0
+    21300008: 144_4_0
+    21300010: 144_6_0
+    21300012: 144_7_0
+    21300014: 144_9_0
+    21300016: 144_10_0
+    21300018: 144_11_0
+    21300020: 144_12_0
+    21300022: 144_13_0
+    21300024: 144_14_0
+    21300026: 144_15_0
+    21300028: 144_16_0
+    21300030: 144_17_0
+    21300032: 146_1_0
+    21300034: 146_2_0
+    21300036: 146_3_0
+    21300038: 146_4_0
+    21300040: 146_5_0
+    21300042: 146_6_0
+    21300044: 150_1_0
+    21300046: 150_2_0
+    21300048: 150_3_0
+    21300050: 150_4_0
+    21300052: 150_5_0
+    21300054: 660_0_0
+    21300056: 660_1_0
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -54,7 +55,7 @@ TextureImporter:
   generateCubemap: 6
   cubemapConvolution: 0
   seamlessCubemap: 0
-  textureFormat: -1
+  textureFormat: 1
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
@@ -95,393 +96,407 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: turn-0001
+      name: 144_0_0
       rect:
         serializedVersion: 2
-        x: 124
-        y: 711
-        width: 175
-        height: 311
+        x: 169
+        y: 9
+        width: 82
+        height: 144
       alignment: 9
-      pivot: {x: 0.5, y: -0.03215434}
+      pivot: {x: 0.6219512, y: 0.7291667}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: turn-0002
+      name: 144_1_0
       rect:
         serializedVersion: 2
-        x: 124
-        y: 711
-        width: 175
-        height: 311
+        x: 175
+        y: 231
+        width: 83
+        height: 131
       alignment: 9
-      pivot: {x: 0.5, y: -0.03215434}
+      pivot: {x: 0.62650603, y: 0.8015267}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: turn-0003
+      name: 144_2_0
       rect:
         serializedVersion: 2
-        x: 822
-        y: 710
-        width: 160
-        height: 312
+        x: 1
+        y: 276
+        width: 83
+        height: 134
       alignment: 9
-      pivot: {x: 0.490625, y: -0.05448718}
+      pivot: {x: 0.6385542, y: 0.7835821}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: turn-0004
+      name: 144_3_0
       rect:
         serializedVersion: 2
-        x: 822
-        y: 710
-        width: 160
-        height: 312
+        x: 202
+        y: 499
+        width: 89
+        height: 130
       alignment: 9
-      pivot: {x: 0.490625, y: -0.05448718}
+      pivot: {x: 0.58426964, y: 0.8076923}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: turn-0005
+      name: 144_4_0
       rect:
         serializedVersion: 2
-        x: 614
+        x: 1
+        y: 549
+        width: 94
+        height: 132
+      alignment: 9
+      pivot: {x: 0.5851064, y: 0.8181818}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: 144_6_0
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 155
+        width: 83
+        height: 131
+      alignment: 9
+      pivot: {x: 0.62650603, y: 0.8015267}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: 144_7_0
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 358
+        width: 83
+        height: 134
+      alignment: 9
+      pivot: {x: 0.62650603, y: 0.7835821}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: 144_9_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 143
+        width: 83
+        height: 131
+      alignment: 9
+      pivot: {x: 0.62650603, y: 0.8015267}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: 144_10_0
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 364
+        width: 84
+        height: 133
+      alignment: 9
+      pivot: {x: 0.61904764, y: 0.80451125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: 144_11_0
+      rect:
+        serializedVersion: 2
+        x: 90
         y: 288
-        width: 133
-        height: 314
+        width: 83
+        height: 140
       alignment: 9
-      pivot: {x: 0.58270675, y: -0.0477707}
+      pivot: {x: 0.62650603, y: 0.75}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: turn-0006
+      name: 144_12_0
       rect:
         serializedVersion: 2
-        x: 614
-        y: 288
-        width: 133
-        height: 314
+        x: 1
+        y: 8
+        width: 82
+        height: 133
       alignment: 9
-      pivot: {x: 0.58270675, y: -0.0477707}
+      pivot: {x: 0.6219512, y: 0.7969925}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: turn-0007
+      name: 144_13_0
       rect:
         serializedVersion: 2
-        x: 521
-        y: 402
-        width: 138
-        height: 316
+        x: 85
+        y: 8
+        width: 82
+        height: 133
       alignment: 9
-      pivot: {x: 0.7137681, y: -0.04113924}
+      pivot: {x: 0.6219512, y: 0.7969925}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: turn-0008
+      name: 144_14_0
       rect:
         serializedVersion: 2
-        x: 521
-        y: 402
-        width: 138
-        height: 316
+        x: 97
+        y: 430
+        width: 87
+        height: 135
       alignment: 9
-      pivot: {x: 0.7137681, y: -0.04113924}
+      pivot: {x: 0.5862069, y: 0.8}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: turn-0009
+      name: 144_15_0
       rect:
         serializedVersion: 2
-        x: 213
-        y: 282
-        width: 140
-        height: 304
+        x: 1
+        y: 412
+        width: 87
+        height: 135
       alignment: 9
-      pivot: {x: 0.7107143, y: -0.04276316}
+      pivot: {x: 0.5862069, y: 0.8}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: turn-0010
+      name: 144_16_0
       rect:
         serializedVersion: 2
-        x: 213
-        y: 282
-        width: 140
-        height: 304
+        x: 401
+        y: 495
+        width: 87
+        height: 135
       alignment: 9
-      pivot: {x: 0.7107143, y: -0.04276316}
+      pivot: {x: 0.5862069, y: 0.8}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: turn-0011
+      name: 144_17_0
       rect:
         serializedVersion: 2
-        x: 12
-        y: 403
-        width: 156
-        height: 313
+        x: 401
+        y: 358
+        width: 87
+        height: 135
       alignment: 9
-      pivot: {x: 0.66346157, y: -0.044728436}
+      pivot: {x: 0.5862069, y: 0.8}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: turn-0012
+      name: 146_1_0
       rect:
         serializedVersion: 2
-        x: 12
-        y: 403
-        width: 156
-        height: 313
+        x: 307
+        y: 494
+        width: 92
+        height: 136
       alignment: 9
-      pivot: {x: 0.66346157, y: -0.044728436}
+      pivot: {x: 0.6630435, y: 0.7647059}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: walk-0001
+      name: 146_2_0
       rect:
         serializedVersion: 2
-        x: 290
-        y: 702
-        width: 165
-        height: 320
+        x: 123
+        y: 890
+        width: 108
+        height: 133
       alignment: 9
-      pivot: {x: 0.4939394, y: -0.009375}
+      pivot: {x: 0.7407407, y: 0.7969925}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: walk-0002
+      name: 146_3_0
       rect:
         serializedVersion: 2
-        x: 290
-        y: 702
-        width: 165
-        height: 320
+        x: 207
+        y: 631
+        width: 98
+        height: 135
       alignment: 9
-      pivot: {x: 0.4939394, y: -0.009375}
+      pivot: {x: 0.8061224, y: 0.7777778}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: walk-0003
+      name: 146_4_0
       rect:
         serializedVersion: 2
-        x: 448
-        y: 710
-        width: 170
-        height: 312
+        x: 1
+        y: 683
+        width: 101
+        height: 145
       alignment: 9
-      pivot: {x: 0.55, y: -0.01923077}
+      pivot: {x: 0.8019802, y: 0.73103446}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: walk-0004
+      name: 146_5_0
       rect:
         serializedVersion: 2
-        x: 448
-        y: 710
-        width: 170
-        height: 312
+        x: 341
+        y: 778
+        width: 99
+        height: 144
       alignment: 9
-      pivot: {x: 0.55, y: -0.01923077}
+      pivot: {x: 0.8181818, y: 0.7361111}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: walk-0005
+      name: 146_6_0
       rect:
         serializedVersion: 2
-        x: 720
-        y: 713
-        width: 163
-        height: 309
+        x: 341
+        y: 632
+        width: 99
+        height: 144
       alignment: 9
-      pivot: {x: 0.42638037, y: -0.048543688}
+      pivot: {x: 0.8181818, y: 0.7361111}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: walk-0006
+      name: 150_1_0
       rect:
         serializedVersion: 2
-        x: 720
-        y: 713
-        width: 163
-        height: 309
+        x: 104
+        y: 567
+        width: 96
+        height: 115
       alignment: 9
-      pivot: {x: 0.42638037, y: -0.048543688}
+      pivot: {x: 0.5625, y: 0.93043476}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: walk-0007
+      name: 150_2_0
       rect:
         serializedVersion: 2
-        x: 112
-        y: 79
-        width: 144
-        height: 311
+        x: 104
+        y: 684
+        width: 101
+        height: 101
       alignment: 9
-      pivot: {x: 0.3784722, y: -0.041800644}
+      pivot: {x: 0.6633663, y: 1.039604}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: walk-0008
+      name: 150_3_0
       rect:
         serializedVersion: 2
-        x: 112
-        y: 79
-        width: 144
-        height: 311
+        x: 123
+        y: 787
+        width: 102
+        height: 101
       alignment: 9
-      pivot: {x: 0.3784722, y: -0.041800644}
+      pivot: {x: 0.65686274, y: 1.039604}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: walk-0009
+      name: 150_4_0
       rect:
         serializedVersion: 2
-        x: 145
-        y: 400
-        width: 141
-        height: 316
+        x: 233
+        y: 924
+        width: 108
+        height: 99
       alignment: 9
-      pivot: {x: 0.4432624, y: -0.022151899}
+      pivot: {x: 0.6296296, y: 1.060606}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: walk-0010
+      name: 150_5_0
       rect:
         serializedVersion: 2
-        x: 145
-        y: 400
-        width: 141
-        height: 316
+        x: 343
+        y: 924
+        width: 108
+        height: 99
       alignment: 9
-      pivot: {x: 0.4432624, y: -0.022151899}
+      pivot: {x: 0.6296296, y: 1.060606}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: walk-0011
+      name: 660_0_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 88
-        width: 146
-        height: 320
+        x: 1
+        y: 830
+        width: 120
+        height: 193
       alignment: 9
-      pivot: {x: 0.46917808, y: -0.00625}
+      pivot: {x: 0.60833335, y: 0.5284974}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: walk-0012
+      name: 660_1_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 88
-        width: 146
-        height: 320
+        x: 233
+        y: 768
+        width: 106
+        height: 154
       alignment: 9
-      pivot: {x: 0.46917808, y: -0.00625}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: walk-0013
-      rect:
-        serializedVersion: 2
-        x: 599
-        y: 701
-        width: 158
-        height: 321
-      alignment: 9
-      pivot: {x: 0.40822786, y: -0.009345794}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: walk-0014
-      rect:
-        serializedVersion: 2
-        x: 599
-        y: 701
-        width: 158
-        height: 321
-      alignment: 9
-      pivot: {x: 0.40822786, y: -0.009345794}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: walk-0015
-      rect:
-        serializedVersion: 2
-        x: 2
-        y: 700
-        width: 165
-        height: 322
-      alignment: 9
-      pivot: {x: 0.45757577, y: -0.0062111802}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-    - serializedVersion: 2
-      name: walk-0016
-      rect:
-        serializedVersion: 2
-        x: 2
-        y: 700
-        width: 165
-        height: 322
-      alignment: 9
-      pivot: {x: 0.45757577, y: -0.0062111802}
+      pivot: {x: 0.5943396, y: 0.66883117}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

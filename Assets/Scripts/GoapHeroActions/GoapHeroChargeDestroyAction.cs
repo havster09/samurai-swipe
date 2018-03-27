@@ -10,6 +10,7 @@ namespace Assets.Scripts.GoapHeroActions
         {
             addPrecondition("destroyEnemyNpc", false);
             addEffect("destroyEnemyNpc", true);
+            addEffect("bloodCover", false);
             DistanceToTargetThreshold = 1f;
         }
 
@@ -60,9 +61,16 @@ namespace Assets.Scripts.GoapHeroActions
 
             if (enemyScript.IsDead)
             {
-                NpcIsDestroyed = true;
                 NpcHeroAttributes.KillCount += 1;
+                NpcHeroAttributes.ComboCount += 1;
+                NpcTargetAttributes.Remove(TargetNpcAttribute);
             }
+
+            if (NpcTargetAttributes.Count < 1)
+            {
+                NpcIsDestroyed = true;
+            }
+            Debug.Log(string.Format("<color=green>{0}</color>", NpcTargetAttributes.Count));
             return NpcIsDestroyed;
         }
     }

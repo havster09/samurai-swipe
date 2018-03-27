@@ -48,6 +48,11 @@ namespace Assets.Scripts
             NpcHeroAnimator.SetTrigger(attackType);
         }
 
+        public void BloodCover(bool state)
+        {
+            NpcHeroAnimator.SetBool("heroBloodCover", state);
+        }
+
         public bool IsAnimationPlaying(string animationTag)
         {
             if (NpcHeroAnimator.GetCurrentAnimatorStateInfo(0).Equals(null) ||
@@ -60,7 +65,7 @@ namespace Assets.Scripts
 
         public override bool IsFrozenPosition()
         {
-            return false;
+            return NpcHeroAnimator.GetBool("heroBloodCover");
         }
 
         protected override void OnCantMove<T>(T component)

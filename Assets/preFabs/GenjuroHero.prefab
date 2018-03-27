@@ -24,11 +24,11 @@ GameObject:
   - component: {fileID: 114582323766579276}
   - component: {fileID: 114567955020767244}
   - component: {fileID: 114219458371729736}
+  - component: {fileID: 114155218341992806}
   - component: {fileID: 114264782463166122}
   - component: {fileID: 95816508937588166}
   - component: {fileID: 50049763523117944}
   - component: {fileID: 61078574902650286}
-  - component: {fileID: 114155218341992806}
   m_Layer: 0
   m_Name: GenjuroHero
   m_TagString: Player
@@ -124,6 +124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 1
   target: {fileID: 0}
+  NpcTargetAttributes: []
 --- !u!114 &114219458371729736
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -137,6 +138,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 1
   target: {fileID: 0}
+  NpcTargetAttributes: []
 --- !u!114 &114264782463166122
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -196,6 +198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: 2
   GoapAgentScript: {fileID: 0}
+  GoapHeroActionScript: {fileID: 0}
 --- !u!212 &212617807016556368
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -225,8 +228,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -2033094181
+  m_SortingLayer: 5
   m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: 020be887088aaa94ea8da8180d069d58, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

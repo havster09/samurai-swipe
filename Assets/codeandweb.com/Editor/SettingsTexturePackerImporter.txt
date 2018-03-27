@@ -6,6 +6,7 @@ tpsheetFileNames:
 - Assets/Sprites/genjuro.tpsheet
 - Assets/Sprites/hanzo.tpsheet
 - Assets/Sprites/hero.tpsheet
+- Assets/Sprites/hero2.tpsheet
 - Assets/Sprites/jubei.tpsheet
 - Assets/Sprites/kyoshiro.tpsheet
 - Assets/Sprites/ukyo.tpsheet
@@ -15,11 +16,13 @@ textureFileNames:
 - Assets/Sprites/genjuro.png
 - Assets/Sprites/hanzo.png
 - Assets/Sprites/hero.png
+- Assets/Sprites/hero2.png
 - Assets/Sprites/jubei.png
 - Assets/Sprites/kyoshiro.png
 - Assets/Sprites/ukyo.png
 normalmapFileNames:
 - Assets/codeandweb.com/Example/SpriteSheet/sprites_n.png
+- 
 - 
 - 
 - 

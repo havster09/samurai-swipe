@@ -10,6 +10,7 @@ namespace Assets.Scripts.GoapEnemyTypes
         public float MoveSpeed = 2;
 
         public Enemy EnemyScript;
+        public NpcHeroAttributesComponent NpcHeroAttributes;
         public GoapAgent GoapAgentScript;
 
 
@@ -17,12 +18,10 @@ namespace Assets.Scripts.GoapEnemyTypes
         {
             NpcAttributes = gameObject.GetComponent<NpcAttributesComponent>();
             EnemyScript = GetComponent<Enemy>();
+            NpcHeroAttributes = FindObjectOfType<NpcHeroAttributesComponent>();
             GoapAgentScript = GetComponent<GoapAgent>();
         }
-
-        /**
-	 * Key-Value data that will feed the GOAP actions and system while planning.
-	 */
+        
         public HashSet<KeyValuePair<string, object>> getWorldState()
         {
             HashSet<KeyValuePair<string, object>> worldData = new HashSet<KeyValuePair<string, object>>();
@@ -37,10 +36,7 @@ namespace Assets.Scripts.GoapEnemyTypes
 
             return worldData;
         }
-
-        /**
-	 * Implement in subclasses
-	 */
+        
         public abstract HashSet<KeyValuePair<string, object>> createGoalState();
 
 
@@ -52,21 +48,16 @@ namespace Assets.Scripts.GoapEnemyTypes
 
         public void planFound(HashSet<KeyValuePair<string, object>> goal, Queue<GoapAction> actions)
         {
-            // Yay we found a plan for our goal
             Debug.Log("<color=green>Plan found</color> " + GoapAgent.prettyPrint(actions));
         }
 
         public void actionsFinished()
         {
-            // Everything is done, we completed our actions for this gool. Hooray!
             Debug.Log("<color=blue>Actions completed</color>");
         }
 
         public void planAborted(GoapAction aborter)
         {
-            // An action bailed out of the plan. State has been reset to plan again.
-            // Take note of what happened and make sure if you run the same goal again
-            // that it can succeed.
             Debug.Log("<color=red>Plan Aborted</color> " + GoapAgent.prettyPrint(aborter));
             GoapAgentScript.createIdleState();
         }

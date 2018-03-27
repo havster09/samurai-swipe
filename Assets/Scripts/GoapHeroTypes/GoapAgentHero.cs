@@ -25,7 +25,7 @@ namespace Assets.Scripts.GoapHeroTypes
         {
             HashSet<KeyValuePair<string, object>> worldData = new HashSet<KeyValuePair<string, object>>();
             worldData.Add(new KeyValuePair<string, object>("destroyEnemyNpc", false));
-            worldData.Add(new KeyValuePair<string, object>("destroyEnemyReset", false));
+            worldData.Add(new KeyValuePair<string, object>("bloodCover", false));
             return worldData;
         }
 
@@ -33,7 +33,7 @@ namespace Assets.Scripts.GoapHeroTypes
         {
             HashSet<KeyValuePair<string, object>> goal = new HashSet<KeyValuePair<string, object>>();
             goal.Add(new KeyValuePair<string, object>("destroyEnemyNpc", true));
-            goal.Add(new KeyValuePair<string, object>("destroyEnemyReset", true));
+            goal.Add(new KeyValuePair<string, object>("bloodCover", true));
             return goal;
         }
 
@@ -57,8 +57,6 @@ namespace Assets.Scripts.GoapHeroTypes
         public void planAborted(GoapAction aborter)
         {
             Debug.Log("<color=red>Hero Plan Aborted</color> " + GoapAgent.prettyPrint(aborter));
-            GoapAgentScript.createIdleState();
-            GoapHeroActionScript.NpcTargetAttributes = new List<NpcAttributesComponent>();
         }
 
         public bool moveAgent(GoapAction nextAction)

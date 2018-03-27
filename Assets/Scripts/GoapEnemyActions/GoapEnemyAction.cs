@@ -11,6 +11,7 @@ namespace Assets.Scripts.GoapEnemyActions
         protected Enemy EnemyScript;
         protected NpcHeroAttributesComponent TargetNpcHeroAttribute;
         protected NpcAttributesComponent NpcAttributes;
+        public Hero HeroScript;
 
         protected bool IsPerforming { get; set; }
 
@@ -20,6 +21,7 @@ namespace Assets.Scripts.GoapEnemyActions
         {
             EnemyScript = GetComponent<Enemy>();
             NpcAttributes = GetComponent<NpcAttributesComponent>();
+            HeroScript = FindObjectOfType<Hero>();
         }
 
         void OnEnable()
@@ -29,23 +31,27 @@ namespace Assets.Scripts.GoapEnemyActions
 
         public override bool Move()
         {
-            if (EnemyScript.IsFrozenPosition() == false)
+            if (!HeroScript.IsFrozenPosition())
             {
-                EnemyScript.FaceTarget();
-                float distanceFromTarget = Vector2.Distance(gameObject.transform.position, target.transform.position);
+                if (EnemyScript.IsFrozenPosition() == false)
+                {
+                    EnemyScript.FaceTarget();
+                    float distanceFromTarget =
+                        Vector2.Distance(gameObject.transform.position, target.transform.position);
 
-                if (distanceFromTarget >= DistanceToTargetThreshold)
-                {
-                    float step = (MoveSpeed * 2) * Time.deltaTime;
-                    gameObject.transform.position =
-                        Vector3.MoveTowards(gameObject.transform.position, target.transform.position, step);
-                    EnemyScript.NpcAnimator.SetBool("enemyRun", true);
-                }
-                else
-                {
-                    EnemyScript.NpcAnimator.SetBool("enemyRun", false);
-                    setInRange(true);
-                    return true;
+                    if (distanceFromTarget >= DistanceToTargetThreshold)
+                    {
+                        float step = (MoveSpeed * 2) * Time.deltaTime;
+                        gameObject.transform.position =
+                            Vector3.MoveTowards(gameObject.transform.position, target.transform.position, step);
+                        EnemyScript.NpcAnimator.SetBool("enemyRun", true);
+                    }
+                    else
+                    {
+                        EnemyScript.NpcAnimator.SetBool("enemyRun", false);
+                        setInRange(true);
+                        return true;
+                    }
                 }
             }
             return false;

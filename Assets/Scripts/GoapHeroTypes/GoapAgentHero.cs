@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.GoapAttributeComponents;
+using Assets.Scripts.GoapHeroActions;
 using UnityEngine;
 
 namespace Assets.Scripts.GoapHeroTypes
@@ -7,6 +8,7 @@ namespace Assets.Scripts.GoapHeroTypes
     public class GoapAgentHero : MonoBehaviour, IGoap {
         public float MoveSpeed = 2;
         public GoapAgent GoapAgentScript;
+        public GoapHeroAction GoapHeroActionScript;
 
         public Hero HeroScript { get; set; }
         public NpcHeroAttributesComponent NpcHeroAttributes { get; set; }
@@ -16,6 +18,7 @@ namespace Assets.Scripts.GoapHeroTypes
             NpcHeroAttributes = gameObject.GetComponent<NpcHeroAttributesComponent>();
             HeroScript = GetComponent<Hero>();
             GoapAgentScript = GetComponent<GoapAgent>();
+            GoapHeroActionScript = GetComponent<GoapHeroAction>();
         }
 
         public HashSet<KeyValuePair<string, object>> getWorldState()
@@ -38,6 +41,7 @@ namespace Assets.Scripts.GoapHeroTypes
         {
             Debug.Log("Hero Unhandled plan Failed");
             GoapAgentScript.createIdleState();
+            GoapHeroActionScript.NpcTargetAttributes = new List<NpcAttributesComponent>();
         }
 
         public void planFound(HashSet<KeyValuePair<string, object>> goal, Queue<GoapAction> actions)
@@ -54,6 +58,7 @@ namespace Assets.Scripts.GoapHeroTypes
         {
             Debug.Log("<color=red>Hero Plan Aborted</color> " + GoapAgent.prettyPrint(aborter));
             GoapAgentScript.createIdleState();
+            GoapHeroActionScript.NpcTargetAttributes = new List<NpcAttributesComponent>();
         }
 
         public bool moveAgent(GoapAction nextAction)

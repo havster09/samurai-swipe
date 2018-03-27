@@ -6,9 +6,8 @@ namespace Assets.Scripts.GoapHeroActions
     {
         public GoapHeroResetGoalStateAction()
         {
-            addPrecondition("destroyEnemyReset", false);
             addEffect("destroyEnemyReset", true);
-            addEffect("destroyEnemy", false);
+            addEffect("destroyEnemyNpc", false);
             DistanceToTargetThreshold = 1f;
         }
 

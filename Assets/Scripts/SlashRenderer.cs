@@ -96,7 +96,6 @@ public class SlashRenderer : MonoBehaviour
         _lineRenderer.SetPosition(0, Camera.main.ScreenToWorldPoint(_mouseDownPos));
         _lineRenderer.SetPosition(1, Camera.main.ScreenToWorldPoint(_mouseUpPos));
         AddColliderToLine(_lineRenderer, Camera.main.ScreenToWorldPoint(_mouseDownPos), Camera.main.ScreenToWorldPoint(_mouseUpPos));
-        _goapHeroActionScript.NpcTargetAttributes = new List<NpcAttributesComponent>();
     }
 
     private void AddColliderToLine(LineRenderer line, Vector3 startPoint, Vector3 endPoint)

@@ -10,7 +10,6 @@ namespace Assets.Scripts.GoapHeroActions
         {
             addPrecondition("destroyEnemyNpc", false);
             addEffect("destroyEnemyNpc", true);
-            addEffect("destroyEnemyReset", false);
             DistanceToTargetThreshold = 1f;
         }
 

@@ -40,11 +40,12 @@ namespace Assets.Scripts
             AudioManager.SharedInstance.TestLog();
         }
 
-        private static void InitEnemies()
+        private void InitEnemies()
         {
             for (int i = 0; i < 10; i++)
             {
                 RespawnEnemyFromPool();
+                Debug.Log(i);
             }
         }
 

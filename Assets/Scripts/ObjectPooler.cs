@@ -68,6 +68,7 @@ public class ObjectPooler : MonoBehaviour
         {
             if (!pooledObjects[i].activeInHierarchy && pooledObjects[i].tag == tag)
             {
+                pooledObjects[i].transform.position = new Vector3(pooledObjects[i].transform.position.x - i, 0, 0);
                 pooledObjects[i].SetActive(true);
             }
         }

@@ -25,7 +25,7 @@ namespace Assets.Scripts.GoapHeroActions
         {
             HeroScript = GetComponent<Hero>();
             NpcHeroAttributes = GetComponent<NpcHeroAttributesComponent>();
-            
+            NpcTargetAttributes = new List<NpcAttributesComponent>();
         }
 
         public override bool Move()

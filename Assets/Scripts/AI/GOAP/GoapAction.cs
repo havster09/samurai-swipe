@@ -1,6 +1,9 @@
 
 using UnityEngine;
 using System.Collections.Generic;
+using Assets.Scripts;
+using System.Linq;
+using Assets.Scripts.GoapAttributeComponents;
 
 public abstract class GoapAction : MonoBehaviour {
 
@@ -19,7 +22,7 @@ public abstract class GoapAction : MonoBehaviour {
 	 * An action often has to perform on an object. This is that object. Can be null. */
 	public GameObject target;
 
-	public GoapAction() {
+    public GoapAction() {
 		preconditions = new HashSet<KeyValuePair<string, object>> ();
 		effects = new HashSet<KeyValuePair<string, object>> ();
 	}
@@ -119,4 +122,11 @@ public abstract class GoapAction : MonoBehaviour {
 			return effects;
 		}
 	}
+
+    public int GetActiveEnemyCount()
+    {
+        var enemies = GameObject.FindObjectsOfType<NpcAttributesComponent>()
+            .Select(e => e.Health > 1).ToArray();
+        return enemies.Length;
+    }
 }

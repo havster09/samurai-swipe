@@ -34,11 +34,13 @@ namespace Assets.Scripts.GoapHeroActions
         }
         public override bool perform(GameObject agent)
         {
-            // todo check for number of active enemies in range too
+            int activeEnemyCount = GetActiveEnemyCount();
+            Debug.Log(string.Format("<color=orange>Active Enemies {0}</color>", activeEnemyCount));
             if (
                 NpcTargetAttributes.Count == 0 &&
                 NpcHeroAttributes.ComboCount > 4 &&
-                HeroScript.NpcHeroAnimator.GetBool("heroBloodCover") == false)
+                HeroScript.IsAnimationPlaying("rest") == false
+                )
             {
                 HeroScript.BloodCover(true);
                 float coverBloodCountPauseDuration = NpcHeroAttributes.ComboCount;

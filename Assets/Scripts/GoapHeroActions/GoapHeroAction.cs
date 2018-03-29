@@ -30,9 +30,9 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool Move()
         {
-            if (HeroScript.IsFrozenPosition() == false && HeroScript.IsAnimationPlaying("attack") == false)
+            if (!HeroScript.IsFrozenPosition() && !HeroScript.IsAnimationPlaying("attack"))
             {
-                HeroScript.FaceTarget();
+                HeroScript.FaceTarget(target);
                 float distanceFromTarget = Vector2.Distance(new Vector2(gameObject.transform.position.x, 0), new Vector2(target.transform.position.x, 0));
                 if (distanceFromTarget >= DistanceToTargetThreshold && distanceFromTarget <= InRangeToTargetThreshold)
                 {

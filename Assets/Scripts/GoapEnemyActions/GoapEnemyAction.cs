@@ -33,7 +33,7 @@ namespace Assets.Scripts.GoapEnemyActions
         {
             if (!HeroScript.IsFrozenPosition())
             {
-                if (EnemyScript.IsFrozenPosition() == false)
+                if (!EnemyScript.IsFrozenPosition())
                 {
                     EnemyScript.FaceTarget();
                     float distanceFromTarget =
@@ -53,6 +53,14 @@ namespace Assets.Scripts.GoapEnemyActions
                         return true;
                     }
                 }
+            }
+            else
+            {
+                if (EnemyScript.NpcAnimator.GetBool("enemyRun"))
+                {
+                    EnemyScript.NpcAnimator.SetBool("enemyRun", false);
+                }
+                doReset();
             }
             return false;
         }

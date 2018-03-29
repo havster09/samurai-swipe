@@ -167,7 +167,11 @@ namespace Assets.Scripts
 
         public void MoveEnemy()
         {
-            NpcAnimator.SetBool("enemyRun", false);
+            if (!NpcAnimator.GetBool("enemyRun"))
+            {
+                NpcAnimator.SetBool("enemyRun", false);
+            }
+
             if (IsFrozenPosition())
             {
                 return;

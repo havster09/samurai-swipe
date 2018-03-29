@@ -26,9 +26,9 @@ namespace Assets.Scripts
 
         }
 
-        public void FaceTarget()
+        public void FaceTarget(GameObject target)
         {
-            float targetDistance = _goapHeroAction.target.transform.position.x - transform.position.x;
+            float targetDistance = target.transform.position.x - transform.position.x;
 
             if (targetDistance < 0 && _heroFlipX == false)
             {
@@ -52,6 +52,10 @@ namespace Assets.Scripts
         {
             NpcHeroAnimator.SetBool("heroBloodCover", state);
         }
+        public void TurnPose(bool state)
+        {
+            NpcHeroAnimator.SetBool("heroTurnPause", state);
+        }
 
         public bool IsAnimationPlaying(string animationTag)
         {
@@ -65,7 +69,7 @@ namespace Assets.Scripts
 
         public override bool IsFrozenPosition()
         {
-            return NpcHeroAnimator.GetBool("heroBloodCover");
+            return NpcHeroAnimator.GetBool("heroBloodCover") || NpcHeroAnimator.GetBool("heroTurnPause");
         }
 
         protected override void OnCantMove<T>(T component)

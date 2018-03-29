@@ -23,8 +23,9 @@ GameObject:
   - component: {fileID: 114446266854294874}
   - component: {fileID: 114582323766579276}
   - component: {fileID: 114567955020767244}
-  - component: {fileID: 114219458371729736}
   - component: {fileID: 114155218341992806}
+  - component: {fileID: 114897450705592626}
+  - component: {fileID: 114588772575116784}
   - component: {fileID: 114264782463166122}
   - component: {fileID: 95816508937588166}
   - component: {fileID: 50049763523117944}
@@ -125,20 +126,6 @@ MonoBehaviour:
   cost: 1
   target: {fileID: 0}
   NpcTargetAttributes: []
---- !u!114 &114219458371729736
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1858916847192298}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8180ccc0456347247972a46d60682abf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cost: 1
-  target: {fileID: 0}
-  NpcTargetAttributes: []
 --- !u!114 &114264782463166122
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -153,6 +140,7 @@ MonoBehaviour:
   Health: 100
   Brave: 100
   AttackCount: 0
+  ComboCount: 0
   KillCount: 0
 --- !u!114 &114446266854294874
 MonoBehaviour:
@@ -199,6 +187,34 @@ MonoBehaviour:
   MoveSpeed: 2
   GoapAgentScript: {fileID: 0}
   GoapHeroActionScript: {fileID: 0}
+--- !u!114 &114588772575116784
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1858916847192298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7737354097198d43b0ec895bf838478, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cost: 100
+  target: {fileID: 0}
+  NpcTargetAttributes: []
+--- !u!114 &114897450705592626
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1858916847192298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2314f844e94bfab439bb166447e55447, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cost: 1
+  target: {fileID: 0}
+  NpcTargetAttributes: []
 --- !u!212 &212617807016556368
 SpriteRenderer:
   m_ObjectHideFlags: 1

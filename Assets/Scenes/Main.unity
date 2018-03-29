@@ -209,48 +209,6 @@ Transform:
   m_Father: {fileID: 141495469}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1401978367
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4082432236622114, guid: 4e65ca6bfcb0a5d4aaac99a0308b080c, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4082432236622114, guid: 4e65ca6bfcb0a5d4aaac99a0308b080c, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4082432236622114, guid: 4e65ca6bfcb0a5d4aaac99a0308b080c, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4082432236622114, guid: 4e65ca6bfcb0a5d4aaac99a0308b080c, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4082432236622114, guid: 4e65ca6bfcb0a5d4aaac99a0308b080c, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4082432236622114, guid: 4e65ca6bfcb0a5d4aaac99a0308b080c, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4082432236622114, guid: 4e65ca6bfcb0a5d4aaac99a0308b080c, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4082432236622114, guid: 4e65ca6bfcb0a5d4aaac99a0308b080c, type: 2}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 4e65ca6bfcb0a5d4aaac99a0308b080c, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1001 &1475380826
 Prefab:
   m_ObjectHideFlags: 0
@@ -356,6 +314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9509c0b32bcdd54bbf092f05c827827, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Hero: {fileID: 0}
   LevelStartDelay: 5
   TurnDelay: 0.1
   PlayerFoodPoints: 100
@@ -385,7 +344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemsToPool:
-  - amountToPool: 5
+  - amountToPool: 4
     objectToPool: {fileID: 1662671873553116, guid: 7b17081931e49a046b8c51148a18009b,
       type: 2}
     shouldExpand: 0
@@ -453,7 +412,7 @@ MonoBehaviour:
     objectToPool: {fileID: 1818246317588858, guid: ba43d7216182b0b4cb3d86e76ee224de,
       type: 2}
     shouldExpand: 1
-  - amountToPool: 5
+  - amountToPool: 1
     objectToPool: {fileID: 1748471367380564, guid: 362a8c2da1a99d8499560c0992475f7d,
       type: 2}
     shouldExpand: 0
@@ -576,5 +535,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

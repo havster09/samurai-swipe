@@ -1,6 +1,8 @@
 
-using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
+using Assets.Scripts.GoapAttributeComponents;
+using UnityEngine;
 
 public abstract class GoapAction : MonoBehaviour {
 
@@ -8,7 +10,7 @@ public abstract class GoapAction : MonoBehaviour {
 	private HashSet<KeyValuePair<string,object>> preconditions;
 	private HashSet<KeyValuePair<string,object>> effects;
 
-	private bool inRange = false;
+	private bool inRange;
 
 	/* The cost of performing the action. 
 	 * Figure out a weight that suits the action. 
@@ -119,4 +121,24 @@ public abstract class GoapAction : MonoBehaviour {
 			return effects;
 		}
 	}
+
+    public int GetActiveNpcAttributesComponents()
+    {
+        var totalNpc = FindObjectsOfType<NpcAttributesComponent>()
+            .Where(npc => npc.Health > 0 && npc.isActiveAndEnabled)
+            .ToArray();
+
+        return totalNpc.Length;
+    }
+
+    public int GetActiveNpcAttributesComponentsInRange(GameObject from, float threshold)
+    {
+        var totalNpc = FindObjectsOfType<NpcAttributesComponent>()
+            .Where(npc => npc.Health > 0 &&
+            npc.isActiveAndEnabled &&
+            Vector3.Distance(from.transform.position, npc.transform.position) < threshold)
+            .ToArray();
+
+        return totalNpc.Length;
+    }
 }

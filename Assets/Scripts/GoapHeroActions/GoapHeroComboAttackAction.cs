@@ -4,35 +4,13 @@ using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.GoapHeroActions
 {
-    public class GoapHeroChargeDestroyAction : GoapHeroAction
+    public class GoapHeroComboAttackAction : GoapHeroBaseAttackAction
     {
-        public GoapHeroChargeDestroyAction()
+        public GoapHeroComboAttackAction()
         {
-            addPrecondition("destroyEnemyNpc", false);
             addEffect("destroyEnemyNpc", true);
             addEffect("bloodCover", false);
             DistanceToTargetThreshold = 1f;
-        }
-
-        public override void reset()
-        {
-            NpcIsDestroyed = false;
-            TargetNpcAttribute = null;
-        }
-
-        public override bool isDone()
-        {
-            return NpcIsDestroyed;
-        }
-
-        public override bool requiresInRange()
-        {
-            return true;
-        }
-
-        public override bool checkProceduralPrecondition(GameObject agent)
-        {
-            return FindNpcTarget(agent);
         }
 
         public override bool perform(GameObject agent)

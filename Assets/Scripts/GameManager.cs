@@ -5,6 +5,7 @@ namespace Assets.Scripts
 {
     public class GameManager : MonoBehaviour
     {
+        public Object Hero;
         public float LevelStartDelay = 5f;                      
         public float TurnDelay = 0.1f;      
         public int PlayerFoodPoints = 100;  
@@ -36,16 +37,21 @@ namespace Assets.Scripts
 
         void InitGame()
         {
+            InitHero();
             InitEnemies();
             AudioManager.SharedInstance.TestLog();
         }
 
+        private void InitHero()
+        {
+            Hero = Instantiate(Resources.Load("GenjuroHero"));
+        }
+
         private void InitEnemies()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
             {
                 RespawnEnemyFromPool();
-                Debug.Log(i);
             }
         }
 
@@ -73,8 +79,11 @@ namespace Assets.Scripts
         {
             float respawnPositionX = GetRespawnCurrentPosition(Random.Range(0f, 10f) > 5 ? "Left" : "Right");
             GameObject enemyFromPool = ObjectPooler.SharedInstance.GetPooledObject("Enemy");
-            enemyFromPool.transform.position = new Vector3(respawnPositionX, 0, 0);
-            enemyFromPool.SetActive(true);
+            if (enemyFromPool)
+            {
+                enemyFromPool.transform.position = new Vector3(respawnPositionX, 0, 0);
+                enemyFromPool.SetActive(true);
+            }
         }
 
         void Update()

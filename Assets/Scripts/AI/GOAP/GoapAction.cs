@@ -1,8 +1,14 @@
 
 using System.Collections.Generic;
+<<<<<<< HEAD
 using System.Linq;
 using Assets.Scripts.GoapAttributeComponents;
 using UnityEngine;
+=======
+using Assets.Scripts;
+using System.Linq;
+using Assets.Scripts.GoapAttributeComponents;
+>>>>>>> e06db7a57f815660b80901e6d1105d8db0c8999b
 
 public abstract class GoapAction : MonoBehaviour {
 
@@ -21,7 +27,7 @@ public abstract class GoapAction : MonoBehaviour {
 	 * An action often has to perform on an object. This is that object. Can be null. */
 	public GameObject target;
 
-	public GoapAction() {
+    public GoapAction() {
 		preconditions = new HashSet<KeyValuePair<string, object>> ();
 		effects = new HashSet<KeyValuePair<string, object>> ();
 	}
@@ -140,5 +146,4 @@ public abstract class GoapAction : MonoBehaviour {
             .ToArray();
 
         return totalNpc.Length;
-    }
 }

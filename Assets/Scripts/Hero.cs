@@ -76,5 +76,10 @@ namespace Assets.Scripts
         {
             throw new System.NotImplementedException();
         }
+
+        public void WipeBlood()
+        {
+            NpcHeroAnimator.SetTrigger("heroWipeBlood");
+        }
     }
 }

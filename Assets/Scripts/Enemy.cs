@@ -217,7 +217,7 @@ namespace Assets.Scripts
 
         public void JumpAttack()
         {
-            rb2D.velocity = new Vector2(_enemyFlipX ? -2f : 2f, 8f);
+            rb2D.velocity = new Vector2(_enemyFlipX ? -2f : 2f, 6f);
             NpcAnimator.SetFloat("enemyAttackJumpVertical", 1f);
             StartCoroutine("EnemyAttackJumpVertical");
         }
@@ -235,7 +235,7 @@ namespace Assets.Scripts
         {
             while (transform.position.y > 0)
             {
-                rb2D.velocity = new Vector2(rb2D.velocity.x, -10f);
+                rb2D.velocity = new Vector2(rb2D.velocity.x, -8f);
                 yield return new WaitForFixedUpdate();
             }
             rb2D.velocity = new Vector2(0, 0);

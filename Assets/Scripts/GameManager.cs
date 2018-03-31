@@ -49,7 +49,7 @@ namespace Assets.Scripts
 
         private void InitEnemies()
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 1; i++)
             {
                 RespawnEnemyFromPool();
             }

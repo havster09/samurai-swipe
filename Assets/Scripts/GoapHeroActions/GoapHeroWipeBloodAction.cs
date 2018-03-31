@@ -2,12 +2,13 @@
 
 namespace Assets.Scripts.GoapHeroActions
 {
-    public class GoapHeroBloodCoverAction : GoapHeroAction
+    public class GoapHeroWipeBloodAction : GoapHeroAction
     {
-        public GoapHeroBloodCoverAction()
+        public GoapHeroWipeBloodAction()
         {
             addPrecondition("destroyEnemyNpc", true);
-            addEffect("bloodCover", true);
+            addPrecondition("bloodCover", true);
+            addEffect("wipeBlood", true);
             DistanceToTargetThreshold = 1f;
         }
 
@@ -33,21 +34,10 @@ namespace Assets.Scripts.GoapHeroActions
         }
         public override bool perform(GameObject agent)
         {
-            if (
-                NpcTargetAttributes.Count < 1 &&
-                GetActiveNpcAttributesComponentsInRange(gameObject, 4f) < 1 &&
-                NpcHeroAttributes.ComboCount > 0 &&
-                !HeroScript.NpcHeroAnimator.GetBool("heroBloodCover")
-                )
+            if (GetActiveNpcAttributesComponentsInRange(gameObject, 4f) < 1)
             {
-                HeroScript.BloodCover(true);
+                HeroScript.WipeBlood();
                 NpcIsDestroyedReset = true;
-                NpcTargetAttributes.Remove(TargetNpcAttribute);
-                float coverBloodCountPauseDuration = Mathf.Round(NpcHeroAttributes.ComboCount);
-                HeroScript.WaitFor(() =>
-                {
-                    HeroScript.BloodCover(false);
-                }, coverBloodCountPauseDuration);
             }
             else
             {

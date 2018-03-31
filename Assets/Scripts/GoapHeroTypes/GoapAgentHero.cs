@@ -23,17 +23,23 @@ namespace Assets.Scripts.GoapHeroTypes
 
         public HashSet<KeyValuePair<string, object>> getWorldState()
         {
-            HashSet<KeyValuePair<string, object>> worldData = new HashSet<KeyValuePair<string, object>>();
-            worldData.Add(new KeyValuePair<string, object>("destroyEnemyNpc", false));
-            worldData.Add(new KeyValuePair<string, object>("bloodCover", false));
+            HashSet<KeyValuePair<string, object>> worldData = new HashSet<KeyValuePair<string, object>>
+            {
+                new KeyValuePair<string, object>("destroyEnemyNpc", false),
+                new KeyValuePair<string, object>("bloodCover", false),
+                new KeyValuePair<string, object>("wipeBlood", false)
+            };
             return worldData;
         }
 
         public HashSet<KeyValuePair<string, object>> createGoalState()
         {
-            HashSet<KeyValuePair<string, object>> goal = new HashSet<KeyValuePair<string, object>>();
-            goal.Add(new KeyValuePair<string, object>("destroyEnemyNpc", true));
-            goal.Add(new KeyValuePair<string, object>("bloodCover", true));
+            HashSet<KeyValuePair<string, object>> goal = new HashSet<KeyValuePair<string, object>>
+            {
+                new KeyValuePair<string, object>("destroyEnemyNpc", true),
+                new KeyValuePair<string, object>("bloodCover", true),
+                new KeyValuePair<string, object>("wipeBlood", true)
+            };
             return goal;
         }
 

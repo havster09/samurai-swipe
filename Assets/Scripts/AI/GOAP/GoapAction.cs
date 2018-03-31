@@ -1,14 +1,8 @@
 
 using System.Collections.Generic;
-<<<<<<< HEAD
 using System.Linq;
 using Assets.Scripts.GoapAttributeComponents;
 using UnityEngine;
-=======
-using Assets.Scripts;
-using System.Linq;
-using Assets.Scripts.GoapAttributeComponents;
->>>>>>> e06db7a57f815660b80901e6d1105d8db0c8999b
 
 public abstract class GoapAction : MonoBehaviour {
 
@@ -141,9 +135,10 @@ public abstract class GoapAction : MonoBehaviour {
     {
         var totalNpc = FindObjectsOfType<NpcAttributesComponent>()
             .Where(npc => npc.Health > 0 &&
-            npc.isActiveAndEnabled &&
-            Vector3.Distance(from.transform.position, npc.transform.position) < threshold)
+                          npc.isActiveAndEnabled &&
+                          Vector3.Distance(from.transform.position, npc.transform.position) < threshold)
             .ToArray();
 
         return totalNpc.Length;
+    }
 }

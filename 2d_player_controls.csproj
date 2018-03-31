@@ -104,6 +104,7 @@
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroBaseAttackAction.cs" />
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroBloodCoverAction.cs" />
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroComboAttackAction.cs" />
+    <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroWipeBloodAction.cs" />
     <Compile Include="Assets\Scripts\GoapHeroTypes\GoapAgentHero.cs" />
     <Compile Include="Assets\Scripts\Hero.cs" />
     <Compile Include="Assets\Scripts\MovingObject.cs" />

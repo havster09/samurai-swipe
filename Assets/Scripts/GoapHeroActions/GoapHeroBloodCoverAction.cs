@@ -42,7 +42,6 @@ namespace Assets.Scripts.GoapHeroActions
             {
                 HeroScript.BloodCover(true);
                 NpcIsDestroyedReset = true;
-                NpcTargetAttributes.Remove(TargetNpcAttribute);
                 float coverBloodCountPauseDuration = Mathf.Round(NpcHeroAttributes.ComboCount);
                 HeroScript.WaitFor(() =>
                 {
@@ -52,7 +51,6 @@ namespace Assets.Scripts.GoapHeroActions
             else
             {
                 NpcIsDestroyedReset = true;
-                NpcTargetAttributes.Remove(TargetNpcAttribute);
             }
             NpcHeroAttributes.ComboCount = 0;
             return NpcIsDestroyedReset;

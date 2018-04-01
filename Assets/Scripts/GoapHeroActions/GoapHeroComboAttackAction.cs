@@ -25,15 +25,10 @@ namespace Assets.Scripts.GoapHeroActions
             {
                 var heroAttacks = new string[]
                 {
-                    "heroAttackOne",
-                    "heroAttackTwo",
-                    "heroAttackThree",
-                    "heroAttackFour",
-                    "heroAttackSix",
                     "heroAttackSeven"
                 };
                 HeroScript.Attack(heroAttacks[Random.Range(0, heroAttacks.Length - 1)]);
-                TargetNpcAttribute.Health -= 50;
+                TargetNpcAttribute.Health -= 10;
                 NpcHeroAttributes.AttackCount += 1;
             }
 
@@ -47,6 +42,7 @@ namespace Assets.Scripts.GoapHeroActions
             if (NpcTargetAttributes.Count < 1)
             {
                 NpcIsDestroyed = true;
+                NpcTargetAttributes.Clear();
             }
             Debug.Log(string.Format("<color=green>{0}</color>", NpcTargetAttributes.Count));
             return NpcIsDestroyed;

@@ -19,6 +19,8 @@ namespace Assets.Scripts.GoapHeroTypes
             HeroScript = GetComponent<Hero>();
             GoapAgentScript = GetComponent<GoapAgent>();
             GoapHeroActionScript = GetComponent<GoapHeroAction>();
+
+            // todo randomize cost for alternate behaviour
         }
 
         public HashSet<KeyValuePair<string, object>> getWorldState()
@@ -34,12 +36,10 @@ namespace Assets.Scripts.GoapHeroTypes
 
         public HashSet<KeyValuePair<string, object>> createGoalState()
         {
-            HashSet<KeyValuePair<string, object>> goal = new HashSet<KeyValuePair<string, object>>
-            {
-                new KeyValuePair<string, object>("destroyEnemyNpc", true),
-                new KeyValuePair<string, object>("bloodCover", true),
-                new KeyValuePair<string, object>("wipeBlood", true)
-            };
+            HashSet<KeyValuePair<string, object>> goal = new HashSet<KeyValuePair<string, object>>();
+            goal.Add(new KeyValuePair<string, object>("destroyEnemyNpc", true));
+            goal.Add(new KeyValuePair<string, object>("bloodCover", true));
+            goal.Add(new KeyValuePair<string, object>("wipeBlood", true));
             return goal;
         }
 

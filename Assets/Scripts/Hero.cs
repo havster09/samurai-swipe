@@ -69,7 +69,9 @@ namespace Assets.Scripts
 
         public override bool IsFrozenPosition()
         {
-            return NpcHeroAnimator.GetBool("heroBloodCover") || NpcHeroAnimator.GetBool("heroTurnPause");
+            return NpcHeroAnimator.GetBool("heroBloodCover") ||
+                   IsAnimationPlaying("rest") ||
+                   NpcHeroAnimator.GetBool("heroTurnPause");
         }
 
         protected override void OnCantMove<T>(T component)
@@ -80,6 +82,11 @@ namespace Assets.Scripts
         public void WipeBlood()
         {
             NpcHeroAnimator.SetTrigger("heroWipeBlood");
+        }
+
+        public void CleanWeapon()
+        {
+            NpcHeroAnimator.SetTrigger("heroCleanWeapon");
         }
     }
 }

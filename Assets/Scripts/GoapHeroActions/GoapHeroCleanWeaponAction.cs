@@ -2,12 +2,11 @@
 
 namespace Assets.Scripts.GoapHeroActions
 {
-    public class GoapHeroWipeBloodAction : GoapHeroAction
+    public class GoapHeroCleanWeaponAction : GoapHeroAction
     {
-        public GoapHeroWipeBloodAction()
+        public GoapHeroCleanWeaponAction()
         {
             addPrecondition("destroyEnemyNpc", true);
-            addPrecondition("bloodCover", true);
             addEffect("wipeBlood", true);
             DistanceToTargetThreshold = 1f;
         }
@@ -36,13 +35,14 @@ namespace Assets.Scripts.GoapHeroActions
         {
             if (GetActiveNpcAttributesComponentsInRange(gameObject, 4f) < 1)
             {
-                HeroScript.WipeBlood();
+                HeroScript.CleanWeapon();
                 NpcIsDestroyedReset = true;
             }
             else
             {
                 NpcIsDestroyedReset = true;
             }
+
             NpcHeroAttributes.ComboCount = 0;
             return NpcIsDestroyedReset;
         }

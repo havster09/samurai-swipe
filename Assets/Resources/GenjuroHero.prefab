@@ -19,18 +19,19 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4082432236622114}
+  - component: {fileID: 95816508937588166}
   - component: {fileID: 212617807016556368}
+  - component: {fileID: 61078574902650286}
+  - component: {fileID: 50049763523117944}
+  - component: {fileID: 114264782463166122}
   - component: {fileID: 114446266854294874}
   - component: {fileID: 114582323766579276}
   - component: {fileID: 114567955020767244}
   - component: {fileID: 114191996681220228}
+  - component: {fileID: 114154075046031688}
   - component: {fileID: 114155218341992806}
   - component: {fileID: 114897450705592626}
   - component: {fileID: 114588772575116784}
-  - component: {fileID: 114264782463166122}
-  - component: {fileID: 95816508937588166}
-  - component: {fileID: 50049763523117944}
-  - component: {fileID: 61078574902650286}
   m_Layer: 0
   m_Name: GenjuroHero
   m_TagString: Player
@@ -113,6 +114,20 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114154075046031688
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1858916847192298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 849841d0433fdf041b9592c70d8b7560, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cost: 10
+  target: {fileID: 0}
+  NpcTargetAttributes: []
 --- !u!114 &114155218341992806
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -124,7 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15b0ddab0c701e94ab295f7b63dc0970, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 1
+  cost: 30
   target: {fileID: 0}
   NpcTargetAttributes: []
 --- !u!114 &114191996681220228

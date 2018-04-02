@@ -44,7 +44,8 @@ namespace Assets.Scripts.GoapHeroActions
                 )
             {
                 var heroAttacks = new List<string>();
-                if (NpcHeroAttributes.Rage > 2)
+                var damage = 0;
+                if (NpcHeroAttributes.Rage > 10)
                 {
 
                     heroAttacks.AddRange(new List<string>
@@ -53,6 +54,7 @@ namespace Assets.Scripts.GoapHeroActions
                         "heroDoubleSlashHigh",
                         "heroDoubleSlashLow",
                     });
+                    damage = 50;
                 }
                 else
                 {
@@ -65,11 +67,19 @@ namespace Assets.Scripts.GoapHeroActions
                         "heroAttackSix",
                         "heroAttackSeven"
                     });
+                    damage = 100;
                 }
                 
                 HeroScript.Attack(heroAttacks[Random.Range(0, heroAttacks.Count)], TargetNpcAttribute);
-                TargetNpcAttribute.Health -= 100;
-                enemyScript.EnemyHitSuccess();
+                if (TargetNpcAttribute.DefendCount < 1)
+                {
+                    enemyScript.EnemyHitSuccess(damage);
+                }
+                else
+                {
+                    enemyScript.EnemyHitFail();
+                }
+                
                 NpcHeroAttributes.AttackCount += 1;
             }
 

@@ -30,7 +30,6 @@ GameObject:
   - component: {fileID: 114191996681220228}
   - component: {fileID: 114154075046031688}
   - component: {fileID: 114155218341992806}
-  - component: {fileID: 114588772575116784}
   - component: {fileID: 114455469550128652}
   m_Layer: 0
   m_Name: GenjuroHero
@@ -228,19 +227,6 @@ MonoBehaviour:
   MoveSpeed: 2
   GoapAgentScript: {fileID: 0}
   GoapHeroActionScript: {fileID: 0}
---- !u!114 &114588772575116784
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1858916847192298}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7737354097198d43b0ec895bf838478, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cost: 1
-  target: {fileID: 0}
 --- !u!212 &212617807016556368
 SpriteRenderer:
   m_ObjectHideFlags: 1

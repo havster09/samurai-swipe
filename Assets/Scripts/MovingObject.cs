@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using System;
+using Assets.Scripts.GoapAttributeComponents;
 
 public abstract class MovingObject : MonoBehaviour
 {
@@ -72,10 +73,21 @@ public abstract class MovingObject : MonoBehaviour
         }
     }
 
+    protected IEnumerator BlockMovement(Vector3 end, NpcAttributesComponent npcAttribute)
+    {
+        float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
+        while (sqrRemainingDistance > float.Epsilon && npcAttribute.Health > 0)
+        {
+            Vector3 newPostion = Vector3.MoveTowards(rb2D.position, end, inverseMoveTime * Time.deltaTime);
+            rb2D.MovePosition(newPostion);
+            sqrRemainingDistance = (transform.position - end).sqrMagnitude;
+            yield return new WaitForSeconds(.1f);
+        }
+    }
+
     protected virtual void AttemptMove<T>(float xDir, float yDir, Transform target, Transform movingObject)
         where T : Component
     {
-        // todo check if in attack range
         RaycastHit2D hit;
         bool canMove = Move(xDir, yDir, out hit, target, movingObject);
 

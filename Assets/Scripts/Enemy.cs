@@ -90,6 +90,18 @@ namespace Assets.Scripts
             walkBackEvent.time = walkBackClip.length;
             walkBackEvent.functionName = "EnemyWalkBackEventHandler";
             walkBackClip.AddEvent(walkBackEvent);
+
+            var blockClip = NpcAnimator.runtimeAnimatorController.animationClips[16];
+
+            var blockEventEnd = new AnimationEvent();
+            blockEventEnd.time = blockClip.length;
+            blockEventEnd.functionName = "EnemyBlockEndEventHandler";
+            blockClip.AddEvent(blockEventEnd);
+        }
+
+        private void EnemyBlockEndEventHandler()
+        {
+            NpcAnimator.speed = .8f;
         }
 
         private void EnemyAttackOneEventHandler(string stringParameter)
@@ -197,7 +209,14 @@ namespace Assets.Scripts
 
 
             Debug.DrawLine(_goapEnemyAction.target.transform.position, transform.position, Color.red);
-            AttemptMove<Player>(xDir, yDir, _goapEnemyAction.target.transform, transform);
+            AttemptMove<Enemy>(xDir, yDir, _goapEnemyAction.target.transform, transform);
+        }
+
+        public void MoveEnemyBack()
+        {
+            float distance = _goapEnemyAction.target.transform.position.x > transform.position.x ? -1f : 1f;
+            Vector2 end = (Vector2)transform.position + new Vector2(distance, 0);
+            StartCoroutine(BlockMovement(end, NpcAttribute));
         }
 
         public bool IsInWalkRange()
@@ -254,8 +273,12 @@ namespace Assets.Scripts
             NpcAnimator.SetTrigger("enemyTaunt");
         }
 
-        public void Block(bool state)
+        public void EnemyBlock(bool state)
         {
+            if (!state)
+            {
+                NpcAnimator.speed = 1;
+            }
             NpcAnimator.SetBool("enemyBlock", state);
         }
 
@@ -399,25 +422,48 @@ namespace Assets.Scripts
             }
         }
 
-        public void EnemyHitSuccess()
+        public void EnemyHitSuccess(int damage)
         {
             _slashRenderer.RemoveSlash();
+
+            if (NpcAnimator.GetBool("enemyBlock"))
+            {
+                EnemyBlock(false);
+            }
+
             if (NpcAttribute.Health > 0)
             {
-                EnemyHit();
-            }
-            else if (!IsDead)
-            {
-                EnemyDie();
+                EnemyHit(damage);
             }
         }
 
-        public void EnemyHit()
+        public void EnemyHitFail()
+        {
+            _slashRenderer.RemoveSlash();
+            NpcAttribute.DefendCount -= 1;
+            MoveEnemyBack();
+            if (!NpcAnimator.GetBool("enemyBlock"))
+            {
+                EnemyBlock(true);
+            }
+            else
+            {
+                NpcAnimator.Play("enemyBlock", -1, .5f);
+            }
+        }
+
+        public void EnemyHit(int damage)
         {
             StopEnemyVelocity();
             GetBloodEffect("Blood", "BloodEffect1");
             NpcAnimator.SetTrigger("enemyHit");
             IsHit = true;
+            NpcAttribute.Health -= damage;
+
+            if (NpcAttribute.Health < 1 && !IsDead)
+            {
+                EnemyDie();
+            }
         }
 
         private void GetBloodEffect(string tag, string name = null)
@@ -453,6 +499,20 @@ namespace Assets.Scripts
                 return true;
             }
             return false;
+        }
+
+        public AnimationClip GetAnimationClip(string name)
+        {
+            if (!NpcAnimator) return null;
+
+            foreach (AnimationClip clip in NpcAnimator.runtimeAnimatorController.animationClips)
+            {
+                if (clip.name == name)
+                {
+                    return clip;
+                }
+            }
+            return null; // no clip by that name
         }
 
         void OnDisable()

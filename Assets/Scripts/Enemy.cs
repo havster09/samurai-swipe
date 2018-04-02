@@ -102,6 +102,13 @@ namespace Assets.Scripts
         private void EnemyBlockEndEventHandler()
         {
             NpcAnimator.speed = .8f;
+            WaitFor(() =>
+            {
+                if (NpcAnimator.GetBool("enemyBlock"))
+                {
+                    EnemyBlock(false);
+                }
+            }, 5f);
         }
 
         private void EnemyAttackOneEventHandler(string stringParameter)
@@ -214,8 +221,8 @@ namespace Assets.Scripts
 
         public void MoveEnemyBack()
         {
-            float distance = _goapEnemyAction.target.transform.position.x > transform.position.x ? -1f : 1f;
-            Vector2 end = (Vector2)transform.position + new Vector2(distance, 0);
+            float distance = _goapEnemyAction.target.transform.position.x > transform.position.x ? -2f : 2f;
+            Vector2 end = new Vector2(transform.position.x, 0) + new Vector2(distance, 0);
             StartCoroutine(BlockMovement(end, NpcAttribute));
         }
 
@@ -275,6 +282,7 @@ namespace Assets.Scripts
 
         public void EnemyBlock(bool state)
         {
+            FaceTarget();
             if (!state)
             {
                 NpcAnimator.speed = 1;

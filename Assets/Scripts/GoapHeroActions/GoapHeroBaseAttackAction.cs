@@ -10,7 +10,7 @@ namespace Assets.Scripts.GoapHeroActions
         public GoapHeroBaseAttackAction()
         {
             addEffect("destroyEnemyNpc", true);
-            DistanceToTargetThreshold = 1f;
+            DistanceToTargetThreshold = .6f;
         }
 
         public override void reset()

@@ -4,18 +4,17 @@ using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.GoapHeroActions
 {
-    public class GoapHeroComboAttackAction : GoapHeroBaseAttackAction
+    public class GoapHeroComboAttackAction : GoapHeroAction
     {
         public GoapHeroComboAttackAction()
         {
+
             addEffect("destroyEnemyNpc", true);
-            addEffect("bloodCover", false);
             DistanceToTargetThreshold = 1f;
         }
 
         public override bool perform(GameObject agent)
         {
-            Debug.Log("Hero Perform");
             Enemy enemyScript = target.GetComponent<Enemy>();
             if (
                 !HeroScript.IsAnimationPlaying("attack") &&
@@ -25,10 +24,13 @@ namespace Assets.Scripts.GoapHeroActions
             {
                 var heroAttacks = new string[]
                 {
-                    "heroAttackSeven"
+                    "heroDoubleSlashMid",
+                    "heroDoubleSlashHigh",
+                    "heroDoubleSlashLow",
                 };
-                HeroScript.Attack(heroAttacks[Random.Range(0, heroAttacks.Length - 1)]);
-                TargetNpcAttribute.Health -= 10;
+                HeroScript.Attack(heroAttacks[Random.Range(0, heroAttacks.Length)], TargetNpcAttribute);
+                TargetNpcAttribute.Health -= 50;
+                enemyScript.EnemyHitSuccess();
                 NpcHeroAttributes.AttackCount += 1;
             }
 

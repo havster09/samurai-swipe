@@ -7,20 +7,7 @@ namespace Assets.Scripts.GoapAttributeComponents
         public int KillCount;
         public int AttackCount;
         public int Brave;
-
-        private int _health;
-        public int Health
-        {
-            get { return _health; }
-            set
-            {
-                _health = value;
-                if (_health < 100 && _health > 1)
-                {
-                    EnemyScript.EnemyHitSuccess();
-                }
-            }
-        }
+        public int Health;
 
         public int Stamina;
         public Enemy EnemyScript { get; set; }
@@ -46,7 +33,7 @@ namespace Assets.Scripts.GoapAttributeComponents
             AttackCount = 0;
             Stamina = 100;
             Brave = 0;
-            _health = 100;
+            Health = 100;
         }
     }
 }

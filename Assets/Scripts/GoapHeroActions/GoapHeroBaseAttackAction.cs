@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -9,7 +10,6 @@ namespace Assets.Scripts.GoapHeroActions
         public GoapHeroBaseAttackAction()
         {
             addEffect("destroyEnemyNpc", true);
-            addEffect("bloodCover", false);
             DistanceToTargetThreshold = 1f;
         }
 
@@ -36,7 +36,6 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool perform(GameObject agent)
         {
-            Debug.Log("Hero Perform");
             Enemy enemyScript = target.GetComponent<Enemy>();
             if (
                 !HeroScript.IsAnimationPlaying("attack") &&
@@ -44,17 +43,33 @@ namespace Assets.Scripts.GoapHeroActions
                 !enemyScript.IsDead
                 )
             {
-                var heroAttacks = new string[]
+                var heroAttacks = new List<string>();
+                if (NpcHeroAttributes.Rage > 2)
                 {
-                    "heroAttackOne",
-                    "heroAttackTwo",
-                    "heroAttackThree",
-                    "heroAttackFour",
-                    "heroAttackSix",
-                    "heroAttackSeven"
-                };
-                HeroScript.Attack(heroAttacks[Random.Range(0, heroAttacks.Length - 1)]);
-                TargetNpcAttribute.Health -= 10;
+
+                    heroAttacks.AddRange(new List<string>
+                    {
+                        "heroDoubleSlashMid",
+                        "heroDoubleSlashHigh",
+                        "heroDoubleSlashLow",
+                    });
+                }
+                else
+                {
+                    heroAttacks.AddRange(new List<string>
+                    {
+                        "heroAttackOne",
+                        "heroAttackTwo",
+                        "heroAttackThree",
+                        "heroAttackFour",
+                        "heroAttackSix",
+                        "heroAttackSeven"
+                    });
+                }
+                
+                HeroScript.Attack(heroAttacks[Random.Range(0, heroAttacks.Count)], TargetNpcAttribute);
+                TargetNpcAttribute.Health -= 100;
+                enemyScript.EnemyHitSuccess();
                 NpcHeroAttributes.AttackCount += 1;
             }
 

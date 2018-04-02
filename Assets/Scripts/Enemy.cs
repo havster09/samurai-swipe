@@ -19,7 +19,7 @@ namespace Assets.Scripts
         private bool _enemyFlipX;
         private GameObject _headFromPool;
         private SlashRenderer _slashRenderer;
-        public NpcAttributesComponent NpcAttributes;
+        public NpcAttributesComponent NpcAttribute;
         public bool IsHit { get; set; }
         public bool IsTaunting { get; set; }
         public bool IsAttacking { get; set; }
@@ -32,7 +32,7 @@ namespace Assets.Scripts
             _goapHeroActionScript = GameObject.FindObjectOfType<GoapHeroAction>();
             _slashRenderer = GameObject.FindObjectOfType<SlashRenderer>();
             _goapEnemyAction = gameObject.GetComponent<GoapEnemyAction>();
-            NpcAttributes = gameObject.GetComponent<NpcAttributesComponent>();
+            NpcAttribute = gameObject.GetComponent<NpcAttributesComponent>();
             NpcAnimator = GetComponent<Animator>();
             AttachAnimationClipEvents();
         }
@@ -140,6 +140,7 @@ namespace Assets.Scripts
 
         protected override void OnEnable()
         {
+            _goapHeroActionScript.RemoveTargetFromList(NpcAttribute);
             base.OnEnable();
         }
 
@@ -191,7 +192,7 @@ namespace Assets.Scripts
             {
                 xDir = _goapEnemyAction.target.transform.position.x > transform.position.x ? -.5f : .5f;
                 NpcAnimator.SetTrigger("enemyWalkBack");
-                NpcAttributes.Brave += 1;
+                NpcAttribute.Brave += 1;
             }
 
 
@@ -273,7 +274,7 @@ namespace Assets.Scripts
         {
             StopEnemyVelocity();
             EnemySpray();
-            NpcAttributes.Health = 0;
+            NpcAttribute.Health = 0;
             IsDead = true;
         }
 
@@ -391,9 +392,9 @@ namespace Assets.Scripts
         {
             if (collider.gameObject.tag == "SlashCollider")
             {
-                if (NpcAttributes.Health > 0)
+                if (NpcAttribute.Health > 0)
                 {
-                    _goapHeroActionScript.NpcTargetAttributes.Add(NpcAttributes);
+                    _goapHeroActionScript.AddTargetToList(NpcAttribute);
                 }
             }
         }
@@ -401,8 +402,7 @@ namespace Assets.Scripts
         public void EnemyHitSuccess()
         {
             _slashRenderer.RemoveSlash();
-            NpcAttributes.Health -= 50;
-            if (NpcAttributes.Health > 0)
+            if (NpcAttribute.Health > 0)
             {
                 EnemyHit();
             }

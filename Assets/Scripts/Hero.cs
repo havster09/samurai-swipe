@@ -8,7 +8,6 @@ namespace Assets.Scripts
     {
         private bool _heroFlipX;
         public Animator NpcHeroAnimator;
-        private GoapHeroAction _goapHeroAction;
         public NpcHeroAttributesComponent NpcHeroAttributes;
 
         public bool IsAttacking { get; set; }
@@ -17,7 +16,6 @@ namespace Assets.Scripts
         {
             NpcHeroAttributes = gameObject.GetComponent<NpcHeroAttributesComponent>();
             NpcHeroAnimator = GetComponent<Animator>();
-            _goapHeroAction = GetComponent<GoapHeroAction>();
             AttachAnimationClipEvents();
         }
 
@@ -42,15 +40,17 @@ namespace Assets.Scripts
             }
         }
 
-        public void Attack(string attackType)
+        public void Attack(string attackType, NpcAttributesComponent targetNpcAttribute)
         {
             IsAttacking = true;
+            NpcHeroAttributes.Rage += 1;
             NpcHeroAnimator.SetTrigger(attackType);
         }
 
         public void BloodCover(bool state)
         {
             NpcHeroAnimator.SetBool("heroBloodCover", state);
+            NpcHeroAttributes.Rage = 0;
         }
         public void TurnPose(bool state)
         {

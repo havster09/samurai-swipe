@@ -7,7 +7,7 @@ namespace Assets.Scripts.GoapHeroActions
 {
     public class GoapHeroAction : GoapAction
     {
-        public List<NpcAttributesComponent> NpcTargetAttributes;
+        protected List<NpcAttributesComponent> NpcTargetAttributes;
         protected float MoveSpeed = 2;
         protected float DistanceToTargetThreshold = 1;
         protected float InRangeToTargetThreshold = 5f;
@@ -105,6 +105,24 @@ namespace Assets.Scripts.GoapHeroActions
                 NpcIsDestroyed = true;
             }
             return NpcIsDestroyed;
+        }
+
+        public void AddTargetToList(NpcAttributesComponent npcAttribute)
+        {
+            if (!NpcTargetAttributes.Contains(npcAttribute))
+            {
+                NpcTargetAttributes.Add(npcAttribute);
+            }
+        }
+
+        public void ClearAllTargetsFromList()
+        {
+            NpcTargetAttributes.Clear();
+        }
+
+        public void RemoveTargetFromList(NpcAttributesComponent npcAttribute)
+        {
+            NpcTargetAttributes.Remove(npcAttribute);
         }
     }
 }

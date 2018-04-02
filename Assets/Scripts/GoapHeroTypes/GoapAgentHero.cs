@@ -29,7 +29,8 @@ namespace Assets.Scripts.GoapHeroTypes
             {
                 new KeyValuePair<string, object>("destroyEnemyNpc", false),
                 new KeyValuePair<string, object>("bloodCover", false),
-                new KeyValuePair<string, object>("wipeBlood", false)
+                new KeyValuePair<string, object>("wipeBlood", false),
+                new KeyValuePair<string, object>("hasRage", false)
             };
             return worldData;
         }
@@ -47,7 +48,6 @@ namespace Assets.Scripts.GoapHeroTypes
         {
             Debug.Log("Hero Unhandled plan Failed");
             GoapAgentScript.createIdleState();
-            GoapHeroActionScript.NpcTargetAttributes = new List<NpcAttributesComponent>();
         }
 
         public void planFound(HashSet<KeyValuePair<string, object>> goal, Queue<GoapAction> actions)

@@ -30,8 +30,8 @@ GameObject:
   - component: {fileID: 114191996681220228}
   - component: {fileID: 114154075046031688}
   - component: {fileID: 114155218341992806}
-  - component: {fileID: 114897450705592626}
   - component: {fileID: 114588772575116784}
+  - component: {fileID: 114455469550128652}
   m_Layer: 0
   m_Name: GenjuroHero
   m_TagString: Player
@@ -125,9 +125,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 849841d0433fdf041b9592c70d8b7560, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 10
+  cost: 5
   target: {fileID: 0}
-  NpcTargetAttributes: []
 --- !u!114 &114155218341992806
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -139,9 +138,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15b0ddab0c701e94ab295f7b63dc0970, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 30
+  cost: 20
   target: {fileID: 0}
-  NpcTargetAttributes: []
 --- !u!114 &114191996681220228
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -155,7 +153,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 10
   target: {fileID: 0}
-  NpcTargetAttributes: []
 --- !u!114 &114264782463166122
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -169,6 +166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Health: 100
   Brave: 100
+  Rage: 0
   AttackCount: 0
   ComboCount: 0
   KillCount: 0
@@ -183,6 +181,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9a07630984c23e48a79079359aca64c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114455469550128652
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1858916847192298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2314f844e94bfab439bb166447e55447, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cost: 10
+  target: {fileID: 0}
 --- !u!114 &114567955020767244
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -230,21 +241,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 1
   target: {fileID: 0}
-  NpcTargetAttributes: []
---- !u!114 &114897450705592626
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1858916847192298}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2314f844e94bfab439bb166447e55447, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cost: 10
-  target: {fileID: 0}
-  NpcTargetAttributes: []
 --- !u!212 &212617807016556368
 SpriteRenderer:
   m_ObjectHideFlags: 1

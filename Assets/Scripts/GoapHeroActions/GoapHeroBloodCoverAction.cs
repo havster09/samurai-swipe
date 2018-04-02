@@ -34,15 +34,13 @@ namespace Assets.Scripts.GoapHeroActions
         public override bool perform(GameObject agent)
         {
             if (
-                NpcTargetAttributes.Count < 1 &&
                 GetActiveNpcAttributesComponentsInRange(gameObject, 4f) < 1 &&
-                NpcHeroAttributes.ComboCount > 0 &&
                 !HeroScript.NpcHeroAnimator.GetBool("heroBloodCover")
                 )
             {
                 HeroScript.BloodCover(true);
                 NpcIsDestroyedReset = true;
-                float coverBloodCountPauseDuration = Mathf.Round(NpcHeroAttributes.ComboCount);
+                float coverBloodCountPauseDuration = 5f;
                 HeroScript.WaitFor(() =>
                 {
                     HeroScript.BloodCover(false);

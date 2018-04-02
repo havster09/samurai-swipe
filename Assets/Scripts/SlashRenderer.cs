@@ -80,6 +80,7 @@ public class SlashRenderer : MonoBehaviour
 
     private void AddSlash()
     {
+        _goapHeroActionScript.ClearAllTargetsFromList();
         _lineRenderer.positionCount = _linePoints + 1;
         Vector3 mPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, SlashZPosition);
         _lineRenderer.SetPosition(_linePoints, Camera.main.ScreenToWorldPoint(mPosition));

@@ -25,6 +25,7 @@ namespace Assets.Scripts.GoapHeroActions
         public override bool requiresInRange()
         {
             return false;
+            // todo check if all enemy targets are dead
         }
 
         public override bool checkProceduralPrecondition(GameObject agent)

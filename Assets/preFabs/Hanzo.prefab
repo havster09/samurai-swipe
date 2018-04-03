@@ -137,7 +137,7 @@ MonoBehaviour:
   RunSpeed: 0
   HasWalkAbility: 0
   NpcAnimator: {fileID: 0}
-  NpcAttributes: {fileID: 0}
+  NpcAttribute: {fileID: 0}
   CanWalk: 1
   IsCelebrating: 0
 --- !u!114 &114127162461347048
@@ -153,6 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 1
   target: {fileID: 0}
+  HeroScript: {fileID: 0}
 --- !u!114 &114172263393424522
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -166,6 +167,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 1
   target: {fileID: 0}
+  HeroScript: {fileID: 0}
 --- !u!114 &114323605483184488
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -177,11 +179,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3eb470dd52a1bf44bb46e758c65d14d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  killCount: 0
-  attackCount: 0
-  brave: 0
-  health: 100
-  stamina: 100
+  KillCount: 0
+  AttackCount: 0
+  DefendCount: 2
+  Brave: 0
+  Health: 100
+  Stamina: 100
 --- !u!114 &114440178695945674
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -195,6 +198,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 1
   target: {fileID: 0}
+  HeroScript: {fileID: 0}
 --- !u!114 &114552490541089036
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -219,6 +223,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 1
   target: {fileID: 0}
+  HeroScript: {fileID: 0}
 --- !u!114 &114636809072535518
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -232,6 +237,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 10
   target: {fileID: 0}
+  HeroScript: {fileID: 0}
 --- !u!114 &114694377834436292
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -245,6 +251,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 10
   target: {fileID: 0}
+  HeroScript: {fileID: 0}
 --- !u!114 &114860592310309714
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -259,6 +266,7 @@ MonoBehaviour:
   NpcAttributes: {fileID: 0}
   MoveSpeed: 2
   EnemyScript: {fileID: 0}
+  NpcHeroAttributes: {fileID: 0}
   GoapAgentScript: {fileID: 0}
 --- !u!212 &212770613706250732
 SpriteRenderer:
@@ -269,6 +277,7 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -284,6 +293,7 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5

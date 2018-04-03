@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /**
@@ -133,16 +134,10 @@ public class GoapPlanner
 	 * Check that all items in 'test' are in 'state'. If just one does not match or is not there
 	 * then this returns false.
 	 */
-	private bool inState(HashSet<KeyValuePair<string,object>> test, HashSet<KeyValuePair<string,object>> state) {
+	private static bool inState(IEnumerable<KeyValuePair<string, object>> test, HashSet<KeyValuePair<string,object>> state) {
 		bool allMatch = true;
-		foreach (KeyValuePair<string,object> t in test) {
-			bool match = false;
-			foreach (KeyValuePair<string,object> s in state) {
-                if (s.Equals(t)) {
-					match = true;
-					break;
-				}
-			}
+		foreach (var t in test) {
+			bool match = Enumerable.Contains(state, t);
 		    if (!match)
 		    {
 		        allMatch = false;

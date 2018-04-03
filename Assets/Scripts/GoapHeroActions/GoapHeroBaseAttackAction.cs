@@ -9,6 +9,7 @@ namespace Assets.Scripts.GoapHeroActions
     {
         public GoapHeroBaseAttackAction()
         {
+            
             addEffect("destroyEnemyNpc", true);
             DistanceToTargetThreshold = .6f;
         }
@@ -36,8 +37,7 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool perform(GameObject agent)
         {
-            // todo duplicate script to call crossSword on action....add precondition for goap planner to use new action
-            Enemy enemyScript = target.GetComponent<Enemy>();
+            var enemyScript = target.GetComponent<Enemy>();
             if (
                 !HeroScript.IsAnimationPlaying("attack") &&
                 !HeroScript.IsAnimationPlaying("rest") &&

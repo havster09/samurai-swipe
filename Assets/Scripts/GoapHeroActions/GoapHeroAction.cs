@@ -7,11 +7,12 @@ namespace Assets.Scripts.GoapHeroActions
 {
     public class GoapHeroAction : GoapAction
     {
-        protected List<NpcAttributesComponent> NpcTargetAttributes;
+        protected static List<NpcAttributesComponent> NpcTargetAttributes;
         protected float MoveSpeed = 2;
         protected float DistanceToTargetThreshold = 1;
         protected float InRangeToTargetThreshold = 5f;
         protected bool NpcIsDestroyed;
+        protected bool HassCrossedSword;
         protected bool NpcIsDestroyedReset;
         protected Hero HeroScript;
         protected NpcAttributesComponent TargetNpcAttribute;
@@ -72,12 +73,12 @@ namespace Assets.Scripts.GoapHeroActions
             return FindNpcTarget(agent);
         }
 
-        public virtual bool FindNpcTarget(GameObject agent)
+        public bool FindNpcTarget(GameObject agent)
         {
             NpcAttributesComponent closest = null;
             float closestDist = 5f;
 
-            foreach (NpcAttributesComponent npc in NpcTargetAttributes)
+            foreach (var npc in NpcTargetAttributes)
             {
                 float dist = (npc.gameObject.transform.position - agent.transform.position).magnitude;
                 if (dist < closestDist && npc.Health > 0)
@@ -95,7 +96,7 @@ namespace Assets.Scripts.GoapHeroActions
             TargetNpcAttribute = closest;
             target = TargetNpcAttribute.gameObject;
 
-            return closest != null;
+            return true;
         }
 
         public override bool perform(GameObject agent)

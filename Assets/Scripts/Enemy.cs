@@ -37,7 +37,7 @@ namespace Assets.Scripts
             AttachAnimationClipEvents();
         }
 
-    
+
 
         private void AttachAnimationClipEvents()
         {
@@ -102,13 +102,6 @@ namespace Assets.Scripts
         private void EnemyBlockEndEventHandler()
         {
             NpcAnimator.speed = .8f;
-            WaitFor(() =>
-            {
-                if (NpcAnimator.GetBool("enemyBlock"))
-                {
-                    EnemyBlock(false);
-                }
-            }, 5f);
         }
 
         private void EnemyAttackOneEventHandler(string stringParameter)
@@ -219,12 +212,17 @@ namespace Assets.Scripts
             AttemptMove<Enemy>(xDir, yDir, _goapEnemyAction.target.transform, transform);
         }
 
-        public void MoveEnemyBack()
+        public void MoveEnemyBack(float to, float speed)
         {
-            float distance = _goapEnemyAction.target.transform.position.x > transform.position.x ? -2f : 2f;
+            float distance = _goapEnemyAction.target.transform.position.x > transform.position.x ? -to : to;
             Vector2 end = new Vector2(transform.position.x, 0) + new Vector2(distance, 0);
-            StartCoroutine(BlockMovement(end, NpcAttribute));
+            StartCoroutine(MovementTo(end, speed, NpcAttribute, () =>
+             {
+                 EnemyBlock(false);
+             }));
         }
+
+        // todo duplicate to move forwards when crossed swords
 
         public bool IsInWalkRange()
         {
@@ -267,7 +265,7 @@ namespace Assets.Scripts
             }
             rb2D.velocity = new Vector2(0, 0);
             NpcAnimator.SetFloat("enemyAttackJumpVertical", 0);
-            transform.position = new  Vector2(transform.position.x, 0f);
+            transform.position = new Vector2(transform.position.x, 0f);
         }
 
         protected override void OnCantMove<T>(T component)
@@ -282,7 +280,7 @@ namespace Assets.Scripts
 
         public void CrossSword(bool state)
         {
-            FaceTarget();            
+            FaceTarget();
             NpcAnimator.SetBool("enemyCrossSword", state);
         }
 
@@ -455,7 +453,7 @@ namespace Assets.Scripts
         {
             _slashRenderer.RemoveSlash();
             NpcAttribute.DefendCount -= 1;
-            MoveEnemyBack();
+            MoveEnemyBack(.35f, 5);
             if (!NpcAnimator.GetBool("enemyBlock"))
             {
                 EnemyBlock(true);

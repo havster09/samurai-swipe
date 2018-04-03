@@ -30,6 +30,7 @@ GameObject:
   - component: {fileID: 114191996681220228}
   - component: {fileID: 114154075046031688}
   - component: {fileID: 114155218341992806}
+  - component: {fileID: 114442440405982196}
   - component: {fileID: 114455469550128652}
   m_Layer: 0
   m_Name: GenjuroHero
@@ -169,6 +170,19 @@ MonoBehaviour:
   AttackCount: 0
   ComboCount: 0
   KillCount: 0
+--- !u!114 &114442440405982196
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1858916847192298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff4ecb611470a6644b1f52f34df67106, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cost: 1
+  target: {fileID: 0}
 --- !u!114 &114446266854294874
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -236,6 +250,7 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -251,6 +266,7 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5

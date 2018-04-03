@@ -19,8 +19,6 @@ namespace Assets.Scripts.GoapHeroTypes
             HeroScript = GetComponent<Hero>();
             GoapAgentScript = GetComponent<GoapAgent>();
             GoapHeroActionScript = GetComponent<GoapHeroAction>();
-
-            // todo randomize cost for alternate behaviour
         }
 
         public HashSet<KeyValuePair<string, object>> getWorldState()
@@ -57,7 +55,7 @@ namespace Assets.Scripts.GoapHeroTypes
 
         public void actionsFinished()
         {
-            Debug.Log("<color=blue>Hero Actions completed</color>");
+            Debug.Log("<color=blue>Hero Actions completed</color>");            
         }
 
         public void planAborted(GoapAction aborter)

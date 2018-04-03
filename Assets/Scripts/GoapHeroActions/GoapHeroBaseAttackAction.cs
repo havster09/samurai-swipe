@@ -36,6 +36,7 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool perform(GameObject agent)
         {
+            // todo duplicate script to call crossSword on action....add precondition for goap planner to use new action
             Enemy enemyScript = target.GetComponent<Enemy>();
             if (
                 !HeroScript.IsAnimationPlaying("attack") &&
@@ -73,11 +74,12 @@ namespace Assets.Scripts.GoapHeroActions
                 HeroScript.Attack(heroAttacks[Random.Range(0, heroAttacks.Count)], TargetNpcAttribute);
                 if (TargetNpcAttribute.DefendCount < 1)
                 {
-                    enemyScript.EnemyHitSuccess(damage);
+                    enemyScript.EnemyHitSuccess(damage);                    
                 }
                 else
                 {
                     enemyScript.EnemyHitFail();
+                    NpcHeroAttributes.Rage -= 1;
                 }
                 
                 NpcHeroAttributes.AttackCount += 1;
@@ -88,6 +90,7 @@ namespace Assets.Scripts.GoapHeroActions
                 NpcHeroAttributes.KillCount += 1;
                 NpcHeroAttributes.ComboCount += 1;
                 NpcTargetAttributes.Remove(TargetNpcAttribute);
+                NpcHeroAttributes.Rage += 5;
             }
 
             if (NpcTargetAttributes.Count < 1)

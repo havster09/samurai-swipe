@@ -40,10 +40,14 @@ namespace Assets.Scripts
             }
         }
 
+        public void CrossSword(bool state)
+        {
+            NpcHeroAnimator.SetBool("heroCrossSword", state);
+        }
+
         public void Attack(string attackType, NpcAttributesComponent targetNpcAttribute)
         {
             IsAttacking = true;
-            NpcHeroAttributes.Rage += 1;
             NpcHeroAnimator.SetTrigger(attackType);
         }
 

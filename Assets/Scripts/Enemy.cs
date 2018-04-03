@@ -280,6 +280,12 @@ namespace Assets.Scripts
             NpcAnimator.SetTrigger("enemyTaunt");
         }
 
+        public void CrossSword(bool state)
+        {
+            FaceTarget();            
+            NpcAnimator.SetBool("enemyCrossSword", state);
+        }
+
         public void EnemyBlock(bool state)
         {
             FaceTarget();

@@ -39,7 +39,17 @@ namespace Assets.Scripts.GoapHeroActions
             var enemyScript = target.GetComponent<Enemy>();
             HeroScript.CrossSword(true);
             enemyScript.CrossSword(true);
-            enemyScript.MoveEnemyBack(.1f, 1);
+
+            var to = .6f;
+            var speed = 5;
+
+            float distance = target.transform.position.x > transform.position.x ? to : -to;
+            Vector2 end = new Vector2(transform.position.x, 0) + new Vector2(distance, 0);
+            StartCoroutine(enemyScript.MovementTo(end, speed, TargetNpcAttribute, () =>
+            {
+                
+            }));
+
             return HassCrossedSword;
         }
     }

@@ -27,7 +27,7 @@ namespace Assets.Scripts
         public bool CanWalk = true;
         public bool IsCelebrating;
 
-        void Awake()
+        private void Awake()
         {
             _goapHeroActionScript = GameObject.FindObjectOfType<GoapHeroAction>();
             _slashRenderer = GameObject.FindObjectOfType<SlashRenderer>();
@@ -280,7 +280,6 @@ namespace Assets.Scripts
 
         public void CrossSword(bool state)
         {
-            FaceTarget();
             NpcAnimator.SetBool("enemyCrossSword", state);
         }
 
@@ -492,6 +491,7 @@ namespace Assets.Scripts
         public override bool IsFrozenPosition()
         {
             if (
+                NpcAnimator.GetBool("enemyCrossSword") ||
                 IsAttacking.Equals(true) ||
                 IsTaunting.Equals(true) ||
                 IsDead.Equals(true) ||
@@ -527,7 +527,7 @@ namespace Assets.Scripts
             return null; // no clip by that name
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             IsAttacking = false;
             IsTaunting = false;

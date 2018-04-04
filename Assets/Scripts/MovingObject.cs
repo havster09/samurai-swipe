@@ -73,15 +73,19 @@ public abstract class MovingObject : MonoBehaviour
         }
     }
 
-    protected IEnumerator MovementTo(Vector3 end, float speed, NpcAttributesComponent npcAttribute, Action callback)
+    public IEnumerator MovementTo(Vector3 end, float speed, NpcAttributesComponent npcAttribute, Action callback = null, float callbackDuration = 1f)
     {
         while (Vector2.Distance(transform.position, end) > .01f || npcAttribute.Health < 1)
         {
-            Vector3 newPostion = Vector3.MoveTowards(rb2D.position, end, speed * Time.deltaTime);
+            var step = speed * Time.deltaTime;
+            Vector3 newPostion = Vector3.MoveTowards(rb2D.position, end, step);
             rb2D.MovePosition(newPostion);
             yield return new WaitForFixedUpdate();
         }
-        WaitFor(callback, 1f);
+        if (callback != null)
+        {
+            WaitFor(callback, callbackDuration);
+        }
     }
 
     protected virtual void AttemptMove<T>(float xDir, float yDir, Transform target, Transform movingObject)

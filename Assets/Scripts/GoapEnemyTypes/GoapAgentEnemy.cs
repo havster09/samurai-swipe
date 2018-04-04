@@ -64,18 +64,18 @@ namespace Assets.Scripts.GoapEnemyTypes
 
         public virtual bool moveAgent(GoapAction nextAction)
         {
-            float step = MoveSpeed * Time.deltaTime;
-            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, nextAction.target.transform.position, step);
+            if(!EnemyScript.IsFrozenPosition())
+            {
+                float step = MoveSpeed * Time.deltaTime;
+                gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, nextAction.target.transform.position, step);
 
-            if (gameObject.transform.position.Equals(nextAction.target.transform.position))
-            {
-                nextAction.setInRange(true);
-                return true;
+                if (gameObject.transform.position.Equals(nextAction.target.transform.position))
+                {
+                    nextAction.setInRange(true);
+                    return true;
+                }
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
     }
 }

@@ -74,6 +74,7 @@ namespace Assets.Scripts
         public override bool IsFrozenPosition()
         {
             return NpcHeroAnimator.GetBool("heroBloodCover") ||
+                   NpcHeroAnimator.GetBool("heroCrossSword") ||
                    IsAnimationPlaying("rest") ||
                    NpcHeroAnimator.GetBool("heroTurnPause");
         }

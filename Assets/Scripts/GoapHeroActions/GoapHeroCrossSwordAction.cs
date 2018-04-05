@@ -9,23 +9,29 @@ namespace Assets.Scripts.GoapHeroActions
     {
         public GoapHeroCrossSwordAction()
         {
+            addPrecondition("crossSword", false);
             addEffect("crossSword", true);
             DistanceToTargetThreshold = .6f;
+            TotalMovementDistance = 0;
         }
 
         public override void reset()
         {
-            HassCrossedSword = false;
+            HasCrossedSword = false;
             TargetNpcAttribute = null;
         }
 
         public override bool isDone()
         {
-            return HassCrossedSword;
+            return HasCrossedSword;
         }
 
         public override bool requiresInRange()
         {
+            if (IsPerforming)
+            {
+                return false;
+            }
             return true;
         }
 
@@ -36,21 +42,45 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool perform(GameObject agent)
         {
+            var forward = Random.Range(0, 10) < 3;
+            IsPerforming = true;
             var enemyScript = target.GetComponent<Enemy>();
-            HeroScript.CrossSword(true);
-            enemyScript.CrossSword(true);
 
-            var to = .6f;
-            var speed = 5;
-
-            float distance = target.transform.position.x > transform.position.x ? to : -to;
-            Vector2 end = new Vector2(transform.position.x, 0) + new Vector2(distance, 0);
-            StartCoroutine(enemyScript.MovementTo(end, speed, TargetNpcAttribute, () =>
+            if (!HeroScript.NpcHeroAnimator.GetBool("heroCrossSword") && Mathf.Abs(TotalMovementDistance) < 50)
             {
-                
-            }));
+                HeroScript.CrossSword(true);
+                enemyScript.CrossSword(true);
+            }
 
-            return HassCrossedSword;
+            if (Mathf.Abs(TotalMovementDistance) > 50)
+            {
+                HeroScript.CrossSword(false);
+                enemyScript.CrossSword(false);
+                HasCrossedSword = true;
+            }
+            else
+            {
+                SetCrossSwordMovement(enemyScript, HeroScript, forward);
+            }
+            return HasCrossedSword;
+        }
+
+        private void SetCrossSwordMovement(Enemy enemyScript, Hero heroScript, bool forward)
+        {
+            Vector2 end;
+            if (forward)
+            {
+                TotalMovementDistance--;
+                end = new Vector2(transform.position.x, 0) - new Vector2(TotalMovementDistance, 0);
+            }
+            else
+            {
+                TotalMovementDistance++;
+                end = new Vector2(transform.position.x, 0) + new Vector2(TotalMovementDistance, 0);
+            }
+            var speed = Random.Range(0, 2);
+            StartCoroutine(enemyScript.PerformMovementTo(end, speed, TargetNpcAttribute));
+            StartCoroutine(heroScript.PerformMovementTo(end, speed, TargetNpcAttribute));
         }
     }
 }

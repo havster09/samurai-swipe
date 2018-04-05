@@ -11,6 +11,7 @@ public abstract class GoapAction : MonoBehaviour {
 	private HashSet<KeyValuePair<string,object>> effects;
 
 	private bool inRange;
+    protected float TotalMovementDistance;
 
 	/* The cost of performing the action. 
 	 * Figure out a weight that suits the action. 

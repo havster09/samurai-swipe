@@ -16,7 +16,7 @@ namespace Assets.Scripts
 
         public Animator NpcAnimator;
         private GoapEnemyAction _goapEnemyAction;
-        private bool _enemyFlipX;
+        public bool EnemyFlipX;
         private GameObject _headFromPool;
         private SlashRenderer _slashRenderer;
         public NpcAttributesComponent NpcAttribute;
@@ -161,15 +161,15 @@ namespace Assets.Scripts
         {
             float targetDistance = _goapEnemyAction.target.transform.position.x - transform.position.x;
 
-            if (targetDistance < 0 && _enemyFlipX == false)
+            if (targetDistance < 0 && EnemyFlipX == false)
             {
                 transform.localRotation = Quaternion.Euler(0, 180, 0);
-                _enemyFlipX = true;
+                EnemyFlipX = true;
             }
-            else if (targetDistance > 0 && _enemyFlipX)
+            else if (targetDistance > 0 && EnemyFlipX)
             {
                 transform.localRotation = Quaternion.Euler(0, 0, 0);
-                _enemyFlipX = false;
+                EnemyFlipX = false;
             }
         }
 
@@ -216,7 +216,7 @@ namespace Assets.Scripts
         {
             float distance = _goapEnemyAction.target.transform.position.x > transform.position.x ? -to : to;
             Vector2 end = new Vector2(transform.position.x, 0) + new Vector2(distance, 0);
-            StartCoroutine(MovementTo(end, speed, NpcAttribute, () =>
+            StartCoroutine(PerformMovementTo(end, speed, NpcAttribute, () =>
              {
                  EnemyBlock(false);
              }));
@@ -242,7 +242,7 @@ namespace Assets.Scripts
 
         public void JumpAttack()
         {
-            rb2D.velocity = new Vector2(_enemyFlipX ? -2f : 2f, 6f);
+            rb2D.velocity = new Vector2(EnemyFlipX ? -2f : 2f, 6f);
             NpcAnimator.SetFloat("enemyAttackJumpVertical", 1f);
             StartCoroutine("EnemyAttackJumpVertical");
         }
@@ -281,6 +281,10 @@ namespace Assets.Scripts
         public void CrossSword(bool state)
         {
             NpcAnimator.SetBool("enemyCrossSword", state);
+            if (state)
+            {
+                _slashRenderer.RemoveSlash();
+            }
         }
 
         public void EnemyBlock(bool state)
@@ -367,7 +371,7 @@ namespace Assets.Scripts
         {
             NpcAnimator.SetBool("enemyDecapitationBody", true);
             Vector2 start = transform.position;
-            float distance = _enemyFlipX ? .25f : -.25f;
+            float distance = EnemyFlipX ? .25f : -.25f;
             Vector2 end = start + new Vector2(distance, 0);
             StartCoroutine(SmoothMovement(end));
             string headString = Utilities.ReplaceClone(name) + "Head";

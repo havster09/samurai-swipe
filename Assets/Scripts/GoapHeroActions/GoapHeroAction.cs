@@ -12,7 +12,7 @@ namespace Assets.Scripts.GoapHeroActions
         protected float DistanceToTargetThreshold = 1;
         protected float InRangeToTargetThreshold = 5f;
         protected bool NpcIsDestroyed;
-        protected bool HassCrossedSword;
+        protected bool HasCrossedSword;
         protected bool NpcIsDestroyedReset;
         protected Hero HeroScript;
         protected NpcAttributesComponent TargetNpcAttribute;

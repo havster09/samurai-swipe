@@ -73,9 +73,9 @@ public abstract class MovingObject : MonoBehaviour
         }
     }
 
-    public IEnumerator MovementTo(Vector3 end, float speed, NpcAttributesComponent npcAttribute, Action callback = null, float callbackDuration = 1f)
+    public IEnumerator PerformMovementTo(Vector3 end, float speed, NpcAttributesComponent npcAttribute, Action callback = null, float callbackDuration = 1f)
     {
-        while (Vector2.Distance(transform.position, end) > .01f || npcAttribute.Health < 1)
+        while (Vector2.Distance(transform.position, end) > .01f && npcAttribute.Health > 0)
         {
             var step = speed * Time.deltaTime;
             Vector3 newPostion = Vector3.MoveTowards(rb2D.position, end, step);

@@ -56,6 +56,11 @@ namespace Assets.Scripts.GoapEnemyActions
             }
             else
             {
+                if(EnemyScript.NpcAnimator.GetBool("enemyCrossSword"))
+                {
+                    return false; //todo refactor movement to a shared method between hero and enemy
+                }
+
                 if (EnemyScript.NpcAnimator.GetBool("enemyRun"))
                 {
                     EnemyScript.NpcAnimator.SetBool("enemyRun", false);

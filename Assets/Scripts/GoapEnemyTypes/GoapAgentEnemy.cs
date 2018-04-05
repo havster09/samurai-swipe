@@ -42,7 +42,7 @@ namespace Assets.Scripts.GoapEnemyTypes
 
         public virtual void planFailed(HashSet<KeyValuePair<string, object>> failedGoal)
         {
-            Debug.Log("Unhandled plan Failed");
+            Debug.Log("<color=red>Enemy Unhandled plan Failed</color> " + failedGoal);
             GoapAgentScript.createIdleState();
         }
 
@@ -64,16 +64,14 @@ namespace Assets.Scripts.GoapEnemyTypes
 
         public virtual bool moveAgent(GoapAction nextAction)
         {
-            if(!EnemyScript.IsFrozenPosition())
-            {
-                float step = MoveSpeed * Time.deltaTime;
-                gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, nextAction.target.transform.position, step);
+            if (EnemyScript.IsFrozenPosition()) return false;
+            float step = MoveSpeed * Time.deltaTime;
+            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, nextAction.target.transform.position, step);
 
-                if (gameObject.transform.position.Equals(nextAction.target.transform.position))
-                {
-                    nextAction.setInRange(true);
-                    return true;
-                }
+            if (gameObject.transform.position.Equals(nextAction.target.transform.position))
+            {
+                nextAction.setInRange(true);
+                return true;
             }
             return false;
         }

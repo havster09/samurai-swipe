@@ -37,6 +37,7 @@ namespace Assets.Scripts.GoapHeroTypes
         public HashSet<KeyValuePair<string, object>> createGoalState()
         {
             HashSet<KeyValuePair<string, object>> goal = new HashSet<KeyValuePair<string, object>>();
+            goal.Add(new KeyValuePair<string, object>("crossSword", true));
             goal.Add(new KeyValuePair<string, object>("destroyEnemyNpc", true));
             goal.Add(new KeyValuePair<string, object>("bloodCover", true));
             goal.Add(new KeyValuePair<string, object>("wipeBlood", true));

@@ -9,7 +9,6 @@ namespace Assets.Scripts.GoapHeroActions
     {
         public GoapHeroBaseAttackAction()
         {
-            addPrecondition("crossSword", true);
             addEffect("destroyEnemyNpc", true);
             DistanceToTargetThreshold = .6f;
         }

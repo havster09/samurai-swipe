@@ -43,6 +43,10 @@ namespace Assets.Scripts
         public void CrossSword(bool state)
         {
             NpcHeroAnimator.SetBool("heroCrossSword", state);
+            if (!state)
+            {
+                NpcHeroAnimator.Play("genjuroAttackFive");
+            }
         }
 
         public void Attack(string attackType, NpcAttributesComponent targetNpcAttribute)

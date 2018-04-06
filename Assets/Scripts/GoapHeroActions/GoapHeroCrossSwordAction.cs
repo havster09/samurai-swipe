@@ -46,16 +46,23 @@ namespace Assets.Scripts.GoapHeroActions
             IsPerforming = true;
             var enemyScript = target.GetComponent<Enemy>();
 
-            if (!HeroScript.NpcHeroAnimator.GetBool("heroCrossSword") && Mathf.Abs(TotalMovementDistance) < 50)
+            if (!HeroScript.NpcHeroAnimator.GetBool("heroCrossSword") && Mathf.Abs(TotalMovementDistance) < 10)
             {
                 HeroScript.CrossSword(true);
                 enemyScript.CrossSword(true);
+
+                var targetCrossSwordPosition = enemyScript.EnemyFlipX ? DistanceToTargetThreshold : -DistanceToTargetThreshold;
+                target.gameObject.transform.position = new Vector2(
+                    gameObject.transform.position.x + targetCrossSwordPosition,
+                    0
+                    );
             }
 
-            if (Mathf.Abs(TotalMovementDistance) > 50)
+            if (Mathf.Abs(TotalMovementDistance) > 10)
             {
                 HeroScript.CrossSword(false);
                 enemyScript.CrossSword(false);
+                IsPerforming = false;
                 HasCrossedSword = true;
             }
             else

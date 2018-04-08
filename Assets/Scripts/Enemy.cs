@@ -2,6 +2,7 @@
 using Assets.Scripts.GoapAttributeComponents;
 using Assets.Scripts.GoapEnemyActions;
 using Assets.Scripts.GoapHeroActions;
+using NUnit.Framework;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -20,12 +21,13 @@ namespace Assets.Scripts
         private GameObject _headFromPool;
         private SlashRenderer _slashRenderer;
         public NpcAttributesComponent NpcAttribute;
-        public bool IsHit { get; set; }
         public bool IsTaunting { get; set; }
         public bool IsAttacking { get; set; }
         public bool IsDead { get; set; }
-        public bool CanWalk = true;
+        public bool IsCanWalk = true;
         public bool IsCelebrating;
+
+        private Coroutine _moveEnemyCoroutine;
 
         private void Awake()
         {
@@ -142,12 +144,12 @@ namespace Assets.Scripts
 
         private void EnemyWalkEventHandler()
         {
-            WaitFor(() => CanWalk = true, 3f);
+            WaitFor(() => IsCanWalk = true, 3f);
         }
 
         private void EnemyWalkBackEventHandler()
         {
-            WaitFor(() => CanWalk = true, 4f);
+            WaitFor(() => IsCanWalk = true, 4f);
         }
 
         protected override void OnEnable()
@@ -173,11 +175,6 @@ namespace Assets.Scripts
             }
         }
 
-        protected override void AttemptMove<T>(float xDir, float yDir, Transform target, Transform movingObject)
-        {
-            base.AttemptMove<T>(xDir, yDir, target, movingObject);
-        }
-
         public void MoveEnemy()
         {
             if (!NpcAnimator.GetBool("enemyRun"))
@@ -191,8 +188,7 @@ namespace Assets.Scripts
             }
 
             float xDir = 0;
-            float yDir = 0;
-            CanWalk = false;
+            IsCanWalk = false;
 
             bool walkBackwards = Random.Range(0, 5) < 2 && Utilities.ReplaceClone(name) != "Ukyo";
             if (!walkBackwards)
@@ -207,42 +203,39 @@ namespace Assets.Scripts
                 NpcAttribute.Brave += 1;
             }
 
-
-            Debug.DrawLine(_goapEnemyAction.target.transform.position, transform.position, Color.red);
-            AttemptMove<Enemy>(xDir, yDir, _goapEnemyAction.target.transform, transform);
+            Vector2 end = new Vector2(transform.position.x, 0) + new Vector2(xDir, 0);
+            StartCoroutine(PerformMovementTo(end, .8f, NpcAttribute));
         }
 
         public void MoveEnemyBack(float to, float speed)
         {
             float distance = _goapEnemyAction.target.transform.position.x > transform.position.x ? -to : to;
             Vector2 end = new Vector2(transform.position.x, 0) + new Vector2(distance, 0);
-            StartCoroutine(PerformMovementTo(end, speed, NpcAttribute, () =>
+            StartCoroutine(PerformMovementTo(end, speed, NpcAttribute, true,() =>
              {
                  EnemyBlock(false);
              }));
         }
 
-        // todo duplicate to move forwards when crossed swords
-
         public bool IsInWalkRange()
         {
-            return Mathf.Abs(Vector3.Distance(_goapEnemyAction.target.transform.transform.position, transform.position)) < maxWalkRange;
+            return Mathf.Abs(Vector3.Distance(_goapEnemyAction.target.transform.transform.position, transform.position)) < MaxWalkRange;
         }
 
         public bool IsInCombatRange()
         {
-            return Mathf.Abs(Vector3.Distance(_goapEnemyAction.target.transform.transform.position, transform.position)) < maxCombatRange;
+            return Mathf.Abs(Vector3.Distance(_goapEnemyAction.target.transform.transform.position, transform.position)) < MaxCombatRange;
         }
 
         public void StopEnemyVelocity()
         {
             NpcAnimator.SetBool("enemyRun", false);
-            rb2D.velocity = new Vector2(0f, rb2D.velocity.y);
+            Rb2D.velocity = new Vector2(0f, Rb2D.velocity.y);
         }
 
         public void JumpAttack()
         {
-            rb2D.velocity = new Vector2(EnemyFlipX ? -2f : 2f, 6f);
+            Rb2D.velocity = new Vector2(EnemyFlipX ? -2f : 2f, 6f);
             NpcAnimator.SetFloat("enemyAttackJumpVertical", 1f);
             StartCoroutine("EnemyAttackJumpVertical");
         }
@@ -260,10 +253,10 @@ namespace Assets.Scripts
         {
             while (transform.position.y > 0)
             {
-                rb2D.velocity = new Vector2(rb2D.velocity.x, -8f);
+                Rb2D.velocity = new Vector2(Rb2D.velocity.x, -8f);
                 yield return new WaitForFixedUpdate();
             }
-            rb2D.velocity = new Vector2(0, 0);
+            Rb2D.velocity = new Vector2(0, 0);
             NpcAnimator.SetFloat("enemyAttackJumpVertical", 0);
             transform.position = new Vector2(transform.position.x, 0f);
         }
@@ -284,6 +277,11 @@ namespace Assets.Scripts
             if (state)
             {
                 _slashRenderer.RemoveSlash();
+                IsCross = true;
+            }
+            else
+            {
+                IsCross = false;
             }
         }
 
@@ -293,6 +291,7 @@ namespace Assets.Scripts
             if (!state)
             {
                 NpcAnimator.speed = 1;
+                IsBlock = false;
             }
             NpcAnimator.SetBool("enemyBlock", state);
         }
@@ -373,7 +372,7 @@ namespace Assets.Scripts
             Vector2 start = transform.position;
             float distance = EnemyFlipX ? .25f : -.25f;
             Vector2 end = start + new Vector2(distance, 0);
-            StartCoroutine(SmoothMovement(end));
+            StartCoroutine(PerformMovementGeneral(end));
             string headString = Utilities.ReplaceClone(name) + "Head";
             _headFromPool = ObjectPooler.SharedInstance.GetPooledObject("BodyPart", headString);
             int randomDecapitationIndex = Random.Range(0, ObjectPooler.SharedInstance.bloodDecapitationEffects.Length);
@@ -398,7 +397,7 @@ namespace Assets.Scripts
                 elapsedWaitTime++;
             }
             StartCoroutine(WaitToRespawn(.5f));
-            StartCoroutine(Utilities.FadeOut(spriteRenderer, .5f));
+            StartCoroutine(Utilities.FadeOut(SpriteRenderer, .5f));
             yield return null;
         }
 
@@ -440,7 +439,6 @@ namespace Assets.Scripts
         public void EnemyHitSuccess(int damage)
         {
             _slashRenderer.RemoveSlash();
-
             if (NpcAnimator.GetBool("enemyBlock"))
             {
                 EnemyBlock(false);
@@ -456,10 +454,11 @@ namespace Assets.Scripts
         {
             _slashRenderer.RemoveSlash();
             NpcAttribute.DefendCount -= 1;
-            MoveEnemyBack(.35f, 5);
+            MoveEnemyBack(.35f, 3);
             if (!NpcAnimator.GetBool("enemyBlock"))
             {
                 EnemyBlock(true);
+                IsBlock = true;
             }
             else
             {
@@ -494,8 +493,7 @@ namespace Assets.Scripts
 
         public override bool IsFrozenPosition()
         {
-            if (
-                NpcAnimator.GetBool("enemyCrossSword") ||
+            if (                
                 IsAttacking.Equals(true) ||
                 IsTaunting.Equals(true) ||
                 IsDead.Equals(true) ||
@@ -533,11 +531,19 @@ namespace Assets.Scripts
 
         private void OnDisable()
         {
+            Reset();
+        }
+
+        private void Reset()
+        {
             IsAttacking = false;
             IsTaunting = false;
             IsDead = false;
             IsCelebrating = false;
             IsHit = false;
+            IsBlock = false;
+            IsCanWalk = true;
+            IsCross = false;
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Assets.Scripts.GoapEnemyActions
             float distanceFromTarget = Vector2.Distance(gameObject.transform.position, target.transform.position);
             if (distanceFromTarget > 2 &&
                 !EnemyScript.IsAnimationPlaying("attack") &&
-                !EnemyScript.IsAnimationPlaying("walk") && EnemyScript.CanWalk)
+                !EnemyScript.IsAnimationPlaying("walk") && EnemyScript.IsCanWalk)
             {
                 GoapAgentSearchAndDestroyRun();
                 return false;
@@ -35,7 +35,7 @@ namespace Assets.Scripts.GoapEnemyActions
                     setInRange(true);
                     return true;
                 }
-                else if (EnemyScript.IsAnimationPlaying("idle") && EnemyScript.CanWalk)
+                else if (EnemyScript.IsAnimationPlaying("idle") && EnemyScript.IsCanWalk)
                 {
                     EnemyScript.MoveEnemy();
                     return false;

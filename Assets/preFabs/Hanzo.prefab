@@ -126,17 +126,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6efe757e477eebd4899df551a92cd20e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveTime: 1
-  blockingLayer:
+  MoveTime: 0.1
+  BlockingLayer:
     serializedVersion: 2
     m_Bits: 0
-  maxCombatRange: 1.5
-  maxWalkRange: 6
-  spriteRenderer: {fileID: 0}
+  MaxCombatRange: 0
+  MaxWalkRange: 0
+  SpriteRenderer: {fileID: 0}
+  Rb2D: {fileID: 0}
   PlayerDamage: 0
   RunSpeed: 0
   HasWalkAbility: 0
   NpcAnimator: {fileID: 0}
+  EnemyFlipX: 0
   NpcAttribute: {fileID: 0}
   CanWalk: 1
   IsCelebrating: 0
@@ -235,7 +237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baec37c103c027445968673ebb5a9368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 10
+  cost: 1
   target: {fileID: 0}
   HeroScript: {fileID: 0}
 --- !u!114 &114694377834436292

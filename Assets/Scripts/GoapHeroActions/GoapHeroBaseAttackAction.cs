@@ -15,6 +15,11 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override void reset()
         {
+            if (Random.Range(0, 10) < 5)
+            {
+                addPrecondition("crossSword", true);
+            }
+
             NpcIsDestroyed = false;
             TargetNpcAttribute = null;
         }
@@ -39,6 +44,7 @@ namespace Assets.Scripts.GoapHeroActions
             var enemyScript = target.GetComponent<Enemy>();
             if (
                 !HeroScript.IsAnimationPlaying("attack") &&
+                !HeroScript.IsAnimationPlaying("cross") &&
                 !HeroScript.IsAnimationPlaying("rest") &&
                 !enemyScript.IsDead
                 )
@@ -69,18 +75,18 @@ namespace Assets.Scripts.GoapHeroActions
                     });
                     damage = 100;
                 }
-                
+
                 HeroScript.Attack(heroAttacks[Random.Range(0, heroAttacks.Count)], TargetNpcAttribute);
                 if (TargetNpcAttribute.DefendCount < 1)
                 {
-                    enemyScript.EnemyHitSuccess(damage);                    
+                    enemyScript.EnemyHitSuccess(damage);
                 }
                 else
                 {
                     enemyScript.EnemyHitFail();
                     NpcHeroAttributes.Rage -= 1;
                 }
-                
+
                 NpcHeroAttributes.AttackCount += 1;
             }
 

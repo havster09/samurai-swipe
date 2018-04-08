@@ -5,15 +5,19 @@ using Assets.Scripts.GoapAttributeComponents;
 
 public abstract class MovingObject : MonoBehaviour
 {
-    public float moveTime = 0.1f;           
-    public LayerMask blockingLayer;         
-    public float maxCombatRange;
-    public float maxWalkRange;
-    public SpriteRenderer spriteRenderer;
+    public bool IsHit { get; set; }
+    public bool IsCross = false;
+    public bool IsBlock = false;
+    public float MoveTime = 0.1f;           
+    public LayerMask BlockingLayer;         
+    public float MaxCombatRange;
+    public float MaxWalkRange;
+    public SpriteRenderer SpriteRenderer;
 
-    private BoxCollider2D boxCollider;      
-    protected Rigidbody2D rb2D;             
-    private float inverseMoveTime;    
+    private BoxCollider2D _boxCollider;      
+    public Rigidbody2D Rb2D;             
+    private float _inverseMoveTime;
+    public bool IsMoving { get; set; }
 
     protected virtual void Start()
     {
@@ -22,11 +26,11 @@ public abstract class MovingObject : MonoBehaviour
 
     protected virtual void OnEnable()
     {
-        boxCollider = GetComponent<BoxCollider2D>();
-        rb2D = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        inverseMoveTime = 1.1f / moveTime;
-        Utilities.ResetSpriteAlpha(spriteRenderer);
+        _boxCollider = GetComponent<BoxCollider2D>();
+        Rb2D = GetComponent<Rigidbody2D>();
+        SpriteRenderer = GetComponent<SpriteRenderer>();
+        _inverseMoveTime = 1.1f / MoveTime;
+        Utilities.ResetSpriteAlpha(SpriteRenderer);
     }
 
     protected virtual void OnDisable()
@@ -34,70 +38,44 @@ public abstract class MovingObject : MonoBehaviour
         
     }
 
-
-    protected bool Move(float xDir, float yDir, out RaycastHit2D hit, Transform target, Transform movingObject)
+    protected IEnumerator PerformMovementGeneral(Vector3 end)
     {
-        Vector2 start = transform.position;
-
-        Vector2 end = start + new Vector2(xDir, yDir);
-
-        boxCollider.enabled = false;
-
-        hit = Physics2D.Linecast(start, end, blockingLayer); // todo reuse for projectile attack
-
-        boxCollider.enabled = true;
-
-        if (hit.transform == null)
-        {
-            StartCoroutine(SmoothMovement(end));
-            return true;
-        }
-        return false;
-    }
-
-
-    protected IEnumerator SmoothMovement(Vector3 end)
-    {
-        if (IsFrozenPosition())
-        {
-            yield break;
-        }
         float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
-
         while (sqrRemainingDistance > float.Epsilon && !IsFrozenPosition())
         {
-            Vector3 newPostion = Vector3.MoveTowards(rb2D.position, end, inverseMoveTime * Time.deltaTime);
-            rb2D.MovePosition(newPostion);
+            Vector3 newPostion = Vector3.MoveTowards(Rb2D.position, end, _inverseMoveTime * Time.deltaTime);
+            Rb2D.MovePosition(newPostion);
             sqrRemainingDistance = (transform.position - end).sqrMagnitude;
             yield return null;
         }
     }
 
-    public IEnumerator PerformMovementTo(Vector3 end, float speed, NpcAttributesComponent npcAttribute, Action callback = null, float callbackDuration = 1f)
+    public IEnumerator PerformMovementTo(Vector3 end, float speed, NpcAttributesComponent npcAttribute, bool force = false, Action callback = null, float callbackDuration = 1f)
     {
-        while (Vector2.Distance(transform.position, end) > .01f && npcAttribute.Health > 0)
+        if (IsFrozenPosition() && !force)
+        {
+            yield break;
+        }
+
+        while (
+            Vector2.Distance(transform.position, end) > .01f &&
+            npcAttribute.Health > 0 &&
+            IsHit == false &&
+            IsBlock == false &&
+            IsCross == false
+            )
         {
             var step = speed * Time.deltaTime;
-            Vector3 newPostion = Vector3.MoveTowards(rb2D.position, end, step);
-            rb2D.MovePosition(newPostion);
+            Vector3 newPostion = Vector3.MoveTowards(Rb2D.position, end, step);
+            Rb2D.MovePosition(newPostion);
+            IsMoving = true;
             yield return new WaitForFixedUpdate();
         }
         if (callback != null)
         {
             WaitFor(callback, callbackDuration);
         }
-    }
-
-    protected virtual void AttemptMove<T>(float xDir, float yDir, Transform target, Transform movingObject)
-        where T : Component
-    {
-        RaycastHit2D hit;
-        bool canMove = Move(xDir, yDir, out hit, target, movingObject);
-
-        if (!canMove)
-        {
-            OnCantMove(target);
-        }
+        IsMoving = false;
     }
 
     public abstract bool IsFrozenPosition(); 

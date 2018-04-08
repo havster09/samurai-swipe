@@ -10,6 +10,7 @@ TagManager:
   - Background
   - BodyParts
   - SlashCollider
+  - BackgroundProps
   layers:
   - Default
   - TransparentFX
@@ -46,6 +47,9 @@ TagManager:
   m_SortingLayers:
   - name: Background
     uniqueID: 2016958415
+    locked: 0
+  - name: Background Props
+    uniqueID: 4148092715
     locked: 0
   - name: Default
     uniqueID: 0

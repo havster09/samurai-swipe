@@ -6,8 +6,6 @@ using Assets.Scripts.GoapAttributeComponents;
 public abstract class MovingObject : MonoBehaviour
 {
     public bool IsHit { get; set; }
-    public bool IsCross = false;
-    public bool IsBlock = false;
     public float MoveTime = 0.1f;           
     public LayerMask BlockingLayer;         
     public float MaxCombatRange;
@@ -17,7 +15,7 @@ public abstract class MovingObject : MonoBehaviour
     private BoxCollider2D _boxCollider;      
     public Rigidbody2D Rb2D;             
     private float _inverseMoveTime;
-    public bool IsMoving { get; set; }
+    public bool IsCoroutineMoving { get; set; }
 
     protected virtual void Start()
     {
@@ -57,25 +55,19 @@ public abstract class MovingObject : MonoBehaviour
             yield break;
         }
 
-        while (
-            Vector2.Distance(transform.position, end) > .01f &&
-            npcAttribute.Health > 0 &&
-            IsHit == false &&
-            IsBlock == false &&
-            IsCross == false
-            )
+        while (Vector2.Distance(transform.position, end) > .01f)
         {
             var step = speed * Time.deltaTime;
             Vector3 newPostion = Vector3.MoveTowards(Rb2D.position, end, step);
             Rb2D.MovePosition(newPostion);
-            IsMoving = true;
+            IsCoroutineMoving = true;
             yield return new WaitForFixedUpdate();
         }
         if (callback != null)
         {
             WaitFor(callback, callbackDuration);
         }
-        IsMoving = false;
+        IsCoroutineMoving = false;
     }
 
     public abstract bool IsFrozenPosition(); 

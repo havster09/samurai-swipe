@@ -424,7 +424,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemsToPool:
-  - amountToPool: 1
+  - amountToPool: 2
     objectToPool: {fileID: 1662671873553116, guid: 7b17081931e49a046b8c51148a18009b,
       type: 2}
     shouldExpand: 0
@@ -436,7 +436,7 @@ MonoBehaviour:
     objectToPool: {fileID: 1110474289633428, guid: ebd731446439f804ebfdee98622af00f,
       type: 2}
     shouldExpand: 0
-  - amountToPool: 1
+  - amountToPool: 4
     objectToPool: {fileID: 1442982838751068, guid: 66c1ced9e6e7a9b488a3c87f6ab25743,
       type: 2}
     shouldExpand: 0

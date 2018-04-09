@@ -38,13 +38,22 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool checkProceduralPrecondition(GameObject agent)
         {
-            return FindNpcTarget(agent);
+            if (!target)
+            {
+                return FindNpcTarget(agent);
+            }
+            return target;
         }
 
         public override bool perform(GameObject agent)
         {
             IsPerforming = true;
             var enemyScript = target.GetComponent<Enemy>();
+
+            if (enemyScript.MoveEnemyCoroutine != null)
+            {
+                enemyScript.StopCoroutine(enemyScript.MoveEnemyCoroutine);
+            }
 
             if (!HeroScript.NpcHeroAnimator.GetBool("heroCrossSword") && Mathf.Abs(TotalMovementDistance) < _maxMovementDistance)
             {
@@ -82,7 +91,7 @@ namespace Assets.Scripts.GoapHeroActions
         private void SetCrossSwordMovement(MovingObject enemyScript, MovingObject heroScript)
         {
             TotalMovementDistance++;
-            var velocity = Random.Range(-3, 3);
+            var velocity = Random.Range(-5, 5);
             heroScript.Rb2D.velocity = new Vector2(velocity, 0);
             enemyScript.Rb2D.velocity = new Vector2(velocity, 0);
         }

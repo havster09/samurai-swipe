@@ -27,7 +27,8 @@ namespace Assets.Scripts
         public bool IsCanWalk = true;
         public bool IsCelebrating;
 
-        private Coroutine _moveEnemyCoroutine;
+        public Coroutine MoveEnemyCoroutine;
+        public Coroutine MoveEnemyBackCoroutine;
 
         private void Awake()
         {
@@ -204,14 +205,17 @@ namespace Assets.Scripts
             }
 
             Vector2 end = new Vector2(transform.position.x, 0) + new Vector2(xDir, 0);
-            StartCoroutine(PerformMovementTo(end, .8f, NpcAttribute));
+            if (!IsCoroutineMoving)
+            {
+                MoveEnemyCoroutine = StartCoroutine(PerformMovementTo(end, .8f, NpcAttribute));
+            }
         }
 
         public void MoveEnemyBack(float to, float speed)
         {
             float distance = _goapEnemyAction.target.transform.position.x > transform.position.x ? -to : to;
             Vector2 end = new Vector2(transform.position.x, 0) + new Vector2(distance, 0);
-            StartCoroutine(PerformMovementTo(end, speed, NpcAttribute, true,() =>
+            MoveEnemyBackCoroutine = StartCoroutine(PerformMovementTo(end, speed, NpcAttribute, true,() =>
              {
                  EnemyBlock(false);
              }));
@@ -277,11 +281,6 @@ namespace Assets.Scripts
             if (state)
             {
                 _slashRenderer.RemoveSlash();
-                IsCross = true;
-            }
-            else
-            {
-                IsCross = false;
             }
         }
 
@@ -291,7 +290,6 @@ namespace Assets.Scripts
             if (!state)
             {
                 NpcAnimator.speed = 1;
-                IsBlock = false;
             }
             NpcAnimator.SetBool("enemyBlock", state);
         }
@@ -458,7 +456,6 @@ namespace Assets.Scripts
             if (!NpcAnimator.GetBool("enemyBlock"))
             {
                 EnemyBlock(true);
-                IsBlock = true;
             }
             else
             {
@@ -541,9 +538,8 @@ namespace Assets.Scripts
             IsDead = false;
             IsCelebrating = false;
             IsHit = false;
-            IsBlock = false;
             IsCanWalk = true;
-            IsCross = false;
+            IsCoroutineMoving = false;
         }
     }
 }

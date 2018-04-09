@@ -42,6 +42,13 @@ namespace Assets.Scripts.GoapHeroActions
         public override bool perform(GameObject agent)
         {
             var enemyScript = target.GetComponent<Enemy>();
+
+            if (enemyScript.MoveEnemyCoroutine != null)
+            {
+                enemyScript.StopCoroutine(enemyScript.MoveEnemyCoroutine);
+            }
+            
+
             if (
                 !HeroScript.IsAnimationPlaying("attack") &&
                 !HeroScript.IsAnimationPlaying("cross") &&

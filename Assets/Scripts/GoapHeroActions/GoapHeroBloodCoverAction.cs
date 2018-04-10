@@ -19,6 +19,7 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool isDone()
         {
+            
             return NpcIsDestroyedReset;
         }
 

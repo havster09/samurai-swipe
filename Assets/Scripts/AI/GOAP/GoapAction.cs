@@ -10,7 +10,7 @@ public abstract class GoapAction : MonoBehaviour {
 	private HashSet<KeyValuePair<string,object>> preconditions;
 	private HashSet<KeyValuePair<string,object>> effects;
 
-	private bool inRange;
+	protected bool InRange;
     protected float TotalMovementDistance;
 
 	/* The cost of performing the action. 
@@ -27,8 +27,8 @@ public abstract class GoapAction : MonoBehaviour {
 		effects = new HashSet<KeyValuePair<string, object>> ();
 	}
 
-	public void doReset() {
-		inRange = false;
+	public virtual void DoReset() {
+		InRange = false;
 		target = null;
 		reset ();
 	}
@@ -71,11 +71,11 @@ public abstract class GoapAction : MonoBehaviour {
 	 * The MoveTo state will set this and it gets reset each time this action is performed.
 	 */
 	public bool isInRange () {
-		return inRange;
+		return InRange;
 	}
 	
 	public void setInRange(bool inRange) {
-		this.inRange = inRange;
+		this.InRange = inRange;
 	}
 
 

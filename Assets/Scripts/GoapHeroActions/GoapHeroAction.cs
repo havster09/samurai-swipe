@@ -96,6 +96,7 @@ namespace Assets.Scripts.GoapHeroActions
             TargetNpcAttribute = closest;
             target = TargetNpcAttribute.gameObject;
 
+
             return true;
         }
 

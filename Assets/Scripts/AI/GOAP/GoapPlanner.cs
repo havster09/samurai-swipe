@@ -21,7 +21,7 @@ public class GoapPlanner
 	{
 		// reset the actions so we can start fresh with them
 		foreach (GoapAction a in availableActions) {
-			a.doReset ();
+			a.DoReset ();
 		}
 
 		// check what actions can run using their checkProceduralPrecondition

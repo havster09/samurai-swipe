@@ -7,7 +7,7 @@ namespace Assets.Scripts.GoapHeroActions
 {
     public class GoapHeroCrossSwordAction : GoapHeroAction
     {
-        private int _maxMovementDistance = 20;
+        public Enemy EnemyScript { get; set; }
 
         public GoapHeroCrossSwordAction()
         {
@@ -16,10 +16,24 @@ namespace Assets.Scripts.GoapHeroActions
             TotalMovementDistance = 0;
         }
 
+        public override void DoReset()
+        {
+            if (!IsPerforming)
+            {
+                target = null;
+                TargetNpcAttribute = null;
+                if (EnemyScript != null && EnemyScript.IsDead)
+                {
+                    TotalMovementDistance = 0;
+                }
+            }
+            InRange = false;
+            reset();
+        }
+
         public override void reset()
         {
             HasCrossedSword = false;
-            TargetNpcAttribute = null;
         }
 
         public override bool isDone()
@@ -38,43 +52,38 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool checkProceduralPrecondition(GameObject agent)
         {
-            if (!target)
-            {
-                return FindNpcTarget(agent);
-            }
-            return target;
+            if (IsPerforming && target != null) return true;
+            return FindNpcTarget(agent);
         }
 
         public override bool perform(GameObject agent)
         {
-            IsPerforming = true;
-            var enemyScript = target.GetComponent<Enemy>();
-
-            if (enemyScript.MoveEnemyCoroutine != null)
+            EnemyScript = target.GetComponent<Enemy>();
+            if (EnemyScript.MoveEnemyCoroutine != null)
             {
-                enemyScript.StopCoroutine(enemyScript.MoveEnemyCoroutine);
+                EnemyScript.StopCoroutine(EnemyScript.MoveEnemyCoroutine);
             }
 
-            if (!HeroScript.NpcHeroAnimator.GetBool("heroCrossSword") && Mathf.Abs(TotalMovementDistance) < _maxMovementDistance)
+            if (!HeroScript.NpcHeroAnimator.GetBool("heroCrossSword") && Mathf.Abs(TotalMovementDistance) < TargetNpcAttribute.CrossSwordMaxMovementDistance)
             {
                 HeroScript.CrossSword(true);
-                enemyScript.CrossSword(true);
-
-                var targetCrossSwordPosition = enemyScript.EnemyFlipX ? DistanceToTargetThreshold : -DistanceToTargetThreshold;
+                EnemyScript.CrossSword(true);
+                IsPerforming = true;
+                var targetCrossSwordPosition = EnemyScript.EnemyFlipX ? DistanceToTargetThreshold : -DistanceToTargetThreshold;
                 target.gameObject.transform.position = new Vector2(
                     gameObject.transform.position.x + targetCrossSwordPosition,
                     0
                     );
             }
 
-            if (Mathf.Abs(TotalMovementDistance) > _maxMovementDistance)
+            if (Mathf.Abs(TotalMovementDistance) > TargetNpcAttribute.CrossSwordMaxMovementDistance)
             {
                 HeroScript.CrossSword(false);
-                enemyScript.CrossSword(false);
+                EnemyScript.CrossSword(false);
                 IsPerforming = false;
                 HasCrossedSword = true;
                 HeroScript.Rb2D.velocity = new Vector2(0, 0);
-                enemyScript.Rb2D.velocity = new Vector2(0, 0);
+                EnemyScript.Rb2D.velocity = new Vector2(0, 0);
                 HasCrossedSword = true;
                 return HasCrossedSword;
             }
@@ -82,7 +91,7 @@ namespace Assets.Scripts.GoapHeroActions
             {
                 if (IsPerforming)
                 {
-                    SetCrossSwordMovement(enemyScript, HeroScript);
+                    SetCrossSwordMovement(EnemyScript, HeroScript);
                 }
             }
             return HasCrossedSword;
@@ -91,7 +100,7 @@ namespace Assets.Scripts.GoapHeroActions
         private void SetCrossSwordMovement(MovingObject enemyScript, MovingObject heroScript)
         {
             TotalMovementDistance++;
-            var velocity = Random.Range(-5, 5);
+            var velocity = Random.Range(-2, 2);
             heroScript.Rb2D.velocity = new Vector2(velocity, 0);
             enemyScript.Rb2D.velocity = new Vector2(velocity, 0);
         }

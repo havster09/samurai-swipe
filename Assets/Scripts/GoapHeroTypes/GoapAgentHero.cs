@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.GoapAttributeComponents;
 using Assets.Scripts.GoapHeroActions;
 using UnityEngine;
@@ -13,6 +14,8 @@ namespace Assets.Scripts.GoapHeroTypes
         public Hero HeroScript { get; set; }
         public NpcHeroAttributesComponent NpcHeroAttributes { get; set; }
 
+        protected HashSet<KeyValuePair<string, object>> WorldData;
+
         void Awake()
         {
             NpcHeroAttributes = gameObject.GetComponent<NpcHeroAttributesComponent>();
@@ -23,15 +26,15 @@ namespace Assets.Scripts.GoapHeroTypes
 
         public HashSet<KeyValuePair<string, object>> getWorldState()
         {
-            HashSet<KeyValuePair<string, object>> worldData = new HashSet<KeyValuePair<string, object>>
+            WorldData = new HashSet<KeyValuePair<string, object>>
             {
                 new KeyValuePair<string, object>("destroyEnemyNpc", false),
                 new KeyValuePair<string, object>("bloodCover", false),
                 new KeyValuePair<string, object>("wipeBlood", false),
                 new KeyValuePair<string, object>("hasRage", false),
-                new KeyValuePair<string, object>("crossSword", false),
+                new KeyValuePair<string, object>("crossSword", false)
             };
-            return worldData;
+            return WorldData;
         }
 
         public HashSet<KeyValuePair<string, object>> createGoalState()
@@ -57,7 +60,7 @@ namespace Assets.Scripts.GoapHeroTypes
 
         public void actionsFinished()
         {
-            Debug.Log("<color=blue>Hero Actions completed</color>");            
+            Debug.Log("<color=blue>Hero Actions completed</color>");
         }
 
         public void planAborted(GoapAction aborter)

@@ -9,6 +9,7 @@ namespace Assets.Scripts.GoapAttributeComponents
         public int DefendCount;
         public int Brave;
         public int Health;
+        public int CrossSwordMaxMovementDistance;
 
         public int Stamina;
         public Enemy EnemyScript { get; set; }
@@ -36,6 +37,7 @@ namespace Assets.Scripts.GoapAttributeComponents
             Stamina = 100;
             Brave = 0;
             Health = 100;
+            CrossSwordMaxMovementDistance = 20; 
         }
     }
 }

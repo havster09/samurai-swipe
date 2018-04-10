@@ -65,7 +65,7 @@ namespace Assets.Scripts.GoapEnemyActions
                 {
                     EnemyScript.NpcAnimator.SetBool("enemyRun", false);
                 }
-                doReset();
+                DoReset();
             }
             return false;
         }

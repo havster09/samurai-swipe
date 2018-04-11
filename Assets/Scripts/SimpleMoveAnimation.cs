@@ -4,28 +4,26 @@ using UnityEngine;
 
 public class SimpleMoveAnimation : MonoBehaviour
 {
-    public float xEndPosition;
-    public float yEndPosition;
+    public float XEndPosition;
+    public float YEndPosition;
     public float holdFirstFrameInSeconds;
 
-    protected Rigidbody2D rb2D;
-    public float moveTime = 1f;
+    protected Rigidbody2D Rb2D;
+    public float MoveTime = 1f;
 
-    private float inverseMoveTime;
-    private SpriteRenderer spriteRenderer;
-    private bool flipX;
-
-    private Transform target;
-    private float distanceFromTarget;
+    private float _inverseMoveTime;
+    private SpriteRenderer _spriteRenderer;
+    private Transform _target;
+    private float _distanceFromTarget;
 
     void OnEnable()
 	{
-	    rb2D = GetComponent<Rigidbody2D>();
-	    spriteRenderer = GetComponent<SpriteRenderer>();
-	    inverseMoveTime = 1.1f / moveTime;
-	    target = GameObject.FindGameObjectWithTag("Player").transform;
-	    distanceFromTarget = target.position.x - transform.position.x;
-	    Utilities.ResetSpriteAlpha(spriteRenderer);
+	    Rb2D = GetComponent<Rigidbody2D>();
+	    _spriteRenderer = GetComponent<SpriteRenderer>();
+	    _inverseMoveTime = 1.1f / MoveTime;
+	    _target = GameObject.FindGameObjectWithTag("Player").transform;
+	    _distanceFromTarget = _target.position.x - transform.position.x;
+	    Utilities.ResetSpriteAlpha(_spriteRenderer);
         SimpleMoveAnimationEndEventHandler();
 	}
 
@@ -43,19 +41,19 @@ public class SimpleMoveAnimation : MonoBehaviour
 
     protected bool FacingRight()
     {
-        return distanceFromTarget < 0;
+        return _distanceFromTarget < 0;
     }
 
     protected IEnumerator MoveToEndPosition()
     {
         Vector3 startPosition = transform.position;
-        Vector3 endPosition = startPosition + new Vector3(FacingRight() ? xEndPosition : Mathf.Abs(xEndPosition), yEndPosition);
+        Vector3 endPosition = startPosition + new Vector3(FacingRight() ? XEndPosition : Mathf.Abs(XEndPosition), YEndPosition);
         float sqrRemainingDistance = (transform.position - endPosition).sqrMagnitude;
-        StartCoroutine(Utilities.FadeOut(spriteRenderer, moveTime * 2));
+        StartCoroutine(Utilities.FadeOut(_spriteRenderer, MoveTime * 2));
         while (sqrRemainingDistance > float.Epsilon)
         {
-            Vector3 newPostion = Vector2.MoveTowards(rb2D.position, endPosition, inverseMoveTime * Time.deltaTime);
-            rb2D.MovePosition(newPostion);
+            Vector3 newPostion = Vector2.MoveTowards(Rb2D.position, endPosition, _inverseMoveTime * Time.deltaTime);
+            Rb2D.MovePosition(newPostion);
             sqrRemainingDistance = (transform.position - endPosition).sqrMagnitude;
             yield return new WaitForEndOfFrame();
         }

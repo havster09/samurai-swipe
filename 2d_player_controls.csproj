@@ -261,6 +261,7 @@
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroBloodCoverAction.cs" />
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroCleanWeaponAction.cs" />
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroCrossSwordAction.cs" />
+    <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroResetPositionAction.cs" />
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroWipeBloodAction.cs" />
     <Compile Include="Assets\Scripts\GoapHeroTypes\GoapAgentHero.cs" />
     <Compile Include="Assets\Scripts\Hero.cs" />

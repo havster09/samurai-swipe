@@ -6,7 +6,7 @@ namespace Assets.Scripts.GoapHeroActions
     {
         public GoapHeroResetPositionAction()
         {
-            addPrecondition("destroyEnemyNpc", true);
+            addPrecondition("wipeBlood", true);
             addEffect("resetPosition", true);
         }
 
@@ -14,6 +14,7 @@ namespace Assets.Scripts.GoapHeroActions
         {
             HasResetPosition = false;
             TargetNpcAttribute = null;
+            target = gameObject;
         }
 
         public override bool isDone()
@@ -23,6 +24,26 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool requiresInRange()
         {
+            return true;
+        }
+
+        public override bool Move()
+        {
+            Vector2 currentHeroPosition = gameObject.transform.position;
+            if (HeroScript.IsFrozenPosition())
+            {
+                return false;
+            }
+
+            if (Vector2.Distance(currentHeroPosition, new Vector2(0, 0)) > 1f)
+            {
+                HeroScript.ResetPosition();
+            }
+            else
+            {
+                setInRange(true);
+                return true;
+            }
             return false;
         }
 
@@ -32,11 +53,7 @@ namespace Assets.Scripts.GoapHeroActions
         }
         public override bool perform(GameObject agent)
         {
-            Vector2 currentHeroPosition = agent.transform.position;
-            if (Mathf.Abs(currentHeroPosition.x) > 0)
-            {
-                HeroScript.ResetPosition();
-            }
+            HasResetPosition = true;
             return HasResetPosition;
         }
     }

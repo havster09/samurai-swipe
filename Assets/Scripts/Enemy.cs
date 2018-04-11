@@ -201,7 +201,6 @@ namespace Assets.Scripts
             {
                 xDir = _goapEnemyAction.target.transform.position.x > transform.position.x ? -.5f : .5f;
                 NpcAnimator.SetTrigger("enemyWalkBack");
-                NpcAttribute.Brave += 1;
             }
 
             Vector2 end = new Vector2(transform.position.x, 0) + new Vector2(xDir, 0);
@@ -215,7 +214,7 @@ namespace Assets.Scripts
         {
             float distance = _goapEnemyAction.target.transform.position.x > transform.position.x ? -to : to;
             Vector2 end = new Vector2(transform.position.x, 0) + new Vector2(distance, 0);
-            MoveEnemyBackCoroutine = StartCoroutine(PerformMovementTo(end, speed, NpcAttribute, true,() =>
+            MoveEnemyBackCoroutine = StartCoroutine(PerformMovementTo(end, speed, true,() =>
              {
                  EnemyBlock(false);
              }));

@@ -9,6 +9,7 @@ namespace Assets.Scripts
         private bool _heroFlipX;
         public Animator NpcHeroAnimator;
         public NpcHeroAttributesComponent NpcHeroAttributes;
+        private Coroutine _moveHeroCoroutine;
 
         public bool IsAttacking { get; set; }
 
@@ -74,10 +75,11 @@ namespace Assets.Scripts
         public override bool IsFrozenPosition()
         {
             return NpcHeroAnimator.GetBool("heroBloodCover") ||
+                   NpcHeroAnimator.GetBool("heroCleanWeapon") ||
                    IsAnimationPlaying("rest") ||
                    NpcHeroAnimator.GetBool("heroTurnPause");
         }
-        
+
         public void WipeBlood()
         {
             NpcHeroAnimator.SetTrigger("heroWipeBlood");
@@ -90,7 +92,13 @@ namespace Assets.Scripts
 
         public void ResetPosition()
         {
-            throw new System.NotImplementedException();
+            var xDir = transform.position.x < 0 ? .5f : -.5f;
+            var end = new Vector2(transform.position.x, 0) + new Vector2(xDir, 0);
+            if (!IsCoroutineMoving)
+            {
+                _moveHeroCoroutine = StartCoroutine(PerformMovementTo(end, .8f, true));
+                NpcHeroAnimator.SetTrigger("heroWalkBack");
+            }
         }
     }
 }

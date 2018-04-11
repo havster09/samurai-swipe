@@ -86,7 +86,4 @@ public abstract class MovingObject : MonoBehaviour
         }
         callback();
     }
-
-    protected abstract void OnCantMove<T>(T component)
-        where T : Component;
 }

@@ -94,8 +94,6 @@ namespace Assets.Scripts
                 Debug.Log("Init all enemies");
                 ObjectPooler.SharedInstance.InitializeAllEnemies("Enemy");
             }
-            // todo remove and use gaop for all enemy prefabs
-            // StartCoroutine(EnemiesAi());
         }
 
         public void GameOver()

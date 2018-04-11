@@ -32,6 +32,7 @@ GameObject:
   - component: {fileID: 114155218341992806}
   - component: {fileID: 114442440405982196}
   - component: {fileID: 114455469550128652}
+  - component: {fileID: 114255630672500134}
   m_Layer: 0
   m_Name: GenjuroHero
   m_TagString: Player
@@ -153,6 +154,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 10
   target: {fileID: 0}
+--- !u!114 &114255630672500134
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1858916847192298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea950cebb19a07f4e80b4763bc643be7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cost: 1
+  target: {fileID: 0}
 --- !u!114 &114264782463166122
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -218,13 +232,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58d919c3bd3a0c64a844413b82c54407, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveTime: 0.1
-  blockingLayer:
+  MoveTime: 0.1
+  BlockingLayer:
     serializedVersion: 2
     m_Bits: 0
-  maxCombatRange: 0
-  maxWalkRange: 0
-  spriteRenderer: {fileID: 0}
+  MaxCombatRange: 0
+  MaxWalkRange: 0
+  SpriteRenderer: {fileID: 0}
+  Rb2D: {fileID: 0}
   NpcHeroAnimator: {fileID: 0}
   NpcHeroAttributes: {fileID: 0}
 --- !u!114 &114582323766579276

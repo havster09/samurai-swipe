@@ -264,12 +264,7 @@ namespace Assets.Scripts
             NpcAnimator.SetFloat("enemyAttackJumpVertical", 0);
             transform.position = new Vector2(transform.position.x, 0f);
         }
-
-        protected override void OnCantMove<T>(T component)
-        {
-            NpcAnimator.SetTrigger("enemyAttackOne");
-        }
-
+        
         public void Taunt()
         {
             NpcAnimator.SetTrigger("enemyTaunt");

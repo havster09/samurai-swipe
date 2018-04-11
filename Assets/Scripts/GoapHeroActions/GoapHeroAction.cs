@@ -14,6 +14,7 @@ namespace Assets.Scripts.GoapHeroActions
         protected bool NpcIsDestroyed;
         protected bool HasCrossedSword;
         protected bool NpcIsDestroyedReset;
+        protected bool HasResetPosition;
         protected Hero HeroScript;
         protected NpcAttributesComponent TargetNpcAttribute;
         protected NpcHeroAttributesComponent NpcHeroAttributes;

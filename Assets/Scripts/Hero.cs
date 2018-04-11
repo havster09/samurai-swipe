@@ -77,12 +77,7 @@ namespace Assets.Scripts
                    IsAnimationPlaying("rest") ||
                    NpcHeroAnimator.GetBool("heroTurnPause");
         }
-
-        protected override void OnCantMove<T>(T component)
-        {
-            throw new System.NotImplementedException();
-        }
-
+        
         public void WipeBlood()
         {
             NpcHeroAnimator.SetTrigger("heroWipeBlood");
@@ -91,6 +86,11 @@ namespace Assets.Scripts
         public void CleanWeapon()
         {
             NpcHeroAnimator.SetTrigger("heroCleanWeapon");
+        }
+
+        public void ResetPosition()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

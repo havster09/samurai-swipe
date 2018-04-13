@@ -137,7 +137,24 @@ public abstract class GoapAction : MonoBehaviour {
         var totalNpc = FindObjectsOfType<NpcAttributesComponent>()
             .Where(npc => npc.Health > 0 &&
                           npc.isActiveAndEnabled &&
-                          Vector3.Distance(from.transform.position, npc.transform.position) < threshold)
+                          Vector2.Distance(from.transform.position, npc.transform.position) < threshold)
+            .ToArray();
+
+        return totalNpc.Length;
+    }
+
+    public int GetActiveNpcAttributesComponentsInRangeByDirection(GameObject from, float threshold = 5f)
+    {
+        var directionRight = from.transform.position.x < 0;
+        var totalNpc = FindObjectsOfType<NpcAttributesComponent>()
+            .Where(npc => npc.Health > 0 &&
+                          npc.isActiveAndEnabled &&
+                          Vector2.Distance(npc.transform.position, from.transform.position) < threshold &&
+                              (
+                                npc.transform.position.x > from.transform.position.x && directionRight || 
+                                npc.transform.position.x < from.transform.position.x && !directionRight
+                              )
+                          )
             .ToArray();
 
         return totalNpc.Length;

@@ -18,6 +18,7 @@ namespace Assets.Scripts.GoapHeroActions
         protected Hero HeroScript;
         protected NpcAttributesComponent TargetNpcAttribute;
         protected NpcHeroAttributesComponent NpcHeroAttributes;
+        protected Renderer NpcHeroRenderer;
 
         protected bool IsPerforming { get; set; }
 
@@ -28,6 +29,7 @@ namespace Assets.Scripts.GoapHeroActions
             HeroScript = GetComponent<Hero>();
             NpcHeroAttributes = GetComponent<NpcHeroAttributesComponent>();
             NpcTargetAttributes = new List<NpcAttributesComponent>();
+            NpcHeroRenderer = gameObject.GetComponent<Renderer>();
         }
 
         public override bool Move()

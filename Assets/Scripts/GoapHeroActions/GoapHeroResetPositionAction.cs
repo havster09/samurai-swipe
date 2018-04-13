@@ -4,9 +4,11 @@ namespace Assets.Scripts.GoapHeroActions
 {
     public class GoapHeroResetPositionAction : GoapHeroAction
     {
+        private const float ResetPositionThreshold = 1.5f;
+        
+
         public GoapHeroResetPositionAction()
         {
-            addPrecondition("wipeBlood", true);
             addEffect("resetPosition", true);
         }
 
@@ -35,9 +37,15 @@ namespace Assets.Scripts.GoapHeroActions
                 return false;
             }
 
-            if (Vector2.Distance(currentHeroPosition, new Vector2(0, 0)) > 1f)
+            // todo create new action to force hero back into screen
+
+            if (
+                !NpcHeroRenderer.isVisible ||
+                Mathf.Round(Vector2.Distance(currentHeroPosition, new Vector2(0, 0))) > ResetPositionThreshold &&
+                GetActiveNpcAttributesComponentsInRangeByDirection(gameObject) < 1
+                )
             {
-                HeroScript.ResetPosition();
+                HeroScript.HeroResetPosition();
             }
             else
             {

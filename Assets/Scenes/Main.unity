@@ -185,8 +185,9 @@ Transform:
   m_Children:
   - {fileID: 1716319578}
   - {fileID: 1270857682}
+  - {fileID: 1793328606}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1270857681
 GameObject:
@@ -253,7 +254,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4625522247668538, guid: 25c290f4617816345a92fb14c9aa947a, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 61912551527691644, guid: 25c290f4617816345a92fb14c9aa947a,
         type: 2}
@@ -357,12 +358,12 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1793328604}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.53, y: -0.2, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.0200002, y: -0.58000004, z: 0}
+  m_LocalScale: {x: 0.6666667, y: 0.6666667, z: 0.6666667}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_Father: {fileID: 141495469}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1869648003
 GameObject:
@@ -424,7 +425,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemsToPool:
-  - amountToPool: 1
+  - amountToPool: 2
     objectToPool: {fileID: 1662671873553116, guid: 7b17081931e49a046b8c51148a18009b,
       type: 2}
     shouldExpand: 0
@@ -615,5 +616,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

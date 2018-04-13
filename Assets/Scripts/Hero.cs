@@ -90,14 +90,15 @@ namespace Assets.Scripts
             NpcHeroAnimator.SetTrigger("heroCleanWeapon");
         }
 
-        public void ResetPosition()
+        public void HeroResetPosition()
         {
             var xDir = transform.position.x < 0 ? .5f : -.5f;
             var end = new Vector2(transform.position.x, 0) + new Vector2(xDir, 0);
             if (!IsCoroutineMoving)
             {
-                _moveHeroCoroutine = StartCoroutine(PerformMovementTo(end, .8f, true));
-                NpcHeroAnimator.SetTrigger("heroWalkBack");
+                var walkType = _heroFlipX ? "heroWalkBack" : "heroWalk";
+                NpcHeroAnimator.SetTrigger(walkType);
+                _moveHeroCoroutine = StartCoroutine(PerformMovementTo(end, 1.6f, true));
             }
         }
     }

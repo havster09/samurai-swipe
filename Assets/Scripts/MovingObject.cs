@@ -17,6 +17,7 @@ namespace Assets.Scripts
         public Rigidbody2D Rb2D;             
         private float _inverseMoveTime;
         public bool IsCoroutineMoving { get; set; }
+        public Renderer NpcRenderer;
 
         protected virtual void Start()
         {

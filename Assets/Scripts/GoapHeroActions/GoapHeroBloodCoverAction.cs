@@ -4,8 +4,6 @@ namespace Assets.Scripts.GoapHeroActions
 {
     public class GoapHeroBloodCoverAction : GoapHeroAction
     {
-        private const float BloodCoverDistanceThreshold = 6f;
-
         public GoapHeroBloodCoverAction()
         {
             addPrecondition("destroyEnemyNpc", true);
@@ -37,7 +35,7 @@ namespace Assets.Scripts.GoapHeroActions
         public override bool perform(GameObject agent)
         {
             if (
-                GetActiveNpcAttributesComponentsInRange(gameObject, BloodCoverDistanceThreshold) < 1 &&
+                GetActiveNpcAttributesComponentsInRange(gameObject, PoseThreshold) < 1 &&
                 !HeroScript.NpcHeroAnimator.GetBool("heroBloodCover")
                 )
             {

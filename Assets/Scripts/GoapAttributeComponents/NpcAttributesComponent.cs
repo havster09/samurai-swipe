@@ -33,11 +33,11 @@ namespace Assets.Scripts.GoapAttributeComponents
         {
             KillCount = 0;
             AttackCount = 0;
-            DefendCount = 2;
+            DefendCount = 1;
             Stamina = 100;
             Brave = 0;
             Health = 100;
-            CrossSwordMaxMovementDistance = 20; 
+            CrossSwordMaxMovementDistance = 15; 
         }
     }
 }

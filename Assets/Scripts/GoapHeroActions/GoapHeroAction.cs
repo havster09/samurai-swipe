@@ -7,10 +7,11 @@ namespace Assets.Scripts.GoapHeroActions
 {
     public class GoapHeroAction : GoapAction
     {
-        protected static List<NpcAttributesComponent> NpcTargetAttributes;
+        public static List<NpcAttributesComponent> NpcTargetAttributes;
         protected float MoveSpeed = 2;
         protected float DistanceToTargetThreshold = 1;
         protected float InRangeToTargetThreshold = 5f;
+        protected float PoseThreshold = 10f;
         protected bool NpcIsDestroyed;
         protected bool HasCrossedSword;
         protected bool NpcIsDestroyedReset;
@@ -18,7 +19,6 @@ namespace Assets.Scripts.GoapHeroActions
         protected Hero HeroScript;
         protected NpcAttributesComponent TargetNpcAttribute;
         protected NpcHeroAttributesComponent NpcHeroAttributes;
-        protected Renderer NpcHeroRenderer;
 
         protected bool IsPerforming { get; set; }
 
@@ -29,7 +29,6 @@ namespace Assets.Scripts.GoapHeroActions
             HeroScript = GetComponent<Hero>();
             NpcHeroAttributes = GetComponent<NpcHeroAttributesComponent>();
             NpcTargetAttributes = new List<NpcAttributesComponent>();
-            NpcHeroRenderer = gameObject.GetComponent<Renderer>();
         }
 
         public override bool Move()

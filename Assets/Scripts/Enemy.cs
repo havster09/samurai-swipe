@@ -37,6 +37,7 @@ namespace Assets.Scripts
             _goapEnemyAction = gameObject.GetComponent<GoapEnemyAction>();
             NpcAttribute = gameObject.GetComponent<NpcAttributesComponent>();
             NpcAnimator = GetComponent<Animator>();
+            NpcRenderer = GetComponent<Renderer>();
             AttachAnimationClipEvents();
         }
 

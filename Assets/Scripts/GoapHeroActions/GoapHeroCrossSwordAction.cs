@@ -58,13 +58,25 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool perform(GameObject agent)
         {
+            if (
+                TargetNpcAttribute.CrossSwordMaxMovementDistance < 1 ||
+                GetActiveNpcAttributesComponentsInRange(gameObject, PoseThreshold) > 2
+                )
+            {
+                HasCrossedSword = true;
+                return HasCrossedSword;
+            }
+
             EnemyScript = target.GetComponent<Enemy>();
             if (EnemyScript.MoveEnemyCoroutine != null)
             {
                 EnemyScript.StopCoroutine(EnemyScript.MoveEnemyCoroutine);
             }
 
-            if (!HeroScript.NpcHeroAnimator.GetBool("heroCrossSword") && Mathf.Abs(TotalMovementDistance) < TargetNpcAttribute.CrossSwordMaxMovementDistance)
+            if (
+                !HeroScript.NpcHeroAnimator.GetBool("heroCrossSword") &&
+                Mathf.Abs(TotalMovementDistance) < TargetNpcAttribute.CrossSwordMaxMovementDistance
+                )
             {
                 HeroScript.CrossSword(true);
                 EnemyScript.CrossSword(true);

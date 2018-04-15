@@ -25,7 +25,6 @@ namespace Assets.Scripts.GoapHeroActions
         public override bool requiresInRange()
         {
             return false;
-            // todo check if all enemy targets are dead
         }
 
         public override bool checkProceduralPrecondition(GameObject agent)
@@ -34,7 +33,7 @@ namespace Assets.Scripts.GoapHeroActions
         }
         public override bool perform(GameObject agent)
         {
-            if (GetActiveNpcAttributesComponentsInRange(gameObject, 4f) < .5f)
+            if (GetActiveNpcAttributesComponentsInRange(gameObject, PoseThreshold) < 1)
             {
                 HeroScript.CleanWeapon();
                 NpcIsDestroyedReset = true;

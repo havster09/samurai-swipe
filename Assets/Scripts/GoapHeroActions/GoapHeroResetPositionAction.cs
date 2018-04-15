@@ -4,8 +4,9 @@ namespace Assets.Scripts.GoapHeroActions
 {
     public class GoapHeroResetPositionAction : GoapHeroAction
     {
-        private const float ResetPositionThreshold = 1.5f;
-        
+        protected const float ResetPositionThreshold = .5f;
+        private bool InitialPause { get; set; }
+
 
         public GoapHeroResetPositionAction()
         {
@@ -15,6 +16,7 @@ namespace Assets.Scripts.GoapHeroActions
         public override void reset()
         {
             HasResetPosition = false;
+            InitialPause = false;
             TargetNpcAttribute = null;
             target = gameObject;
         }
@@ -29,19 +31,22 @@ namespace Assets.Scripts.GoapHeroActions
             return true;
         }
 
+        // todo add generic pause action to help transitions
+
         public override bool Move()
         {
             Vector2 currentHeroPosition = gameObject.transform.position;
-            if (HeroScript.IsFrozenPosition())
+            if (HeroScript.IsFrozenPosition() || !InitialPause)
             {
+                HeroScript.WaitFor(() => InitialPause = true, 1f);
                 return false;
             }
 
-            // todo create new action to force hero back into screen
+            var distanceFromResetPosition = Vector2.Distance(currentHeroPosition, new Vector2(0, 0));
 
             if (
-                !NpcHeroRenderer.isVisible ||
-                Mathf.Round(Vector2.Distance(currentHeroPosition, new Vector2(0, 0))) > ResetPositionThreshold &&
+                Mathf.Round(distanceFromResetPosition) > ResetPositionThreshold &&
+                GoapHeroAction.NpcTargetAttributes.Count < 1 &&
                 GetActiveNpcAttributesComponentsInRangeByDirection(gameObject) < 1
                 )
             {

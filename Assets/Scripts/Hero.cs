@@ -17,6 +17,7 @@ namespace Assets.Scripts
         {
             NpcHeroAttributes = gameObject.GetComponent<NpcHeroAttributesComponent>();
             NpcHeroAnimator = GetComponent<Animator>();
+            NpcRenderer = GetComponent<Renderer>();
             AttachAnimationClipEvents();
         }
 
@@ -94,7 +95,7 @@ namespace Assets.Scripts
         {
             var xDir = transform.position.x < 0 ? .5f : -.5f;
             var end = new Vector2(transform.position.x, 0) + new Vector2(xDir, 0);
-            if (!IsCoroutineMoving)
+            if (!IsCoroutineMoving && GoapHeroAction.NpcTargetAttributes.Count < 1)
             {
                 var walkType = _heroFlipX ? "heroWalkBack" : "heroWalk";
                 NpcHeroAnimator.SetTrigger(walkType);

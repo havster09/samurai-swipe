@@ -84,6 +84,7 @@ namespace Assets.Scripts.GoapHeroActions
                 }
 
                 HeroScript.Attack(heroAttacks[Random.Range(0, heroAttacks.Count)], TargetNpcAttribute);
+
                 if (TargetNpcAttribute.DefendCount < 1)
                 {
                     enemyScript.EnemyHitSuccess(damage);

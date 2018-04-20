@@ -37,7 +37,7 @@ namespace Assets.Scripts.GoapEnemyActions
         {
             if (TargetNpcHeroAttribute != null)
             {
-                if (!EnemyScript.IsAnimationPlaying("attack"))
+                if (!EnemyScript.IsAnimationTagPlaying("attack"))
                 {
                     EnemyScript.Attack("enemyAttackTwo");
                     TargetNpcHeroAttribute.Health -= 1;

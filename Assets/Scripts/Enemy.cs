@@ -163,6 +163,11 @@ namespace Assets.Scripts
 
         public void FaceTarget()
         {
+            if (!_goapEnemyAction.target)
+            {
+                return;
+            }
+
             float targetDistance = _goapEnemyAction.target.transform.position.x - transform.position.x;
 
             if (targetDistance < 0 && EnemyFlipX == false)
@@ -385,7 +390,6 @@ namespace Assets.Scripts
             float elapsedWaitTime = 0f;
             while (elapsedWaitTime < waitTime)
             {
-                // todo spray blood objects here
                 yield return new WaitForSeconds(1f);
                 elapsedWaitTime++;
             }
@@ -497,7 +501,7 @@ namespace Assets.Scripts
             return false;
         }
 
-        public bool IsAnimationPlaying(string animationTag)
+        public bool IsAnimationTagPlaying(string animationTag)
         {
             if (NpcAnimator.GetCurrentAnimatorStateInfo(0).Equals(null) ||
                 NpcAnimator.GetCurrentAnimatorStateInfo(0).IsTag(animationTag))

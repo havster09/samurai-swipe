@@ -38,7 +38,7 @@ namespace Assets.Scripts.GoapEnemyActions
         {
             if (TargetNpcHeroAttribute != null && NpcAttributes.Stamina > 0)
             {
-                if (!EnemyScript.IsAnimationPlaying("attack"))
+                if (!EnemyScript.IsAnimationTagPlaying("attack"))
                 {
                     EnemyScript.JumpAttack();
                     NpcAttributes.Stamina -= 100;

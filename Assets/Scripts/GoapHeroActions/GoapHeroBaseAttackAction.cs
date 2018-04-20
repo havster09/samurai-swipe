@@ -50,15 +50,25 @@ namespace Assets.Scripts.GoapHeroActions
             
 
             if (
-                !HeroScript.IsAnimationPlaying("attack") &&
-                !HeroScript.IsAnimationPlaying("cross") &&
-                !HeroScript.IsAnimationPlaying("rest") &&
+                !HeroScript.IsAnimationTagPlaying("attack") &&
+                !HeroScript.IsAnimationTagPlaying("cross") &&
+                !HeroScript.IsAnimationTagPlaying("rest") &&
                 !enemyScript.IsDead
                 )
             {
                 var heroAttacks = new List<string>();
                 var damage = 0;
-                if (NpcHeroAttributes.Rage > 10)
+
+                if (target.transform.position.y > 0)
+                {
+                    heroAttacks.AddRange(new List<string>
+                    {
+                        "heroAttackFour", // slash high
+                        "heroAttackSix", // crouch slash high
+                    });
+                    damage = 100;
+                }
+                else if (NpcHeroAttributes.Rage > 10)
                 {
 
                     heroAttacks.AddRange(new List<string>
@@ -73,17 +83,15 @@ namespace Assets.Scripts.GoapHeroActions
                 {
                     heroAttacks.AddRange(new List<string>
                     {
-                        "heroAttackOne",
-                        "heroAttackTwo",
-                        "heroAttackThree",
-                        "heroAttackFour",
-                        "heroAttackSix",
-                        "heroAttackSeven"
+                        "heroAttackOne", // slash down
+                        "heroAttackTwo", // handle bump
+                        "heroAttackThree", // straight thrust
+                        "heroAttackSeven" // step strong slash
                     });
                     damage = 100;
                 }
 
-                HeroScript.Attack(heroAttacks[Random.Range(0, heroAttacks.Count)], TargetNpcAttribute);
+                HeroScript.Attack(heroAttacks[Random.Range(0, heroAttacks.Count)]);
 
                 if (TargetNpcAttribute.DefendCount < 1)
                 {

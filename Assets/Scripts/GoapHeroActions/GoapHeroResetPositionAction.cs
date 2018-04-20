@@ -31,8 +31,6 @@ namespace Assets.Scripts.GoapHeroActions
             return true;
         }
 
-        // todo add generic pause action to help transitions
-
         public override bool Move()
         {
             Vector2 currentHeroPosition = gameObject.transform.position;

@@ -50,7 +50,7 @@ namespace Assets.Scripts
             }
         }
 
-        public IEnumerator PerformMovementTo(Vector3 end, float speed, bool force = false, Action callback = null, float callbackDuration = 1f)
+        public IEnumerator PerformMovementTo(Vector3 end, float speed, bool force = false, Action callback = null, float callbackDuration = 1f, Animator npcAnimator = null)
         {
             if (IsFrozenPosition() && !force)
             {
@@ -65,6 +65,7 @@ namespace Assets.Scripts
                 IsCoroutineMoving = true;
                 yield return new WaitForFixedUpdate();
             }
+            if (npcAnimator != null) npcAnimator.StartPlayback();
             if (callback != null)
             {
                 WaitFor(callback, callbackDuration);

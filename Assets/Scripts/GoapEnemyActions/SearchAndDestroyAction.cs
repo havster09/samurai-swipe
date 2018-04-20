@@ -21,8 +21,8 @@ namespace Assets.Scripts.GoapEnemyActions
             EnemyScript.FaceTarget();
             float distanceFromTarget = Vector2.Distance(gameObject.transform.position, target.transform.position);
             if (distanceFromTarget > 2 &&
-                !EnemyScript.IsAnimationPlaying("attack") &&
-                !EnemyScript.IsAnimationPlaying("walk") && EnemyScript.IsCanWalk)
+                !EnemyScript.IsAnimationTagPlaying("attack") &&
+                !EnemyScript.IsAnimationTagPlaying("walk") && EnemyScript.IsCanWalk)
             {
                 GoapAgentSearchAndDestroyRun();
                 return false;
@@ -35,7 +35,7 @@ namespace Assets.Scripts.GoapEnemyActions
                     setInRange(true);
                     return true;
                 }
-                else if (EnemyScript.IsAnimationPlaying("idle") && EnemyScript.IsCanWalk)
+                else if (EnemyScript.IsAnimationTagPlaying("idle") && EnemyScript.IsCanWalk)
                 {
                     EnemyScript.MoveEnemy();
                     return false;
@@ -77,7 +77,7 @@ namespace Assets.Scripts.GoapEnemyActions
         
             if (TargetNpcHeroAttribute != null)
             {
-                if (TargetNpcHeroAttribute.Health > 0 && !EnemyScript.IsAnimationPlaying("attack"))
+                if (TargetNpcHeroAttribute.Health > 0 && !EnemyScript.IsAnimationTagPlaying("attack"))
                 {
                     EnemyScript.Attack("enemyAttackOne");
                 }            

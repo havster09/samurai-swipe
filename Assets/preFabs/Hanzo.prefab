@@ -134,13 +134,14 @@ MonoBehaviour:
   MaxWalkRange: 0
   SpriteRenderer: {fileID: 0}
   Rb2D: {fileID: 0}
+  NpcRenderer: {fileID: 0}
   PlayerDamage: 0
   RunSpeed: 0
   HasWalkAbility: 0
   NpcAnimator: {fileID: 0}
   EnemyFlipX: 0
   NpcAttribute: {fileID: 0}
-  CanWalk: 1
+  IsCanWalk: 1
   IsCelebrating: 0
 --- !u!114 &114127162461347048
 MonoBehaviour:
@@ -186,6 +187,7 @@ MonoBehaviour:
   DefendCount: 2
   Brave: 0
   Health: 100
+  CrossSwordMaxMovementDistance: 15
   Stamina: 100
 --- !u!114 &114440178695945674
 MonoBehaviour:
@@ -237,7 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baec37c103c027445968673ebb5a9368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 1
+  cost: 10
   target: {fileID: 0}
   HeroScript: {fileID: 0}
 --- !u!114 &114694377834436292

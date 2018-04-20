@@ -47,7 +47,7 @@ namespace Assets.Scripts
             NpcHeroAnimator.SetBool("heroCrossSword", state);
         }
 
-        public void Attack(string attackType, NpcAttributesComponent targetNpcAttribute)
+        public void Attack(string attackType)
         {
             IsAttacking = true;
             NpcHeroAnimator.SetTrigger(attackType);
@@ -63,7 +63,7 @@ namespace Assets.Scripts
             NpcHeroAnimator.SetBool("heroTurnPause", state);
         }
 
-        public bool IsAnimationPlaying(string animationTag)
+        public bool IsAnimationTagPlaying(string animationTag)
         {
             if (NpcHeroAnimator.GetCurrentAnimatorStateInfo(0).Equals(null) ||
                 NpcHeroAnimator.GetCurrentAnimatorStateInfo(0).IsTag(animationTag))
@@ -77,7 +77,7 @@ namespace Assets.Scripts
         {
             return NpcHeroAnimator.GetBool("heroBloodCover") ||
                    NpcHeroAnimator.GetBool("heroCleanWeapon") ||
-                   IsAnimationPlaying("rest") ||
+                   IsAnimationTagPlaying("rest") ||
                    NpcHeroAnimator.GetBool("heroTurnPause");
         }
 
@@ -99,7 +99,7 @@ namespace Assets.Scripts
             {
                 var walkType = _heroFlipX ? "heroWalkBack" : "heroWalk";
                 NpcHeroAnimator.SetTrigger(walkType);
-                _moveHeroCoroutine = StartCoroutine(PerformMovementTo(end, 1.6f, true));
+                _moveHeroCoroutine = StartCoroutine(PerformMovementTo(end, 1.6f, true, null, 0, NpcHeroAnimator));
             }
         }
     }

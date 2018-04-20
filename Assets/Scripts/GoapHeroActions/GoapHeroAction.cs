@@ -33,7 +33,7 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool Move()
         {
-            if (!HeroScript.IsFrozenPosition() && !HeroScript.IsAnimationPlaying("attack"))
+            if (!HeroScript.IsFrozenPosition() && !HeroScript.IsAnimationTagPlaying("attack"))
             {
                 HeroScript.FaceTarget(target);
                 float distanceFromTarget = Vector2.Distance(new Vector2(gameObject.transform.position.x, 0), new Vector2(target.transform.position.x, 0));

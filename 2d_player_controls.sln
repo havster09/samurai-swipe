@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2017
+# Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2d_player_controls", "2d_player_controls.csproj", "{E83A9D26-00E3-3618-3876-975A5F1747D8}"
 EndProject
 Global

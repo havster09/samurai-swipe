@@ -9,7 +9,8 @@ namespace Assets.Scripts.GoapHeroActions
     {
         public static List<NpcAttributesComponent> NpcTargetAttributes;
         protected float MoveSpeed = 2;
-        protected float DistanceToTargetThreshold = 1;
+        protected const float ResetPositionThreshold = 1f;
+        protected float DistanceToTargetThreshold = 1f;
         protected float InRangeToTargetThreshold = 5f;
         protected float PoseThreshold = 10f;
         protected bool NpcIsDestroyed;
@@ -127,6 +128,11 @@ namespace Assets.Scripts.GoapHeroActions
         public void RemoveTargetFromList(NpcAttributesComponent npcAttribute)
         {
             NpcTargetAttributes.Remove(npcAttribute);
+        }
+
+        protected bool InResetRange()
+        {
+            return Mathf.Abs(gameObject.transform.position.x) < ResetPositionThreshold;
         }
     }
 }

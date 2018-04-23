@@ -19,7 +19,6 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool isDone()
         {
-            
             return NpcIsDestroyedReset;
         }
 
@@ -36,7 +35,8 @@ namespace Assets.Scripts.GoapHeroActions
         {
             if (
                 GetActiveNpcAttributesComponentsInRange(gameObject, PoseThreshold) < 1 &&
-                !HeroScript.NpcHeroAnimator.GetBool("heroBloodCover")
+                !HeroScript.NpcHeroAnimator.GetBool("heroBloodCover") &&
+                InResetRange()
                 )
             {
                 HeroScript.BloodCover(true);

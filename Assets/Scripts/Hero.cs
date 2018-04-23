@@ -6,6 +6,7 @@ namespace Assets.Scripts
 {
     public class Hero : MovingObject
     {
+        public const float HeroStep = .5f;
         private bool _heroFlipX;
         public Animator NpcHeroAnimator;
         public NpcHeroAttributesComponent NpcHeroAttributes;
@@ -93,7 +94,7 @@ namespace Assets.Scripts
 
         public void HeroResetPosition()
         {
-            var xDir = transform.position.x < 0 ? .5f : -.5f;
+            var xDir = transform.position.x < 0 ? HeroStep : -HeroStep;
             var end = new Vector2(transform.position.x, 0) + new Vector2(xDir, 0);
             if (!IsCoroutineMoving && GoapHeroAction.NpcTargetAttributes.Count < 1)
             {

@@ -65,7 +65,7 @@ namespace Assets.Scripts
                 IsCoroutineMoving = true;
                 yield return new WaitForFixedUpdate();
             }
-            if (npcAnimator != null) npcAnimator.StartPlayback();
+            if (npcAnimator != null) npcAnimator.StopPlayback();
             if (callback != null)
             {
                 WaitFor(callback, callbackDuration);

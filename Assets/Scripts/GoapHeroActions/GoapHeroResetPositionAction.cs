@@ -4,7 +4,6 @@ namespace Assets.Scripts.GoapHeroActions
 {
     public class GoapHeroResetPositionAction : GoapHeroAction
     {
-        protected const float ResetPositionThreshold = .5f;
         private bool InitialPause { get; set; }
 
 
@@ -43,8 +42,9 @@ namespace Assets.Scripts.GoapHeroActions
             var distanceFromResetPosition = Vector2.Distance(currentHeroPosition, new Vector2(0, 0));
 
             if (
-                Mathf.Round(distanceFromResetPosition) > ResetPositionThreshold &&
+                Mathf.Floor(distanceFromResetPosition) > ResetPositionThreshold &&
                 GoapHeroAction.NpcTargetAttributes.Count < 1 &&
+                Mathf.Abs(currentHeroPosition.x) > (Hero.HeroStep + ResetPositionThreshold) &&
                 GetActiveNpcAttributesComponentsInRangeByDirection(gameObject) < 1
                 )
             {

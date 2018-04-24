@@ -24,7 +24,30 @@ namespace Assets.Scripts
 
         private void AttachAnimationClipEvents()
         {
+            var blockClip = NpcHeroAnimator.runtimeAnimatorController.animationClips[23];
 
+            var blockEventEnd = new AnimationEvent();
+            blockEventEnd.time = blockClip.length;
+            blockEventEnd.functionName = "HeroBlockEndEventHandler";
+            blockClip.AddEvent(blockEventEnd);
+        }
+
+
+
+
+        private void HeroBlockEndEventHandler()
+        {
+            NpcHeroAnimator.speed = .8f;
+        }
+
+        public void EnemyBlock(bool state, GameObject target)
+        {
+            FaceTarget(target);
+            if (!state)
+            {
+                NpcHeroAnimator.speed = 1;
+            }
+            NpcHeroAnimator.SetBool("enemyBlock", state);
         }
 
         public void FaceTarget(GameObject target)

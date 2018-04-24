@@ -12,6 +12,7 @@ namespace Assets.Scripts
         public int PlayerDamage;
         public float RunSpeed;
         private GoapHeroAction _goapHeroActionScript;
+        private Hero _heroScript;
 
         public bool HasWalkAbility;
 
@@ -32,6 +33,7 @@ namespace Assets.Scripts
 
         private void Awake()
         {
+            _heroScript = GameObject.FindObjectOfType<Hero>();
             _goapHeroActionScript = GameObject.FindObjectOfType<GoapHeroAction>();
             _slashRenderer = GameObject.FindObjectOfType<SlashRenderer>();
             _goapEnemyAction = gameObject.GetComponent<GoapEnemyAction>();
@@ -291,7 +293,7 @@ namespace Assets.Scripts
             {
                 NpcAnimator.speed = 1;
             }
-            NpcAnimator.SetBool("enemyBlock", state);
+            // todo trigger hero block method
         }
 
         public void AttackGrounded()
@@ -303,6 +305,7 @@ namespace Assets.Scripts
         {
             IsAttacking = true;
             NpcAnimator.SetTrigger(attackType);
+            _heroScript.NpcHeroAnimator.SetBool("heroBlock", true);
         }
 
         public void EnemyDie()

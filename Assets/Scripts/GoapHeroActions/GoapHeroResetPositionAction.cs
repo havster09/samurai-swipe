@@ -53,6 +53,7 @@ namespace Assets.Scripts.GoapHeroActions
             else
             {
                 setInRange(true);
+                // todo add reset step method on hero
                 return true;
             }
             return false;

@@ -968,7 +968,7 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: de60b054d0902e041a7bb482a2d69098, type: 2}
-  m_Tag: walk
+  m_Tag: move
   m_SpeedParameter: enemyWalkSpeedMultiplier
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
@@ -1311,7 +1311,7 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: cc256fd954c2a6049aa76131676713c6, type: 2}
-  m_Tag: walk
+  m_Tag: move
   m_SpeedParameter: enemyWalkSpeedMultiplier
   m_MirrorParameter: 
   m_CycleOffsetParameter: 

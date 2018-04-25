@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Linq;
 using Assets.Scripts.GoapAttributeComponents;
 using Assets.Scripts.GoapEnemyActions;
 using Assets.Scripts.GoapHeroActions;
 using NUnit.Framework;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Assets.Scripts
 {
@@ -29,7 +32,6 @@ namespace Assets.Scripts
         public bool IsCelebrating;
 
         public Coroutine MoveEnemyCoroutine;
-        public Coroutine MoveEnemyBackCoroutine;
 
         private void Awake()
         {
@@ -43,10 +45,14 @@ namespace Assets.Scripts
             AttachAnimationClipEvents();
         }
 
-
-
         private void AttachAnimationClipEvents()
         {
+            // todo use to bind events to all animations in one place
+
+            NpcAnimator.runtimeAnimatorController.animationClips
+                .ToList()
+                .ForEach(a => Debug.Log(a.name));
+
             var attackOneEvent = new AnimationEvent();
             var attackOneClip = NpcAnimator.runtimeAnimatorController.animationClips[1];
             attackOneEvent.time = attackOneClip.length;
@@ -113,6 +119,14 @@ namespace Assets.Scripts
         private void EnemyAttackOneEventHandler(string stringParameter)
         {
             IsAttacking = false;
+            if (!_heroScript.NpcHeroAnimator.GetBool("heroBlock"))
+            {
+                _heroScript.HeroBlock(true, gameObject);
+            }
+            else
+            {
+                _heroScript.NpcHeroAnimator.Play("heroBlock", -1, 1);
+            }
         }
 
         private void EnemyAttackTwoEventHandler(string stringParameter)
@@ -218,16 +232,6 @@ namespace Assets.Scripts
             }
         }
 
-        public void MoveEnemyBack(float to, float speed)
-        {
-            float distance = _goapEnemyAction.target.transform.position.x > transform.position.x ? -to : to;
-            Vector2 end = new Vector2(transform.position.x, 0) + new Vector2(distance, 0);
-            MoveEnemyBackCoroutine = StartCoroutine(PerformMovementTo(end, speed, true,() =>
-             {
-                 EnemyBlock(false);
-             }));
-        }
-
         public bool IsInWalkRange()
         {
             return Mathf.Abs(Vector3.Distance(_goapEnemyAction.target.transform.transform.position, transform.position)) < MaxWalkRange;
@@ -293,7 +297,7 @@ namespace Assets.Scripts
             {
                 NpcAnimator.speed = 1;
             }
-            // todo trigger hero block method
+            NpcAnimator.SetBool("enemyBlock", state);
         }
 
         public void AttackGrounded()
@@ -305,7 +309,6 @@ namespace Assets.Scripts
         {
             IsAttacking = true;
             NpcAnimator.SetTrigger(attackType);
-            _heroScript.NpcHeroAnimator.SetBool("heroBlock", true);
         }
 
         public void EnemyDie()
@@ -454,7 +457,7 @@ namespace Assets.Scripts
         {
             _slashRenderer.RemoveSlash();
             NpcAttribute.DefendCount -= 1;
-            MoveEnemyBack(.35f, 3);
+            MoveBack(_goapEnemyAction.target, .35f, 3, () => EnemyBlock(false));
             if (!NpcAnimator.GetBool("enemyBlock"))
             {
                 EnemyBlock(true);
@@ -514,18 +517,11 @@ namespace Assets.Scripts
             return false;
         }
 
-        public AnimationClip GetAnimationClip(string name)
+        public AnimationClip GetAnimationClip(string animationName)
         {
             if (!NpcAnimator) return null;
 
-            foreach (AnimationClip clip in NpcAnimator.runtimeAnimatorController.animationClips)
-            {
-                if (clip.name == name)
-                {
-                    return clip;
-                }
-            }
-            return null; // no clip by that name
+            return NpcAnimator.runtimeAnimatorController.animationClips.FirstOrDefault(clip => clip.name == animationName);
         }
 
         private void OnDisable()

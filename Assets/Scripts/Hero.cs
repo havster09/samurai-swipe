@@ -7,7 +7,8 @@ namespace Assets.Scripts
     public class Hero : MovingObject
     {
         public const float HeroStep = .5f;
-        private bool _heroFlipX;
+        public GameObject CurrentTarget;
+        public bool _heroFlipX;
         public Animator NpcHeroAnimator;
         public NpcHeroAttributesComponent NpcHeroAttributes;
         private Coroutine _moveHeroCoroutine;
@@ -32,26 +33,25 @@ namespace Assets.Scripts
             blockClip.AddEvent(blockEventEnd);
         }
 
-
-
-
         private void HeroBlockEndEventHandler()
         {
             NpcHeroAnimator.speed = .8f;
+            MoveBack(CurrentTarget, .35f, 3, () => HeroBlock(false));
         }
 
-        public void EnemyBlock(bool state, GameObject target)
+        public void HeroBlock(bool state, GameObject target = null)
         {
-            FaceTarget(target);
+            if (target != null) FaceTarget(target);
             if (!state)
             {
                 NpcHeroAnimator.speed = 1;
             }
-            NpcHeroAnimator.SetBool("enemyBlock", state);
+            NpcHeroAnimator.SetBool("heroBlock", state);
         }
 
         public void FaceTarget(GameObject target)
         {
+            CurrentTarget = target;
             float targetDistance = target.transform.position.x - transform.position.x;
 
             if (targetDistance < 0 && _heroFlipX == false)
@@ -117,13 +117,9 @@ namespace Assets.Scripts
 
         public void HeroResetPosition()
         {
-            var xDir = transform.position.x < 0 ? HeroStep : -HeroStep;
-            var end = new Vector2(transform.position.x, 0) + new Vector2(xDir, 0);
-            if (!IsCoroutineMoving && GoapHeroAction.NpcTargetAttributes.Count < 1)
+            if (GoapHeroAction.NpcTargetAttributes.Count < 1)
             {
-                var walkType = _heroFlipX ? "heroWalkBack" : "heroWalk";
-                NpcHeroAnimator.SetTrigger(walkType);
-                _moveHeroCoroutine = StartCoroutine(PerformMovementTo(end, 1.6f, true, null, 0, NpcHeroAnimator));
+                NpcHeroAnimator.SetBool("heroWalkBackReset", true);
             }
         }
     }

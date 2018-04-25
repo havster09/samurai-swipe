@@ -41,6 +41,8 @@ namespace Assets.Scripts.GoapHeroActions
 
             var distanceFromResetPosition = Vector2.Distance(currentHeroPosition, new Vector2(0, 0));
 
+            var walkResetType = HeroScript._heroFlipX ? "heroWalkBackLoop" : "heroWalkLoop";
+
             if (
                 Mathf.Floor(distanceFromResetPosition) > ResetPositionThreshold &&
                 GoapHeroAction.NpcTargetAttributes.Count < 1 &&
@@ -48,12 +50,15 @@ namespace Assets.Scripts.GoapHeroActions
                 GetActiveNpcAttributesComponentsInRangeByDirection(gameObject) < 1
                 )
             {
-                HeroScript.HeroResetPosition();
+                float step = MoveSpeed/2 * Time.deltaTime;
+                gameObject.transform.position =
+                    Vector3.MoveTowards(gameObject.transform.position, new Vector3(0, 0), step);
+                HeroScript.NpcHeroAnimator.SetBool(walkResetType, true);
             }
             else
             {
+                HeroScript.NpcHeroAnimator.SetBool(walkResetType, false);
                 setInRange(true);
-                // todo add reset step method on hero
                 return true;
             }
             return false;

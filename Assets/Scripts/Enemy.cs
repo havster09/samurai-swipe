@@ -47,16 +47,33 @@ namespace Assets.Scripts
 
         private void AttachAnimationClipEvents()
         {
-            // todo use to bind events to all animations in one place
-
             NpcAnimator.runtimeAnimatorController.animationClips
+                .Where(a => a.name.Contains("Attack"))
                 .ToList()
-                .ForEach(a => Debug.Log(a.name));
+                .ForEach(a =>
+                {
+                    var attackFunctionName = char.ToUpper(a.name[0]) + a.name.Substring(1) + "EventHandler";
+                    var attackMidEvent = new AnimationEvent
+                    {
+                        time = a.length / 2,
+                        functionName = attackFunctionName,
+                        stringParameter = "mid"
+                    };
+                    a.AddEvent(attackMidEvent);
 
-            var attackOneEvent = new AnimationEvent();
+                    var attackEndEvent = new AnimationEvent
+                    {
+                        time = a.length,
+                        functionName = attackFunctionName,
+                        stringParameter = "end"
+                    };
+                    Debug.Log(attackMidEvent.functionName);
+                    a.AddEvent(attackEndEvent);
+                });
+
+            /*var attackOneEvent = new AnimationEvent();
             var attackOneClip = NpcAnimator.runtimeAnimatorController.animationClips[1];
             attackOneEvent.time = attackOneClip.length;
-            attackOneEvent.stringParameter = "attackOneEvent end";
             attackOneEvent.functionName = "EnemyAttackOneEventHandler";
             attackOneClip.AddEvent(attackOneEvent);
 
@@ -65,7 +82,7 @@ namespace Assets.Scripts
             attackTwoEvent.time = attackTwoClip.length;
             attackTwoEvent.stringParameter = "attackTwoEvent end";
             attackTwoEvent.functionName = "EnemyAttackTwoEventHandler";
-            attackTwoClip.AddEvent(attackTwoEvent);
+            attackTwoClip.AddEvent(attackTwoEvent);*/
 
             var tauntEvent = new AnimationEvent();
             var tauntEndFrameEvent = new AnimationEvent();
@@ -118,14 +135,22 @@ namespace Assets.Scripts
 
         private void EnemyAttackOneEventHandler(string stringParameter)
         {
-            IsAttacking = false;
-            if (!_heroScript.NpcHeroAnimator.GetBool("heroBlock"))
+            Debug.Log(stringParameter);
+            if (stringParameter == "end")
             {
-                _heroScript.HeroBlock(true, gameObject);
+                IsAttacking = false;
             }
-            else
+
+            if (stringParameter == "mid")
             {
-                _heroScript.NpcHeroAnimator.Play("heroBlock", -1, 1);
+                if (!_heroScript.NpcHeroAnimator.GetBool("heroBlock"))
+                {
+                    _heroScript.HeroBlock(true, gameObject);
+                }
+                else
+                {
+                    _heroScript.NpcHeroAnimator.Play("heroBlock", -1, 1);
+                }
             }
         }
 
@@ -275,7 +300,7 @@ namespace Assets.Scripts
             NpcAnimator.SetFloat("enemyAttackJumpVertical", 0);
             transform.position = new Vector2(transform.position.x, 0f);
         }
-        
+
         public void Taunt()
         {
             NpcAnimator.SetTrigger("enemyTaunt");
@@ -495,7 +520,7 @@ namespace Assets.Scripts
 
         public override bool IsFrozenPosition()
         {
-            if (                
+            if (
                 IsAttacking.Equals(true) ||
                 IsTaunting.Equals(true) ||
                 IsDead.Equals(true) ||

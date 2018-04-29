@@ -58,9 +58,10 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool perform(GameObject agent)
         {
+            var activeEnemiesInRange = GetActiveNpcAttributesComponentsInRange(gameObject, PoseThreshold);
             if (
                 TargetNpcAttribute.CrossSwordMaxMovementDistance < 1 ||
-                GetActiveNpcAttributesComponentsInRange(gameObject, PoseThreshold) > 2
+                activeEnemiesInRange > 0 && activeEnemiesInRange < 2
                 )
             {
                 HasCrossedSword = true;

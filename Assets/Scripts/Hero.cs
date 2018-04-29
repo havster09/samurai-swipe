@@ -11,7 +11,6 @@ namespace Assets.Scripts
         public bool _heroFlipX;
         public Animator NpcHeroAnimator;
         public NpcHeroAttributesComponent NpcHeroAttributes;
-        private Coroutine _moveHeroCoroutine;
 
         public bool IsAttacking { get; set; }
 
@@ -35,8 +34,8 @@ namespace Assets.Scripts
 
         private void HeroBlockEndEventHandler()
         {
-            NpcHeroAnimator.speed = .8f;
-            MoveBack(CurrentTarget, .35f, 3, () => HeroBlock(false));
+            NpcHeroAnimator.speed = 1f;
+            MoveBack(CurrentTarget, .35f, 5f, () => HeroBlock(false));
         }
 
         public void HeroBlock(bool state, GameObject target = null)
@@ -68,6 +67,7 @@ namespace Assets.Scripts
 
         public void CrossSword(bool state)
         {
+            NpcHeroAnimator.SetBool("heroBlock", false);
             NpcHeroAnimator.SetBool("heroCrossSword", state);
         }
 
@@ -89,8 +89,7 @@ namespace Assets.Scripts
 
         public bool IsAnimationTagPlaying(string animationTag)
         {
-            if (NpcHeroAnimator.GetCurrentAnimatorStateInfo(0).Equals(null) ||
-                NpcHeroAnimator.GetCurrentAnimatorStateInfo(0).IsTag(animationTag))
+            if (NpcHeroAnimator.GetCurrentAnimatorStateInfo(0).IsTag(animationTag))
             {
                 return true;
             }

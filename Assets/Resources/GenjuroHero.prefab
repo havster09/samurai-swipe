@@ -33,6 +33,7 @@ GameObject:
   - component: {fileID: 114442440405982196}
   - component: {fileID: 114455469550128652}
   - component: {fileID: 114255630672500134}
+  - component: {fileID: 114980174523487964}
   m_Layer: 0
   m_Name: GenjuroHero
   m_TagString: Player
@@ -240,6 +241,9 @@ MonoBehaviour:
   MaxWalkRange: 0
   SpriteRenderer: {fileID: 0}
   Rb2D: {fileID: 0}
+  NpcRenderer: {fileID: 0}
+  CurrentTarget: {fileID: 0}
+  _heroFlipX: 0
   NpcHeroAnimator: {fileID: 0}
   NpcHeroAttributes: {fileID: 0}
 --- !u!114 &114582323766579276
@@ -256,6 +260,19 @@ MonoBehaviour:
   MoveSpeed: 2
   GoapAgentScript: {fileID: 0}
   GoapHeroActionScript: {fileID: 0}
+--- !u!114 &114980174523487964
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1858916847192298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7b7c28ee1cd3b24797069103ae039fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cost: 1
+  target: {fileID: 0}
 --- !u!212 &212617807016556368
 SpriteRenderer:
   m_ObjectHideFlags: 1

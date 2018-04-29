@@ -260,6 +260,7 @@
     <Compile Include="Assets\Scripts\GoapEnemyTypes\GoapAgentEnemy.cs" />
     <Compile Include="Assets\Scripts\GoapEnemyTypes\GoapAgentSearchAndDestroy.cs" />
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroAction.cs" />
+    <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroDashAttackAction.cs" />
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroBaseAttackAction.cs" />
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroBloodCoverAction.cs" />
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroCleanWeaponAction.cs" />

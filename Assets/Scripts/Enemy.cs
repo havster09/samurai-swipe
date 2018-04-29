@@ -71,19 +71,6 @@ namespace Assets.Scripts
                     a.AddEvent(attackEndEvent);
                 });
 
-            /*var attackOneEvent = new AnimationEvent();
-            var attackOneClip = NpcAnimator.runtimeAnimatorController.animationClips[1];
-            attackOneEvent.time = attackOneClip.length;
-            attackOneEvent.functionName = "EnemyAttackOneEventHandler";
-            attackOneClip.AddEvent(attackOneEvent);
-
-            var attackTwoEvent = new AnimationEvent();
-            var attackTwoClip = NpcAnimator.runtimeAnimatorController.animationClips[12];
-            attackTwoEvent.time = attackTwoClip.length;
-            attackTwoEvent.stringParameter = "attackTwoEvent end";
-            attackTwoEvent.functionName = "EnemyAttackTwoEventHandler";
-            attackTwoClip.AddEvent(attackTwoEvent);*/
-
             var tauntEvent = new AnimationEvent();
             var tauntEndFrameEvent = new AnimationEvent();
             var tauntClip = NpcAnimator.runtimeAnimatorController.animationClips[13];

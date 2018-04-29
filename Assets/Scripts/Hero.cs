@@ -27,10 +27,10 @@ namespace Assets.Scripts
         {
             var blockClip = NpcHeroAnimator.runtimeAnimatorController.animationClips[23];
 
-            var blockEventEnd = new AnimationEvent();
-            blockEventEnd.time = blockClip.length;
-            blockEventEnd.functionName = "HeroBlockEndEventHandler";
-            blockClip.AddEvent(blockEventEnd);
+            var blockEventMid = new AnimationEvent();
+            blockEventMid.time = blockClip.length/ 2;
+            blockEventMid.functionName = "HeroBlockEndEventHandler";
+            blockClip.AddEvent(blockEventMid);
         }
 
         private void HeroBlockEndEventHandler()
@@ -121,6 +121,11 @@ namespace Assets.Scripts
             {
                 NpcHeroAnimator.SetBool("heroWalkBackReset", true);
             }
+        }
+
+        public bool HeroVulnerable()
+        {
+            return IsAnimationTagPlaying("idle");
         }
     }
 }

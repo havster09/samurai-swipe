@@ -143,13 +143,16 @@ namespace Assets.Scripts
 
             if (stringParameter == "mid")
             {
-                if (!_heroScript.NpcHeroAnimator.GetBool("heroBlock"))
+                if (_heroScript.HeroVulnerable())
                 {
-                    _heroScript.HeroBlock(true, gameObject);
-                }
-                else
-                {
-                    _heroScript.NpcHeroAnimator.Play("heroBlock", -1, 1);
+                    if (!_heroScript.NpcHeroAnimator.GetBool("heroBlock"))
+                    {
+                        _heroScript.HeroBlock(true, gameObject);
+                    }
+                    else
+                    {
+                        _heroScript.NpcHeroAnimator.Play("heroBlock", -1, 1f);
+                    }
                 }
             }
         }
@@ -489,7 +492,7 @@ namespace Assets.Scripts
             }
             else
             {
-                NpcAnimator.Play("enemyBlock", -1, .5f);
+                NpcAnimator.Play("enemyBlock", 1, .5f);
             }
         }
 

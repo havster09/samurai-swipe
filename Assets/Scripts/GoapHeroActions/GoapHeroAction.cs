@@ -20,6 +20,7 @@ namespace Assets.Scripts.GoapHeroActions
         protected Hero HeroScript;
         protected NpcAttributesComponent TargetNpcAttribute;
         protected NpcHeroAttributesComponent NpcHeroAttributes;
+        protected SlashRenderer SlashRendererScript;
 
         protected bool IsPerforming { get; set; }
 
@@ -30,6 +31,7 @@ namespace Assets.Scripts.GoapHeroActions
             HeroScript = GetComponent<Hero>();
             NpcHeroAttributes = GetComponent<NpcHeroAttributesComponent>();
             NpcTargetAttributes = new List<NpcAttributesComponent>();
+            SlashRendererScript = FindObjectOfType<SlashRenderer>();
         }
 
         public override bool Move()
@@ -41,7 +43,7 @@ namespace Assets.Scripts.GoapHeroActions
                 if (distanceFromTarget >= DistanceToTargetThreshold && distanceFromTarget <= InRangeToTargetThreshold)
                 {
                     float step = (MoveSpeed * 2) * Time.deltaTime;
-                    gameObject.transform.position = 
+                    gameObject.transform.position =
                         Vector3.MoveTowards(gameObject.transform.position, new Vector3(target.transform.position.x, 0), step);
                     HeroScript.NpcHeroAnimator.SetBool("heroRun", true);
                 }
@@ -91,7 +93,7 @@ namespace Assets.Scripts.GoapHeroActions
                 }
             }
 
-            if (closest == null) 
+            if (closest == null)
             {
                 return false;
             }
@@ -99,6 +101,27 @@ namespace Assets.Scripts.GoapHeroActions
             TargetNpcAttribute = closest;
             target = TargetNpcAttribute.gameObject;
 
+            return true;
+        }
+
+        public bool FindLastNpcTarget(GameObject agent)
+        {
+            NpcAttributesComponent furthest = null;
+
+            furthest = NpcTargetAttributes.FindLast(
+                n =>
+                agent.transform.position.x > 0 ?
+                n.gameObject.transform.position.x > agent.transform.position.x :
+                n.gameObject.transform.position.x < agent.transform.position.x
+                    );
+
+            if (furthest == null)
+            {
+                return false;
+            }
+
+            TargetNpcAttribute = furthest;
+            target = TargetNpcAttribute.gameObject;
 
             return true;
         }

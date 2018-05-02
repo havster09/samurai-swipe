@@ -126,5 +126,16 @@ namespace Assets.Scripts
         {
             return IsAnimationTagPlaying("idle");
         }
+
+        public void Dash(Vector3 end, float speed)
+        {
+            NpcHeroAnimator.SetFloat("heroDashAttack", 1);
+            StartCoroutine(PerformMovementTo(end, speed, false,
+                () =>
+                {
+                    NpcHeroAnimator.SetFloat("heroDashAttack", 0);
+                    NpcHeroAnimator.Play("genjuroAttackThree");
+                }, 0));
+        }
     }
 }

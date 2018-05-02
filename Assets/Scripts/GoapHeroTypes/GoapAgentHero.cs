@@ -32,7 +32,7 @@ namespace Assets.Scripts.GoapHeroTypes
                 new KeyValuePair<string, object>("bloodCover", false),
                 new KeyValuePair<string, object>("wipeBlood", false),
                 new KeyValuePair<string, object>("hasRage", false),
-                new KeyValuePair<string, object>("crossSword", false),
+                new KeyValuePair<string, object>("crossSword", true),
                 new KeyValuePair<string, object>("resetPosition", false)
             };
             return WorldData;

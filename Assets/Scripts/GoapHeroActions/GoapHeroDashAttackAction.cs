@@ -10,7 +10,7 @@ namespace Assets.Scripts.GoapHeroActions
         public GoapHeroDashAttackAction()
         {
             addEffect("destroyEnemyNpc", true);
-            DistanceToTargetThreshold = .6f;
+            DistanceToTargetThreshold = 5f;
         }
 
         public override void reset()
@@ -36,15 +36,15 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool checkProceduralPrecondition(GameObject agent)
         {
-            return FindNpcTarget(agent); // todo replace and get multiple targets
+            return FindLastNpcTarget(agent);
         }
 
         public override bool perform(GameObject agent)
         {
-            if (NpcTargetAttributes.Count > 2)
-            {
-                HeroScript.NpcHeroAnimator.SetFloat("heroDashAttack", 1);
-            }
+            Debug.Log(SlashRendererScript);
+            HeroScript.Dash(target.transform.position, 5f);
+            Debug.LogWarning("Dashing");
+
             var enemyScript = target.GetComponent<Enemy>();
 
             if (enemyScript.MoveEnemyCoroutine != null)
@@ -60,7 +60,6 @@ namespace Assets.Scripts.GoapHeroActions
                 )
             {
                 var heroAttacks = new List<string>();
-                var damage = 0;
             }
 
             if (enemyScript.IsDead)

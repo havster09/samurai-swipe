@@ -10,16 +10,11 @@ namespace Assets.Scripts.GoapHeroActions
         public GoapHeroDashAttackAction()
         {
             addEffect("destroyEnemyNpc", true);
-            DistanceToTargetThreshold = 5f;
+            DistanceToTargetThreshold = 3f;
         }
 
         public override void reset()
         {
-            if (Random.Range(0, 10) < 5)
-            {
-                addPrecondition("crossSword", true);
-            }
-
             NpcIsDestroyed = false;
             TargetNpcAttribute = null;
         }
@@ -36,46 +31,23 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool checkProceduralPrecondition(GameObject agent)
         {
-            return FindLastNpcTarget(agent);
+            if (target == null)
+            {
+                return FindLastNpcDashTarget(agent) && !HeroScript.IsAnimationTagPlaying("attack");
+            }
+            return target;
         }
 
         public override bool perform(GameObject agent)
         {
-            Debug.Log(SlashRendererScript);
-            HeroScript.Dash(target.transform.position, 5f);
-            Debug.LogWarning("Dashing");
-
-            var enemyScript = target.GetComponent<Enemy>();
-
-            if (enemyScript.MoveEnemyCoroutine != null)
+            if (HeroScript.NpcHeroAnimator.GetFloat("heroDashAttack") < .1f && !HeroScript.IsCoroutineMoving)
             {
-                enemyScript.StopCoroutine(enemyScript.MoveEnemyCoroutine);
-            }
-
-            if (
-                !HeroScript.IsAnimationTagPlaying("attack") &&
-                !HeroScript.IsAnimationTagPlaying("cross") &&
-                !HeroScript.IsAnimationTagPlaying("rest") &&
-                !enemyScript.IsDead
-                )
-            {
-                var heroAttacks = new List<string>();
-            }
-
-            if (enemyScript.IsDead)
-            {
-                NpcHeroAttributes.KillCount += 1;
-                NpcHeroAttributes.ComboCount += 1;
-                NpcTargetAttributes.Remove(TargetNpcAttribute);
-                NpcHeroAttributes.Rage += 5;
-            }
-
-            if (NpcTargetAttributes.Count < 1)
-            {
+                HeroScript.Dash(target.transform.position, 10f);
                 NpcIsDestroyed = true;
-                NpcTargetAttributes.Clear();
+
+                Debug.Log(string.Format("<color=green>Active Targets {0}</color>", NpcTargetAttributes.Count));
             }
-            Debug.Log(string.Format("<color=green>Active Targets {0}</color>", NpcTargetAttributes.Count));
+
             return NpcIsDestroyed;
         }
     }

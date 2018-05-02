@@ -30,12 +30,27 @@ namespace Assets.Scripts.GoapHeroActions
             return true;
         }
 
+        public override bool checkProceduralPrecondition(GameObject agent)
+        {
+            return !HeroScript.IsAnimationTagPlaying("attack") &&
+                HeroScript.NpcHeroAnimator.GetFloat("heroDashAttack") < .1f;
+        }
+
         public override bool Move()
         {
             Vector2 currentHeroPosition = gameObject.transform.position;
-            if (HeroScript.IsFrozenPosition() || !InitialPause)
+            if (!InitialPause)
             {
-                HeroScript.WaitFor(() => InitialPause = true, 1f);
+                HeroScript.WaitFor(() => InitialPause = true, 2f);
+                return false;
+            }
+
+            if (
+                HeroScript.IsFrozenPosition() ||
+                HeroScript.IsCoroutineMoving ||
+                HeroScript.IsAnimationTagPlaying("attack")
+                )
+            {
                 return false;
             }
 
@@ -50,7 +65,7 @@ namespace Assets.Scripts.GoapHeroActions
                 GetActiveNpcAttributesComponentsInRangeByDirection(gameObject) < 1
                 )
             {
-                float step = MoveSpeed/2 * Time.deltaTime;
+                float step = MoveSpeed / 2 * Time.deltaTime;
                 gameObject.transform.position =
                     Vector3.MoveTowards(gameObject.transform.position, new Vector3(0, 0), step);
                 HeroScript.NpcHeroAnimator.SetBool(walkResetType, true);
@@ -64,10 +79,6 @@ namespace Assets.Scripts.GoapHeroActions
             return false;
         }
 
-        public override bool checkProceduralPrecondition(GameObject agent)
-        {
-            return true;
-        }
         public override bool perform(GameObject agent)
         {
             HasResetPosition = true;

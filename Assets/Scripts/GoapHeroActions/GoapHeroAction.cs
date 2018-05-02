@@ -104,7 +104,7 @@ namespace Assets.Scripts.GoapHeroActions
             return true;
         }
 
-        public bool FindLastNpcTarget(GameObject agent)
+        public bool FindLastNpcDashTarget(GameObject agent)
         {
             NpcAttributesComponent furthest = null;
 

@@ -36,7 +36,9 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool checkProceduralPrecondition(GameObject agent)
         {
-            return FindNpcTarget(agent);
+            return FindNpcTarget(agent) &&
+                   HeroScript.NpcHeroAnimator.GetFloat("heroDashAttack") < .1f;
+            
         }
 
         public override bool perform(GameObject agent)
@@ -84,8 +86,6 @@ namespace Assets.Scripts.GoapHeroActions
                     heroAttacks.AddRange(new List<string>
                     {
                         "heroAttackOne", // slash down
-                        "heroAttackTwo", // handle bump
-                        "heroAttackThree", // straight thrust
                         "heroAttackSeven" // step strong slash
                     });
                     damage = 100;

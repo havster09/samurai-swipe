@@ -130,9 +130,9 @@ namespace Assets.Scripts
 
             if (stringParameter == "mid")
             {
-                if (_heroScript.HeroVulnerable())
+                if (_heroScript.HeroVulnerable() && NpcAttribute.Health > 0)
                 {
-                    if (!_heroScript.NpcHeroAnimator.GetBool("heroBlock"))
+                    if (!_heroScript.NpcHeroAnimator.GetBool("heroBlock") && !_heroScript.IsCoroutineMoving)
                     {
                         _heroScript.HeroBlock(true, gameObject);
                     }

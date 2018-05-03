@@ -22,7 +22,7 @@ namespace Assets.Scripts.GoapHeroActions
         protected NpcHeroAttributesComponent NpcHeroAttributes;
         protected SlashRenderer SlashRendererScript;
 
-        protected bool IsPerforming { get; set; }
+        protected static bool IsPerforming;
 
         public GoapHeroAction() { }
 
@@ -108,12 +108,7 @@ namespace Assets.Scripts.GoapHeroActions
         {
             NpcAttributesComponent furthest = null;
 
-            furthest = NpcTargetAttributes.FindLast(
-                n =>
-                agent.transform.position.x > 0 ?
-                n.gameObject.transform.position.x > agent.transform.position.x :
-                n.gameObject.transform.position.x < agent.transform.position.x
-                    );
+            furthest = NpcTargetAttributes.OrderBy(n => n.transform.position.x).LastOrDefault();
 
             if (furthest == null)
             {

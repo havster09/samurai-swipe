@@ -33,7 +33,7 @@ namespace Assets.Scripts.GoapAttributeComponents
         {
             KillCount = 0;
             AttackCount = 0;
-            DefendCount = 0;
+            DefendCount = 5;
             Stamina = 100;
             Brave = 0;
             Health = 100;

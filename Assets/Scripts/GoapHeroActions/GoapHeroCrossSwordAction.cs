@@ -61,7 +61,7 @@ namespace Assets.Scripts.GoapHeroActions
             var activeEnemiesInRange = GetActiveNpcAttributesComponentsInRange(gameObject, PoseThreshold);
             if (
                 TargetNpcAttribute.CrossSwordMaxMovementDistance < 1 ||
-                activeEnemiesInRange > 0 && activeEnemiesInRange < 2
+                activeEnemiesInRange > 1
                 )
             {
                 HasCrossedSword = true;

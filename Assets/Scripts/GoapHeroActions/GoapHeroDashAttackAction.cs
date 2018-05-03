@@ -26,7 +26,7 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool requiresInRange()
         {
-            return true;
+            return false;
         }
 
         public override bool checkProceduralPrecondition(GameObject agent)
@@ -42,7 +42,7 @@ namespace Assets.Scripts.GoapHeroActions
         {
             if (HeroScript.NpcHeroAnimator.GetFloat("heroDashAttack") < .1f && !HeroScript.IsCoroutineMoving)
             {
-                HeroScript.Dash(target.transform.position, 10f);
+                HeroScript.Dash(target.transform.position, 6f);
                 NpcIsDestroyed = true;
 
                 Debug.Log(string.Format("<color=green>Active Targets {0}</color>", NpcTargetAttributes.Count));

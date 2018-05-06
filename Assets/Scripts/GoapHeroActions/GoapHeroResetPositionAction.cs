@@ -4,9 +4,6 @@ namespace Assets.Scripts.GoapHeroActions
 {
     public class GoapHeroResetPositionAction : GoapHeroAction
     {
-        private bool InitialPause { get; set; }
-
-
         public GoapHeroResetPositionAction()
         {
             addEffect("resetPosition", true);
@@ -15,7 +12,6 @@ namespace Assets.Scripts.GoapHeroActions
         public override void reset()
         {
             HasResetPosition = false;
-            InitialPause = false;
             TargetNpcAttribute = null;
             target = gameObject;
         }
@@ -39,16 +35,9 @@ namespace Assets.Scripts.GoapHeroActions
         public override bool Move()
         {
             Vector2 currentHeroPosition = gameObject.transform.position;
-            if (!InitialPause)
-            {
-                HeroScript.WaitFor(() => InitialPause = true, 2f);
-                return false;
-            }
-
             if (
                 HeroScript.IsFrozenPosition() ||
-                HeroScript.IsCoroutineMoving ||
-                HeroScript.IsAnimationTagPlaying("attack")
+                HeroScript.IsCoroutineMoving
                 )
             {
                 return false;

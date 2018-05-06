@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.GoapAttributeComponents;
+﻿using System;
+using Assets.Scripts.GoapAttributeComponents;
 using Assets.Scripts.GoapHeroActions;
 using UnityEngine;
 
@@ -101,6 +102,7 @@ namespace Assets.Scripts
             return NpcHeroAnimator.GetBool("heroBloodCover") ||
                    NpcHeroAnimator.GetBool("heroCleanWeapon") ||
                    IsAnimationTagPlaying("rest") ||
+                   IsAnimationTagPlaying("attack") ||
                    NpcHeroAnimator.GetBool("heroTurnPause");
         }
 
@@ -127,15 +129,16 @@ namespace Assets.Scripts
             return IsAnimationTagPlaying("idle");
         }
 
-        public void Dash(Vector3 end, float speed)
+        public void Dash(Vector3 end, float speed, Action callback)
         {
             NpcHeroAnimator.SetFloat("heroDashAttack", 1);
             StartCoroutine(PerformMovementTo(end, speed, false,
                 () =>
                 {
                     NpcHeroAnimator.SetFloat("heroDashAttack", 0);
-                    NpcHeroAnimator.Play("genjuroAttackThree");
+                    callback();
                 }, 0));
+
         }
     }
 }

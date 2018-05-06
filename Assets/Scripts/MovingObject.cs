@@ -87,15 +87,15 @@ namespace Assets.Scripts
 
         public abstract bool IsFrozenPosition(); 
 
-        public void WaitFor(Action action, float duration)
+        public void WaitFor(Action action, float duration, bool cancel = true)
         {
-            StartCoroutine(WaitForCheck(action, duration));
+            StartCoroutine(WaitForCheck(action, duration, cancel));
         }
 
-        protected IEnumerator WaitForCheck(Action callback, float duration)
+        protected IEnumerator WaitForCheck(Action callback, float duration, bool cancel)
         {
             float start = Time.time;
-            while (Time.time <= start + duration)
+            while (Time.time <= start + duration && cancel)
             {
                 yield return new WaitForSeconds(0.1f);
             }

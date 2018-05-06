@@ -36,12 +36,12 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool Move()
         {
-            if (!HeroScript.IsFrozenPosition() && !HeroScript.IsAnimationTagPlaying("attack"))
+            if (!HeroScript.IsFrozenPosition() && !HeroScript.IsAnimationTagPlaying("attack") && !IsPerforming)
             {
-                HeroScript.FaceTarget(target);
                 float distanceFromTarget = Vector2.Distance(new Vector2(gameObject.transform.position.x, 0), new Vector2(target.transform.position.x, 0));
                 if (distanceFromTarget >= DistanceToTargetThreshold && distanceFromTarget <= InRangeToTargetThreshold)
                 {
+                    HeroScript.FaceTarget(target);
                     float step = (MoveSpeed * 2) * Time.deltaTime;
                     gameObject.transform.position =
                         Vector3.MoveTowards(gameObject.transform.position, new Vector3(target.transform.position.x, 0), step);
@@ -117,7 +117,6 @@ namespace Assets.Scripts.GoapHeroActions
 
             TargetNpcAttribute = furthest;
             target = TargetNpcAttribute.gameObject;
-
             return true;
         }
 

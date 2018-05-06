@@ -15,6 +15,7 @@ namespace Assets.Scripts.GoapHeroTypes
         public NpcHeroAttributesComponent NpcHeroAttributes { get; set; }
 
         protected HashSet<KeyValuePair<string, object>> WorldData;
+        public HashSet<KeyValuePair<string, object>> goal;
 
         void Awake()
         {
@@ -22,6 +23,7 @@ namespace Assets.Scripts.GoapHeroTypes
             HeroScript = GetComponent<Hero>();
             GoapAgentScript = GetComponent<GoapAgent>();
             GoapHeroActionScript = GetComponent<GoapHeroAction>();
+            goal = new HashSet<KeyValuePair<string, object>>();
         }
 
         public HashSet<KeyValuePair<string, object>> getWorldState()
@@ -40,12 +42,11 @@ namespace Assets.Scripts.GoapHeroTypes
 
         public HashSet<KeyValuePair<string, object>> createGoalState()
         {
-            HashSet<KeyValuePair<string, object>> goal = new HashSet<KeyValuePair<string, object>>();
-            goal.Add(new KeyValuePair<string, object>("crossSword", true));
+            goal.Clear();
             goal.Add(new KeyValuePair<string, object>("destroyEnemyNpc", true));
+            goal.Add(new KeyValuePair<string, object>("resetPosition", true));
             goal.Add(new KeyValuePair<string, object>("bloodCover", true));
             goal.Add(new KeyValuePair<string, object>("wipeBlood", true));
-            goal.Add(new KeyValuePair<string, object>("resetPosition", true));
             return goal;
         }
 
@@ -63,6 +64,7 @@ namespace Assets.Scripts.GoapHeroTypes
         public void actionsFinished()
         {
             Debug.Log("<color=blue>Hero Actions completed</color>");
+            goal.Add(new KeyValuePair<string, object>("crossSword", true));
         }
 
         public void planAborted(GoapAction aborter)

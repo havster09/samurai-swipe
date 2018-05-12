@@ -243,7 +243,7 @@ namespace Assets.Scripts
             Vector2 end = new Vector2(transform.position.x, 0) + new Vector2(xDir, 0);
             if (!IsCoroutineMoving)
             {
-                MoveEnemyCoroutine = StartCoroutine(PerformMovementTo(end, .8f, NpcAttribute));
+                MoveEnemyCoroutine = StartCoroutine(PerformMovementTo(end, .8f));
             }
         }
 

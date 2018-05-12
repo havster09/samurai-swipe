@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Assets.Scripts.GoapAttributeComponents;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -7,14 +8,14 @@ namespace Assets.Scripts
     public abstract class MovingObject : MonoBehaviour
     {
         public bool IsHit { get; set; }
-        public float MoveTime = 0.1f;           
-        public LayerMask BlockingLayer;         
+        public float MoveTime = 0.1f;
+        public LayerMask BlockingLayer;
         public float MaxCombatRange;
         public float MaxWalkRange;
         public SpriteRenderer SpriteRenderer;
 
-        private BoxCollider2D _boxCollider;      
-        public Rigidbody2D Rb2D;             
+        private BoxCollider2D _boxCollider;
+        public Rigidbody2D Rb2D;
         private float _inverseMoveTime;
         public bool IsCoroutineMoving { get; set; }
         public Renderer NpcRenderer;
@@ -37,7 +38,7 @@ namespace Assets.Scripts
 
         protected virtual void OnDisable()
         {
-        
+
         }
 
         public void MoveBack(GameObject target, float to, float speed, Action action)
@@ -66,7 +67,11 @@ namespace Assets.Scripts
                 yield break;
             }
 
-            while (Vector2.Distance(transform.position, end) > .01f)
+            var npcAttribute = gameObject.GetComponent<NpcAttributesComponent>();
+
+            bool isAlive = !(npcAttribute != null && npcAttribute.Health < 1);
+
+            while (Vector2.Distance(transform.position, end) > .01f && isAlive)
             {
                 var step = speed * Time.deltaTime;
                 var newPostion = Vector3.MoveTowards(Rb2D.position, end, step);
@@ -80,12 +85,12 @@ namespace Assets.Scripts
                 npcAnimator.ResetTrigger(anmimationType);
             }
             if (npcAnimator != null) npcAnimator.StopPlayback();
-            if (callback != null) WaitFor(callback, callbackDuration); 
+            if (callback != null) WaitFor(callback, callbackDuration);
 
             IsCoroutineMoving = false;
         }
 
-        public abstract bool IsFrozenPosition(); 
+        public abstract bool IsFrozenPosition();
 
         public void WaitFor(Action action, float duration, bool cancel = true)
         {

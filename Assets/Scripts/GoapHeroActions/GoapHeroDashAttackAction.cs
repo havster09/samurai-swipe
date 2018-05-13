@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 namespace Assets.Scripts.GoapHeroActions
 {
@@ -55,8 +56,10 @@ namespace Assets.Scripts.GoapHeroActions
                 var dashEndPosition = HeroScript._heroFlipX
                     ? Vector3.Max(dashEnd, new Vector3(-3.5f, 0, 0))
                     : Vector3.Min(dashEnd, new Vector3(3.5f, 0, 0));
-                RaycastHit2D[] hits = Physics2D.RaycastAll(boxCollider2D.offset, HeroScript._heroFlipX ? Vector2.left : Vector2.right, Vector2.Distance(boxCollider2D.offset, dashEndPosition));
-                Debug.DrawLine(boxCollider2D.offset, dashEndPosition, Color.green, 5f);
+                var dashRaycastEndPosition = dashEndPosition + new Vector3(HeroScript._heroFlipX ? -1f : 1f, 0, 0);
+                var startPosition = new Vector2(transform.position.x, boxCollider2D.offset.y);
+                RaycastHit2D[] hits = Physics2D.RaycastAll(startPosition, HeroScript._heroFlipX ? Vector2.left : Vector2.right, Vector2.Distance(startPosition, dashRaycastEndPosition));
+                Debug.DrawLine(startPosition, new Vector3(0, boxCollider2D.offset.y, 0) + dashRaycastEndPosition, Color.green, 5f);
                 if (hits.Length > 0)
                 {
                     Debug.LogWarning(hits);
@@ -64,32 +67,29 @@ namespace Assets.Scripts.GoapHeroActions
 
                 HeroScript.Dash(dashEndPosition, 6f, () =>
                 {
-                    HeroScript.WaitFor(DamageTargets, .2f);
+                    HeroScript.WaitFor(() => DamageTargets(hits), .2f);
                 });
                 Debug.Log(string.Format("<color=green>Active Targets {0}</color>", NpcTargetAttributes.Count));
             }
             return NpcIsDestroyed;
         }
 
-        private void DamageTargets()
+        private void DamageTargets(RaycastHit2D[] hits)
         {
 
-            NpcTargetAttributes.ForEach(n =>
+            hits.ToList().ForEach(h =>
             {
-                var slashTarget = n.gameObject;
-
-                if (
-                    (HeroScript._heroFlipX && slashTarget.transform.position.x > gameObject.transform.position.x) ||
-                    (!HeroScript._heroFlipX && slashTarget.transform.position.x < gameObject.transform.position.x)
-                    )
+                var slashTarget = h.collider.gameObject;
+                var enemyScript = slashTarget.GetComponent<Enemy>();
+                if (enemyScript != null)
                 {
-                    var enemyScript = slashTarget.GetComponent<Enemy>();
-                    var damage = 100;
-                    enemyScript.EnemyHitSuccess(damage);
+                    enemyScript.EnemyHitSuccess(100);
                 }
+                
             });
 
             NpcTargetAttributes.Clear();
+            // todo trigger reset pos action if needed
 
             HeroScript.WaitFor(() =>
             {

@@ -35,17 +35,12 @@ namespace Assets.Scripts
 
         private void HeroBlockEndEventHandler()
         {
-            NpcHeroAnimator.speed = 1f;
             MoveBack(CurrentTarget, .35f, 5f, () => HeroBlock(false));
         }
 
         public void HeroBlock(bool state, GameObject target = null)
         {
             if (target != null) FaceTarget(target);
-            if (!state)
-            {
-                NpcHeroAnimator.speed = 1;
-            }
             NpcHeroAnimator.SetBool("heroBlock", state);
         }
 

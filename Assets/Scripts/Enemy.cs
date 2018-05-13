@@ -138,7 +138,7 @@ namespace Assets.Scripts
                     }
                     else
                     {
-                        _heroScript.NpcHeroAnimator.Play("heroBlock", -1, 1f);
+                        _heroScript.NpcHeroAnimator.Play("heroBlock", 1, .8f);
                     }
                 }
             }

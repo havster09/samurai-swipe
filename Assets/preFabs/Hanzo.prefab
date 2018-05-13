@@ -33,7 +33,7 @@ GameObject:
   - component: {fileID: 95003300025040100}
   - component: {fileID: 50910809735697186}
   - component: {fileID: 61815173885874320}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Hanzo
   m_TagString: Enemy
   m_Icon: {fileID: 0}

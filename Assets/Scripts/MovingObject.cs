@@ -67,11 +67,9 @@ namespace Assets.Scripts
                 yield break;
             }
 
-            var npcAttribute = gameObject.GetComponent<NpcAttributesComponent>();
+            gameObject.GetComponent<NpcAttributesComponent>();
 
-            bool isAlive = !(npcAttribute != null && npcAttribute.Health < 1);
-
-            while (Vector2.Distance(transform.position, end) > .01f && isAlive)
+            while (Vector2.Distance(transform.position, end) > .01f && !IsFrozenPosition())
             {
                 var step = speed * Time.deltaTime;
                 var newPostion = Vector3.MoveTowards(Rb2D.position, end, step);

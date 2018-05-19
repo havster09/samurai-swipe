@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Assets.Scripts.GoapAttributeComponents;
 using Assets.Scripts.GoapHeroActions;
+using Assets.Scripts.GoapHeroSubStates;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -12,6 +14,7 @@ namespace Assets.Scripts
         public bool _heroFlipX;
         public Animator NpcHeroAnimator;
         public NpcHeroAttributesComponent NpcHeroAttributes;
+        public DashEndStateMachineHandler DashEndStateMachineHandlerScript;
 
         public bool IsAttacking { get; set; }
 
@@ -20,6 +23,8 @@ namespace Assets.Scripts
             NpcHeroAttributes = gameObject.GetComponent<NpcHeroAttributesComponent>();
             NpcHeroAnimator = GetComponent<Animator>();
             NpcRenderer = GetComponent<Renderer>();
+            DashEndStateMachineHandlerScript =
+                GameObject.FindObjectOfType<DashEndStateMachineHandler>();
             AttachAnimationClipEvents();
         }
 
@@ -28,7 +33,7 @@ namespace Assets.Scripts
             var blockClip = NpcHeroAnimator.runtimeAnimatorController.animationClips[23];
 
             var blockEventMid = new AnimationEvent();
-            blockEventMid.time = blockClip.length/ 2;
+            blockEventMid.time = blockClip.length / 2;
             blockEventMid.functionName = "HeroBlockEndEventHandler";
             blockClip.AddEvent(blockEventMid);
         }
@@ -124,16 +129,29 @@ namespace Assets.Scripts
             return IsAnimationTagPlaying("idle");
         }
 
-        public void Dash(Vector3 end, float speed, Action callback)
+        public void Dash(Vector3 end, float speed, RaycastHit2D[] hits)
         {
             NpcHeroAnimator.SetFloat("heroDashAttack", 1);
             StartCoroutine(PerformMovementTo(end, speed, false,
                 () =>
                 {
                     NpcHeroAnimator.SetFloat("heroDashAttack", 0);
-                    callback();
+                    DashEndStateMachineHandlerScript.StartDashEndStateMachineHandler();
+                    DamageRayCastTargets(hits);
                 }, 0));
+        }
 
+        public void DamageRayCastTargets(RaycastHit2D[] hits)
+        {
+            hits.ToList().ForEach(h =>
+            {
+                var slashTarget = h.collider.gameObject;
+                var enemyScript = slashTarget.GetComponent<Enemy>();
+                if (enemyScript != null)
+                {
+                    enemyScript.EnemyHitSuccess(100);
+                }
+            });
         }
     }
 }

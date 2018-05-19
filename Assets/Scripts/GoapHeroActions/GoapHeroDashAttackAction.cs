@@ -65,38 +65,18 @@ namespace Assets.Scripts.GoapHeroActions
                     Debug.LogWarning(hits);
                 }
 
-                HeroScript.Dash(dashEndPosition, 6f, () =>
-                {
-                    HeroScript.WaitFor(() => DamageTargets(hits), .2f);
-                });
+                HeroScript.Dash(dashEndPosition, 6f, hits);
+                ResetDashTargets();
                 Debug.Log(string.Format("<color=green>Active Targets {0}</color>", NpcTargetAttributes.Count));
             }
             return NpcIsDestroyed;
         }
 
-        private void DamageTargets(RaycastHit2D[] hits)
+        private void ResetDashTargets()
         {
-
-            hits.ToList().ForEach(h =>
-            {
-                var slashTarget = h.collider.gameObject;
-                var enemyScript = slashTarget.GetComponent<Enemy>();
-                if (enemyScript != null)
-                {
-                    enemyScript.EnemyHitSuccess(100);
-                }
-                
-            });
-
             NpcTargetAttributes.Clear();
-            // todo trigger reset pos action if needed
-
-            HeroScript.WaitFor(() =>
-            {
-                HeroScript.NpcHeroAnimator.Play("genjuroIdle");
-                NpcIsDestroyed = true;
-                IsPerforming = false;
-            }, 3f);
+            NpcIsDestroyed = true;
+            IsPerforming = false;
         }
     }
 }

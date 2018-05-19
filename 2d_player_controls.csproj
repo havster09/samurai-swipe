@@ -247,6 +247,7 @@
     <Compile Include="Assets\Scripts\ChopTreeAction.cs" />
     <Compile Include="Assets\Scripts\DropOffLogsAction.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
+    <Compile Include="Assets\Scripts\FiniteStateMachine.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\GoapAttributeComponents\NpcAttributesComponent.cs" />
     <Compile Include="Assets\Scripts\GoapAttributeComponents\NpcHeroAttributesComponent.cs" />
@@ -260,13 +261,17 @@
     <Compile Include="Assets\Scripts\GoapEnemyTypes\GoapAgentEnemy.cs" />
     <Compile Include="Assets\Scripts\GoapEnemyTypes\GoapAgentSearchAndDestroy.cs" />
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroAction.cs" />
-    <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroDashAttackAction.cs" />
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroBaseAttackAction.cs" />
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroBloodCoverAction.cs" />
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroCleanWeaponAction.cs" />
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroCrossSwordAction.cs" />
+    <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroDashAttackAction.cs" />
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroResetPositionAction.cs" />
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroWipeBloodAction.cs" />
+    <Compile Include="Assets\Scripts\GoapHeroSubStates\SimpleDelayTransition.cs" />
+    <Compile Include="Assets\Scripts\GoapHeroSubStates\DashEndIdleState.cs" />
+    <Compile Include="Assets\Scripts\GoapHeroSubStates\DashEndPoseState.cs" />
+    <Compile Include="Assets\Scripts\GoapHeroSubStates\DashEndStateMachineHandler.cs" />
     <Compile Include="Assets\Scripts\GoapHeroTypes\GoapAgentHero.cs" />
     <Compile Include="Assets\Scripts\Hero.cs" />
     <Compile Include="Assets\Scripts\MovingObject.cs" />

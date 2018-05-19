@@ -28,6 +28,11 @@ namespace Assets.Scripts
             AttachAnimationClipEvents();
         }
 
+        void Start()
+        {
+            StartSubStateMachines();
+        }
+
         private void AttachAnimationClipEvents()
         {
             var blockClip = NpcHeroAnimator.runtimeAnimatorController.animationClips[23];
@@ -36,6 +41,11 @@ namespace Assets.Scripts
             blockEventMid.time = blockClip.length / 2;
             blockEventMid.functionName = "HeroBlockEndEventHandler";
             blockClip.AddEvent(blockEventMid);
+        }
+
+        private void StartSubStateMachines()
+        {
+            DashEndStateMachineHandlerScript.StartDashEndStateMachineHandler();
         }
 
         private void HeroBlockEndEventHandler()
@@ -136,7 +146,6 @@ namespace Assets.Scripts
                 () =>
                 {
                     NpcHeroAnimator.SetFloat("heroDashAttack", 0);
-                    DashEndStateMachineHandlerScript.StartDashEndStateMachineHandler();
                     DamageRayCastTargets(hits);
                 }, 0));
         }

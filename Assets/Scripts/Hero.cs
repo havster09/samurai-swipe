@@ -17,6 +17,7 @@ namespace Assets.Scripts
         public NpcHeroAttributesComponent NpcHeroAttributes;
         public DashEndStateMachineHandler DashEndStateMachineHandlerScript;
         public delegate void OnHeroBlocked();
+
         public static event OnHeroBlocked onHeroBlocked;
 
         public bool IsAttacking { get; set; }

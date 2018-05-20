@@ -544,6 +544,7 @@ namespace Assets.Scripts
             Hero.onHeroBlocked -= FromEnemyHeroBlockHandler;
             Reset();
             base.OnDisable();
+
         }
 
         private void Reset()

@@ -15,9 +15,9 @@ namespace Assets.Scripts
         public bool HeroFlipX;
         public Animator NpcHeroAnimator;
         public NpcHeroAttributesComponent NpcHeroAttributes;
-        public DashEndStateMachineHandler DashEndStateMachineHandlerScript;
-        public delegate void OnHeroBlocked();
+        public static DashEndStateMachineHandler DashEndStateMachineHandlerScript;
 
+        public delegate void OnHeroBlocked();
         public static event OnHeroBlocked onHeroBlocked;
 
         public bool IsAttacking { get; set; }
@@ -40,19 +40,12 @@ namespace Assets.Scripts
 
         protected override void OnEnable()
         {
-            onHeroBlocked += HeroBlockHandler;
             base.OnEnable();
         }
 
         protected override void OnDisable()
         {
-            onHeroBlocked -= HeroBlockHandler;
             base.OnDisable();
-        }
-
-        public void HeroBlockHandler()
-        {
-            Debug.LogWarning("====delegate from Hero fire====");
         }
         
         private void AttachAnimationClipEvents()
@@ -174,6 +167,12 @@ namespace Assets.Scripts
                     NpcHeroAnimator.SetFloat("heroDashAttack", 0);
                     DamageRayCastTargets(hits);
                 }, 0));
+        }
+
+        public void HandleDashEndEvent(RaycastHit2D[] hits)
+        {
+            NpcHeroAnimator.SetFloat("heroDashAttack", 0);
+            DamageRayCastTargets(hits);
         }
 
         public void DamageRayCastTargets(RaycastHit2D[] hits)

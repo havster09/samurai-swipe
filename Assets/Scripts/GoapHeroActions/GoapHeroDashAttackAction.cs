@@ -52,19 +52,15 @@ namespace Assets.Scripts.GoapHeroActions
                 IsPerforming = true;
                 HeroScript.FaceTarget(target);
                 BoxCollider2D boxCollider2D = gameObject.GetComponent<BoxCollider2D>();
-                var dashEnd = target.transform.position + new Vector3(HeroScript._heroFlipX ? -1f : DashOffset, 0, 0);
-                var dashEndPosition = HeroScript._heroFlipX
+                var dashEnd = target.transform.position + new Vector3(HeroScript.HeroFlipX ? -1f : DashOffset, 0, 0);
+                var dashEndPosition = HeroScript.HeroFlipX
                     ? Vector3.Max(dashEnd, new Vector3(-3.5f, 0, 0))
                     : Vector3.Min(dashEnd, new Vector3(3.5f, 0, 0));
-                var dashRaycastEndPosition = dashEndPosition + new Vector3(HeroScript._heroFlipX ? -1f : 1f, 0, 0);
+                var dashRaycastEndPosition = dashEndPosition + new Vector3(HeroScript.HeroFlipX ? -1f : 1f, 0, 0);
                 var startPosition = new Vector2(transform.position.x, boxCollider2D.offset.y);
-                RaycastHit2D[] hits = Physics2D.RaycastAll(startPosition, HeroScript._heroFlipX ? Vector2.left : Vector2.right, Vector2.Distance(startPosition, dashRaycastEndPosition));
+                RaycastHit2D[] hits = Physics2D.RaycastAll(startPosition, HeroScript.HeroFlipX ? Vector2.left : Vector2.right, Vector2.Distance(startPosition, dashRaycastEndPosition));
                 Debug.DrawLine(startPosition, new Vector3(0, boxCollider2D.offset.y, 0) + dashRaycastEndPosition, Color.green, 5f);
-                if (hits.Length > 0)
-                {
-                    Debug.LogWarning(hits);
-                }
-
+                
                 HeroScript.Dash(dashEndPosition, 6f, hits);
                 ResetDashTargets();
                 Debug.Log(string.Format("<color=green>Active Targets {0}</color>", NpcTargetAttributes.Count));

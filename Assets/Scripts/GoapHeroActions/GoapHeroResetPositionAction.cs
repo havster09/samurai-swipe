@@ -45,7 +45,7 @@ namespace Assets.Scripts.GoapHeroActions
 
             var distanceFromResetPosition = Vector2.Distance(currentHeroPosition, new Vector2(0, 0));
 
-            var walkResetType = HeroScript._heroFlipX ? "heroWalkBackLoop" : "heroWalkLoop";
+            var walkResetType = HeroScript.HeroFlipX ? "heroWalkBackLoop" : "heroWalkLoop";
 
             if (
                 Mathf.Floor(distanceFromResetPosition) > ResetPositionThreshold &&

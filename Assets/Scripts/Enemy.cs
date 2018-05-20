@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Linq;
-using Assets.Scripts.GoapAttributeComponents;
+﻿using Assets.Scripts.GoapAttributeComponents;
 using Assets.Scripts.GoapEnemyActions;
 using Assets.Scripts.GoapHeroActions;
-using NUnit.Framework;
+using System.Collections;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,8 +13,6 @@ namespace Assets.Scripts
         public int PlayerDamage;
         public float RunSpeed;
         private GoapHeroAction _goapHeroActionScript;
-        private Hero _heroScript;
-
         public bool HasWalkAbility;
 
         public Animator NpcAnimator;
@@ -35,7 +31,6 @@ namespace Assets.Scripts
 
         private void Awake()
         {
-            _heroScript = GameObject.FindObjectOfType<Hero>();
             _goapHeroActionScript = GameObject.FindObjectOfType<GoapHeroAction>();
             _slashRenderer = GameObject.FindObjectOfType<SlashRenderer>();
             _goapEnemyAction = gameObject.GetComponent<GoapEnemyAction>();
@@ -115,6 +110,11 @@ namespace Assets.Scripts
             blockClip.AddEvent(blockEventEnd);
         }
 
+        public void FromEnemyHeroBlockHandler()
+        {
+            Debug.LogWarning("=====from enemy delegate handler=====");
+        }
+
         private void EnemyBlockEndEventHandler()
         {
             NpcAnimator.speed = .8f;
@@ -130,15 +130,15 @@ namespace Assets.Scripts
 
             if (stringParameter == "mid")
             {
-                if (_heroScript.HeroVulnerable() && NpcAttribute.Health > 0)
+                if (Hero.Instance.HeroVulnerable() && NpcAttribute.Health > 0)
                 {
-                    if (!_heroScript.NpcHeroAnimator.GetBool("heroBlock") && !_heroScript.IsCoroutineMoving)
+                    if (!Hero.Instance.NpcHeroAnimator.GetBool("heroBlock") && !Hero.Instance.IsCoroutineMoving)
                     {
-                        _heroScript.HeroBlock(true, gameObject);
+                        Hero.Instance.HeroBlock(true, gameObject);
                     }
                     else
                     {
-                        _heroScript.NpcHeroAnimator.Play("heroBlock", 1, .8f);
+                        Hero.Instance.NpcHeroAnimator.Play("heroBlock", 1, .8f);
                     }
                 }
             }
@@ -184,13 +184,6 @@ namespace Assets.Scripts
         {
             WaitFor(() => IsCanWalk = true, 4f);
         }
-
-        protected override void OnEnable()
-        {
-            _goapHeroActionScript.RemoveTargetFromList(NpcAttribute);
-            base.OnEnable();
-        }
-
 
         public void FaceTarget()
         {
@@ -539,9 +532,18 @@ namespace Assets.Scripts
             return NpcAnimator.runtimeAnimatorController.animationClips.FirstOrDefault(clip => clip.name == animationName);
         }
 
-        private void OnDisable()
+        protected override void OnEnable()
         {
+            _goapHeroActionScript.RemoveTargetFromList(NpcAttribute);
+            Hero.onHeroBlocked += FromEnemyHeroBlockHandler;
+            base.OnEnable();
+        }
+
+        protected override void OnDisable()
+        {
+            Hero.onHeroBlocked -= FromEnemyHeroBlockHandler;
             Reset();
+            base.OnDisable();
         }
 
         private void Reset()

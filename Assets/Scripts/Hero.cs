@@ -9,17 +9,21 @@ namespace Assets.Scripts
 {
     public class Hero : MovingObject
     {
+        public static Hero Instance;
         public const float HeroStep = .5f;
         public GameObject CurrentTarget;
-        public bool _heroFlipX;
+        public bool HeroFlipX;
         public Animator NpcHeroAnimator;
         public NpcHeroAttributesComponent NpcHeroAttributes;
         public DashEndStateMachineHandler DashEndStateMachineHandlerScript;
+        public delegate void OnHeroBlocked();
+        public static event OnHeroBlocked onHeroBlocked;
 
         public bool IsAttacking { get; set; }
 
         void Awake()
         {
+            Instance = this;
             NpcHeroAttributes = gameObject.GetComponent<NpcHeroAttributesComponent>();
             NpcHeroAnimator = GetComponent<Animator>();
             NpcRenderer = GetComponent<Renderer>();
@@ -28,11 +32,28 @@ namespace Assets.Scripts
             AttachAnimationClipEvents();
         }
 
-        void Start()
+        protected override void Start()
         {
             StartSubStateMachines();
         }
 
+        protected override void OnEnable()
+        {
+            onHeroBlocked += HeroBlockHandler;
+            base.OnEnable();
+        }
+
+        protected override void OnDisable()
+        {
+            onHeroBlocked -= HeroBlockHandler;
+            base.OnDisable();
+        }
+
+        public void HeroBlockHandler()
+        {
+            Debug.LogWarning("====delegate from Hero fire====");
+        }
+        
         private void AttachAnimationClipEvents()
         {
             var blockClip = NpcHeroAnimator.runtimeAnimatorController.animationClips[23];
@@ -51,7 +72,11 @@ namespace Assets.Scripts
         private void HeroBlockEndEventHandler()
         {
             MoveBack(CurrentTarget, .35f, 5f, () => HeroBlock(false));
-        }
+            if (onHeroBlocked != null)
+            {
+                onHeroBlocked();
+            }
+    }
 
         public void HeroBlock(bool state, GameObject target = null)
         {
@@ -64,15 +89,15 @@ namespace Assets.Scripts
             CurrentTarget = target;
             float targetDistance = target.transform.position.x - transform.position.x;
 
-            if (targetDistance < 0 && _heroFlipX == false)
+            if (targetDistance < 0 && HeroFlipX == false)
             {
                 transform.localRotation = Quaternion.Euler(0, 180, 0);
-                _heroFlipX = true;
+                HeroFlipX = true;
             }
-            else if (targetDistance > 0 && _heroFlipX)
+            else if (targetDistance > 0 && HeroFlipX)
             {
                 transform.localRotation = Quaternion.Euler(0, 0, 0);
-                _heroFlipX = false;
+                HeroFlipX = false;
             }
         }
 

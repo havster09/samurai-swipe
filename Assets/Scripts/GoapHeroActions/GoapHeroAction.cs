@@ -17,18 +17,14 @@ namespace Assets.Scripts.GoapHeroActions
         protected bool HasCrossedSword;
         protected bool NpcIsDestroyedReset;
         protected bool HasResetPosition;
-        protected Hero HeroScript;
         protected NpcAttributesComponent TargetNpcAttribute;
         protected NpcHeroAttributesComponent NpcHeroAttributes;
         protected SlashRenderer SlashRendererScript;
 
         protected static bool IsPerforming;
 
-        public GoapHeroAction() { }
-
         void Awake()
         {
-            HeroScript = GetComponent<Hero>();
             NpcHeroAttributes = GetComponent<NpcHeroAttributesComponent>();
             NpcTargetAttributes = new List<NpcAttributesComponent>();
             SlashRendererScript = FindObjectOfType<SlashRenderer>();
@@ -36,20 +32,20 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool Move()
         {
-            if (!HeroScript.IsFrozenPosition() && !HeroScript.IsAnimationTagPlaying("attack") && !IsPerforming)
+            if (!Hero.Instance.IsFrozenPosition() && !Hero.Instance.IsAnimationTagPlaying("attack") && !IsPerforming)
             {
                 float distanceFromTarget = Vector2.Distance(new Vector2(gameObject.transform.position.x, 0), new Vector2(target.transform.position.x, 0));
                 if (distanceFromTarget >= DistanceToTargetThreshold && distanceFromTarget <= InRangeToTargetThreshold)
                 {
-                    HeroScript.FaceTarget(target);
+                    Hero.Instance.FaceTarget(target);
                     float step = (MoveSpeed * 2) * Time.deltaTime;
                     gameObject.transform.position =
                         Vector3.MoveTowards(gameObject.transform.position, new Vector3(target.transform.position.x, 0), step);
-                    HeroScript.NpcHeroAnimator.SetBool("heroRun", true);
+                    Hero.Instance.NpcHeroAnimator.SetBool("heroRun", true);
                 }
                 else
                 {
-                    HeroScript.NpcHeroAnimator.SetBool("heroRun", false);
+                    Hero.Instance.NpcHeroAnimator.SetBool("heroRun", false);
                     setInRange(true);
                     return true;
                 }

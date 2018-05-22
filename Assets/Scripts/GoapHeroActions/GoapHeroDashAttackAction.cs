@@ -43,25 +43,25 @@ namespace Assets.Scripts.GoapHeroActions
         public override bool perform(GameObject agent)
         {
             if (
-                HeroScript.NpcHeroAnimator.GetFloat("heroDashAttack") < .1f &&
-                !HeroScript.NpcHeroAnimator.GetBool("heroBlock") &&
-                !HeroScript.IsCoroutineMoving &&
+                Hero.Instance.NpcHeroAnimator.GetFloat("heroDashAttack") < .1f &&
+                !Hero.Instance.NpcHeroAnimator.GetBool("heroBlock") &&
+                !Hero.Instance.IsCoroutineMoving &&
                 !IsPerforming
                 )
             {
                 IsPerforming = true;
-                HeroScript.FaceTarget(target);
+                Hero.Instance.FaceTarget(target);
                 BoxCollider2D boxCollider2D = gameObject.GetComponent<BoxCollider2D>();
-                var dashEnd = target.transform.position + new Vector3(HeroScript.HeroFlipX ? -1f : DashOffset, 0, 0);
-                var dashEndPosition = HeroScript.HeroFlipX
+                var dashEnd = target.transform.position + new Vector3(Hero.Instance.HeroFlipX ? -1f : DashOffset, 0, 0);
+                var dashEndPosition = Hero.Instance.HeroFlipX
                     ? Vector3.Max(dashEnd, new Vector3(-3.5f, 0, 0))
                     : Vector3.Min(dashEnd, new Vector3(3.5f, 0, 0));
-                var dashRaycastEndPosition = dashEndPosition + new Vector3(HeroScript.HeroFlipX ? -1f : 1f, 0, 0);
+                var dashRaycastEndPosition = dashEndPosition + new Vector3(Hero.Instance.HeroFlipX ? -1f : 1f, 0, 0);
                 var startPosition = new Vector2(transform.position.x, boxCollider2D.offset.y);
-                RaycastHit2D[] hits = Physics2D.RaycastAll(startPosition, HeroScript.HeroFlipX ? Vector2.left : Vector2.right, Vector2.Distance(startPosition, dashRaycastEndPosition));
+                RaycastHit2D[] hits = Physics2D.RaycastAll(startPosition, Hero.Instance.HeroFlipX ? Vector2.left : Vector2.right, Vector2.Distance(startPosition, dashRaycastEndPosition));
                 Debug.DrawLine(startPosition, new Vector3(0, boxCollider2D.offset.y, 0) + dashRaycastEndPosition, Color.green, 5f);
                 
-                HeroScript.Dash(dashEndPosition, 6f, hits);
+                Hero.Instance.Dash(dashEndPosition, 6f, hits);
                 ResetDashTargets();
                 Debug.Log(string.Format("<color=green>Active Targets {0}</color>", NpcTargetAttributes.Count));
             }

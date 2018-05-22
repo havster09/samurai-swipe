@@ -7,11 +7,11 @@ using UnityEngine;
 namespace Assets.Scripts.GoapHeroTypes
 {
     public class GoapAgentHero : MonoBehaviour, IGoap {
+        public static GoapAgentHero Instance;
         public float MoveSpeed = 2;
         public GoapAgent GoapAgentScript;
         public GoapHeroAction GoapHeroActionScript;
 
-        public Hero HeroScript { get; set; }
         public NpcHeroAttributesComponent NpcHeroAttributes { get; set; }
 
         protected HashSet<KeyValuePair<string, object>> WorldData;
@@ -19,8 +19,17 @@ namespace Assets.Scripts.GoapHeroTypes
 
         void Awake()
         {
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else if (Instance != this)
+            {
+                Destroy(gameObject);
+            }
+            DontDestroyOnLoad(gameObject);
+
             NpcHeroAttributes = gameObject.GetComponent<NpcHeroAttributesComponent>();
-            HeroScript = GetComponent<Hero>();
             GoapAgentScript = GetComponent<GoapAgent>();
             GoapHeroActionScript = GetComponent<GoapHeroAction>();
             goal = new HashSet<KeyValuePair<string, object>>();

@@ -37,7 +37,7 @@ namespace Assets.Scripts.GoapHeroActions
         public override bool checkProceduralPrecondition(GameObject agent)
         {
             return FindNpcTarget(agent) &&
-                   HeroScript.NpcHeroAnimator.GetFloat("heroDashAttack") < .1f;
+                   Hero.Instance.NpcHeroAnimator.GetFloat("heroDashAttack") < .1f;
             
         }
 
@@ -52,9 +52,9 @@ namespace Assets.Scripts.GoapHeroActions
             
 
             if (
-                !HeroScript.IsAnimationTagPlaying("attack") &&
-                !HeroScript.IsAnimationTagPlaying("cross") &&
-                !HeroScript.IsAnimationTagPlaying("rest") &&
+                !Hero.Instance.IsAnimationTagPlaying("attack") &&
+                !Hero.Instance.IsAnimationTagPlaying("cross") &&
+                !Hero.Instance.IsAnimationTagPlaying("rest") &&
                 !enemyScript.IsDead
                 )
             {
@@ -91,7 +91,7 @@ namespace Assets.Scripts.GoapHeroActions
                     damage = 100;
                 }
 
-                HeroScript.Attack(heroAttacks[Random.Range(0, heroAttacks.Count)]);
+                Hero.Instance.Attack(heroAttacks[Random.Range(0, heroAttacks.Count)]);
 
                 if (TargetNpcAttribute.DefendCount < 1)
                 {

@@ -11,7 +11,6 @@ namespace Assets.Scripts.GoapEnemyActions
         protected Enemy EnemyScript;
         protected NpcHeroAttributesComponent TargetNpcHeroAttribute;
         protected NpcAttributesComponent NpcAttributes;
-        public Hero HeroScript;
 
         protected bool IsPerforming { get; set; }
 
@@ -21,7 +20,6 @@ namespace Assets.Scripts.GoapEnemyActions
         {
             EnemyScript = GetComponent<Enemy>();
             NpcAttributes = GetComponent<NpcAttributesComponent>();
-            HeroScript = FindObjectOfType<Hero>();
         }
 
         void OnEnable()
@@ -31,7 +29,7 @@ namespace Assets.Scripts.GoapEnemyActions
 
         public override bool Move()
         {
-            if (!HeroScript.IsFrozenPosition())
+            if (!Hero.Instance.IsFrozenPosition())
             {
                 if (!EnemyScript.IsFrozenPosition())
                 {

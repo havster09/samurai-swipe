@@ -9,14 +9,12 @@ namespace Assets.Scripts.GoapHeroSubStates
 {
     class DashEndIdleState : IState
     {
-        private Hero _heroScript;
         private Animator _npcHeroAnimator;
         
         public void BeginEnter()
         {
             
-            _heroScript = Object.FindObjectOfType<Hero>();
-            _npcHeroAnimator = _heroScript.GetComponent<Animator>();
+            _npcHeroAnimator = Hero.Instance.GetComponent<Animator>();
             _npcHeroAnimator.Play("heroIdle");
         }
 

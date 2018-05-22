@@ -28,16 +28,16 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool checkProceduralPrecondition(GameObject agent)
         {
-            return !HeroScript.IsAnimationTagPlaying("attack") &&
-                HeroScript.NpcHeroAnimator.GetFloat("heroDashAttack") < .1f;
+            return !Hero.Instance.IsAnimationTagPlaying("attack") &&
+                Hero.Instance.NpcHeroAnimator.GetFloat("heroDashAttack") < .1f;
         }
 
         public override bool Move()
         {
             Vector2 currentHeroPosition = gameObject.transform.position;
             if (
-                HeroScript.IsFrozenPosition() ||
-                HeroScript.IsCoroutineMoving
+                Hero.Instance.IsFrozenPosition() ||
+                Hero.Instance.IsCoroutineMoving
                 )
             {
                 return false;
@@ -45,7 +45,7 @@ namespace Assets.Scripts.GoapHeroActions
 
             var distanceFromResetPosition = Vector2.Distance(currentHeroPosition, new Vector2(0, 0));
 
-            var walkResetType = HeroScript.HeroFlipX ? "heroWalkBackLoop" : "heroWalkLoop";
+            var walkResetType = Hero.Instance.HeroFlipX ? "heroWalkBackLoop" : "heroWalkLoop";
 
             if (
                 Mathf.Floor(distanceFromResetPosition) > ResetPositionThreshold &&
@@ -57,11 +57,11 @@ namespace Assets.Scripts.GoapHeroActions
                 float step = MoveSpeed / 2 * Time.deltaTime;
                 gameObject.transform.position =
                     Vector3.MoveTowards(gameObject.transform.position, new Vector3(0, 0), step);
-                HeroScript.NpcHeroAnimator.SetBool(walkResetType, true);
+                Hero.Instance.NpcHeroAnimator.SetBool(walkResetType, true);
             }
             else
             {
-                HeroScript.NpcHeroAnimator.SetBool(walkResetType, false);
+                Hero.Instance.NpcHeroAnimator.SetBool(walkResetType, false);
                 setInRange(true);
                 return true;
             }

@@ -24,7 +24,16 @@ namespace Assets.Scripts
 
         void Awake()
         {
-            Instance = this;
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else if (Instance != this)
+            {
+                Destroy(gameObject);
+            }
+            DontDestroyOnLoad(gameObject);
+
             NpcHeroAttributes = gameObject.GetComponent<NpcHeroAttributesComponent>();
             NpcHeroAnimator = GetComponent<Animator>();
             NpcRenderer = GetComponent<Renderer>();

@@ -35,7 +35,7 @@ namespace Assets.Scripts.GoapHeroActions
         {
             if (GetActiveNpcAttributesComponentsInRange(gameObject, PoseThreshold) < 1 && InResetRange())
             {
-                HeroScript.CleanWeapon();
+                Hero.Instance.CleanWeapon();
                 NpcIsDestroyedReset = true;
             }
             else

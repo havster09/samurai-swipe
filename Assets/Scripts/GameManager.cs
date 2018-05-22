@@ -5,11 +5,11 @@ namespace Assets.Scripts
 {
     public class GameManager : MonoBehaviour
     {
+        public static GameManager Instance;
         public Object Hero;
         public float LevelStartDelay = 5f;                      
         public float TurnDelay = 0.1f;      
-        public int PlayerFoodPoints = 100;  
-        public static GameManager Instance = null;
+        public int PlayerFoodPoints = 100;        
         [HideInInspector] public bool PlayersTurn = true; 
 
         void Awake()
@@ -39,7 +39,7 @@ namespace Assets.Scripts
         {
             InitHero();
             InitEnemies();
-            AudioManager.SharedInstance.TestLog();
+            AudioManager.Instance.TestLog();
         }
 
         private void InitHero()

@@ -75,11 +75,11 @@ namespace Assets.Scripts.GoapHeroActions
             }
 
             if (
-                !HeroScript.NpcHeroAnimator.GetBool("heroCrossSword") &&
+                !Hero.Instance.NpcHeroAnimator.GetBool("heroCrossSword") &&
                 Mathf.Abs(TotalMovementDistance) < TargetNpcAttribute.CrossSwordMaxMovementDistance
                 )
             {
-                HeroScript.CrossSword(true);
+                Hero.Instance.CrossSword(true);
                 EnemyScript.CrossSword(true);
                 IsPerforming = true;
                 var targetCrossSwordPosition = EnemyScript.EnemyFlipX ? DistanceToTargetThreshold : -DistanceToTargetThreshold;
@@ -91,11 +91,11 @@ namespace Assets.Scripts.GoapHeroActions
 
             if (Mathf.Abs(TotalMovementDistance) > TargetNpcAttribute.CrossSwordMaxMovementDistance)
             {
-                HeroScript.CrossSword(false);
+                Hero.Instance.CrossSword(false);
                 EnemyScript.CrossSword(false);
                 IsPerforming = false;
                 HasCrossedSword = true;
-                HeroScript.Rb2D.velocity = new Vector2(0, 0);
+                Hero.Instance.Rb2D.velocity = new Vector2(0, 0);
                 EnemyScript.Rb2D.velocity = new Vector2(0, 0);
                 HasCrossedSword = true;
                 return HasCrossedSword;
@@ -104,7 +104,7 @@ namespace Assets.Scripts.GoapHeroActions
             {
                 if (IsPerforming)
                 {
-                    SetCrossSwordMovement(EnemyScript, HeroScript);
+                    SetCrossSwordMovement(EnemyScript, Hero.Instance);
                 }
             }
             return HasCrossedSword;
@@ -114,7 +114,7 @@ namespace Assets.Scripts.GoapHeroActions
         {
             TotalMovementDistance++;
             var velocity = Random.Range(-2, 2);
-            heroScript.Rb2D.velocity = new Vector2(velocity, 0);
+            Hero.Instance.Rb2D.velocity = new Vector2(velocity, 0);
             enemyScript.Rb2D.velocity = new Vector2(velocity, 0);
         }
     }

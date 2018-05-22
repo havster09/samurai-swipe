@@ -35,16 +35,16 @@ namespace Assets.Scripts.GoapHeroActions
         {
             if (
                 GetActiveNpcAttributesComponentsInRange(gameObject, PoseThreshold) < 1 &&
-                !HeroScript.NpcHeroAnimator.GetBool("heroBloodCover") &&
+                !Hero.Instance.NpcHeroAnimator.GetBool("heroBloodCover") &&
                 InResetRange()
                 )
             {
-                HeroScript.BloodCover(true);
+                Hero.Instance.BloodCover(true);
                 NpcIsDestroyedReset = true;
                 float coverBloodCountPauseDuration = 5f;
-                HeroScript.WaitFor(() =>
+                Hero.Instance.WaitFor(() =>
                 {
-                    HeroScript.BloodCover(false);
+                    Hero.Instance.BloodCover(false);
                 }, coverBloodCountPauseDuration);
             }
             else

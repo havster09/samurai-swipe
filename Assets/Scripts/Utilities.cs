@@ -1,9 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public static class Utilities {
+    public static class Utilities
+    {
         public static string ReplaceClone(string hasClone)
         {
             return hasClone.Replace("(Clone)", "");

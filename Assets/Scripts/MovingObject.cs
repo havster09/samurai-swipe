@@ -36,11 +36,6 @@ namespace Assets.Scripts
             Utilities.ResetSpriteAlpha(SpriteRenderer);
         }
 
-        protected virtual void OnDisable()
-        {
-
-        }
-
         public void MoveBack(GameObject target, float to, float speed, Action action)
         {
             float distance = target.transform.position.x > transform.position.x ? -to : to;
@@ -83,26 +78,11 @@ namespace Assets.Scripts
                 npcAnimator.ResetTrigger(anmimationType);
             }
             if (npcAnimator != null) npcAnimator.StopPlayback();
-            if (callback != null) WaitFor(callback, callbackDuration);
+            if (callback != null) TimingUtilities.Instance.WaitFor(callback, callbackDuration);
 
             IsCoroutineMoving = false;
         }
 
         public abstract bool IsFrozenPosition();
-
-        public void WaitFor(Action action, float duration, bool cancel = true)
-        {
-            StartCoroutine(WaitForCheck(action, duration, cancel));
-        }
-
-        protected IEnumerator WaitForCheck(Action callback, float duration, bool cancel)
-        {
-            float start = Time.time;
-            while (Time.time <= start + duration && cancel)
-            {
-                yield return new WaitForSeconds(0.1f);
-            }
-            callback();
-        }
     }
 }

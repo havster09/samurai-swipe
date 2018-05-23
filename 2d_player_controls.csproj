@@ -248,6 +248,7 @@
     <Compile Include="Assets\Scripts\DropOffLogsAction.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
     <Compile Include="Assets\Scripts\FiniteStateMachine.cs" />
+    <Compile Include="Assets\Scripts\TimingUtilities.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\GoapAttributeComponents\NpcAttributesComponent.cs" />
     <Compile Include="Assets\Scripts\GoapAttributeComponents\NpcHeroAttributesComponent.cs" />

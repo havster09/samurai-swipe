@@ -235,7 +235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baec37c103c027445968673ebb5a9368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 100
+  cost: 1
   target: {fileID: 0}
 --- !u!114 &114694377834436292
 MonoBehaviour:
@@ -248,7 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e125747e22ac7744c908a7c6d516e282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 10
+  cost: 100
   target: {fileID: 0}
 --- !u!114 &114860592310309714
 MonoBehaviour:
@@ -262,7 +262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcAttributes: {fileID: 0}
-  MoveSpeed: 20
+  MoveSpeed: 1
   EnemyScript: {fileID: 0}
   GoapAgentScript: {fileID: 0}
 --- !u!212 &212770613706250732

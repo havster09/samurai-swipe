@@ -33,7 +33,7 @@ namespace Assets.Scripts.GoapEnemyActions
         {
             EnemyScript.IsAttacking = true;
             EnemyScript.AttackGrounded();
-            EnemyScript.WaitFor(() => EnemyScript.IsAttacking = false, 12f);
+            TimingUtilities.Instance.WaitFor(() => EnemyScript.IsAttacking = false, 12f);
             _npcHasAttackGroundedAction = true;
             return _npcHasAttackGroundedAction;
         }

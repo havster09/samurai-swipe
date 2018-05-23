@@ -49,11 +49,6 @@ namespace Assets.Scripts
         {
             base.OnEnable();
         }
-
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-        }
         
         private void AttachAnimationClipEvents()
         {

@@ -43,7 +43,7 @@ namespace Assets.Scripts.GoapHeroActions
                 Hero.Instance.BloodCover(true);
                 NpcIsDestroyedReset = true;
                 float coverBloodCountPauseDuration = 5f;
-                Hero.Instance.WaitFor(() =>
+                TimingUtilities.Instance.WaitFor(() =>
                 {
                     Hero.Instance.BloodCover(false);
                 }, coverBloodCountPauseDuration);

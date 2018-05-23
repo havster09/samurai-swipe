@@ -174,12 +174,12 @@ namespace Assets.Scripts
 
         private void EnemyWalkEventHandler()
         {
-            WaitFor(() => IsCanWalk = true, 3f);
+            TimingUtilities.Instance.WaitFor(() => IsCanWalk = true, 3f);
         }
 
         private void EnemyWalkBackEventHandler()
         {
-            WaitFor(() => IsCanWalk = true, 4f);
+            TimingUtilities.Instance.WaitFor(() => IsCanWalk = true, 4f);
         }
 
         public void FaceTarget()
@@ -365,14 +365,14 @@ namespace Assets.Scripts
         {
             NpcAnimator.SetBool("enemyDieSplit", true);
             GetBloodEffect("Blood", "BloodEffectDiagonal1");
-            WaitFor(() => GetBloodEffect("Blood", "BloodEffectSplit"), .1f);
+            TimingUtilities.Instance.WaitFor(() => GetBloodEffect("Blood", "BloodEffectSplit"), .1f);
         }
 
         private void EnemySplitDrop()
         {
             NpcAnimator.SetBool("enemySplitDrop", true);
             GetBloodEffect("Blood", "BloodEffectDiagonal1");
-            WaitFor(() => GetBloodEffect("Blood", "BloodEffectSplit"), .1f);
+            TimingUtilities.Instance.WaitFor(() => GetBloodEffect("Blood", "BloodEffectSplit"), .1f);
         }
 
         private void EnemyDecapitation()
@@ -392,7 +392,7 @@ namespace Assets.Scripts
                 _headFromPool.transform.position = transform.position;
                 _headFromPool.transform.rotation = transform.rotation;
                 _headFromPool.SetActive(true);
-                WaitFor(() => GetBloodEffect("Blood"), .1f);
+                TimingUtilities.Instance.WaitFor(() => GetBloodEffect("Blood"), .1f);
             }
         }
 
@@ -536,12 +536,10 @@ namespace Assets.Scripts
             base.OnEnable();
         }
 
-        protected override void OnDisable()
+        protected void OnDisable()
         {
             Hero.onHeroBlocked -= FromEnemyHeroBlockHandler;
             Reset();
-            base.OnDisable();
-
         }
 
         private void Reset()

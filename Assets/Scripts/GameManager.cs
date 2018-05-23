@@ -22,11 +22,6 @@ namespace Assets.Scripts
             DontDestroyOnLoad(gameObject);
         }
 
-        void Start()
-        {
-            InitGame();
-        }
-
         void InitGame()
         {
             InitHero();
@@ -77,15 +72,6 @@ namespace Assets.Scripts
             }
         }
 
-        void Update()
-        {
-            GameObject[] activeEnemies = GameObject.FindGameObjectsWithTag("Enemy");
-            if (activeEnemies.Length < 1)
-            {
-                ObjectPooler.Instance.InitializeAllEnemies("Enemy");
-            }
-        }
-
         public void GameOver()
         {
             enabled = false;
@@ -104,9 +90,6 @@ namespace Assets.Scripts
         void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
         {
             InitGame();
-            Debug.Log("======Level Loaded=======");
-            Debug.Log(scene.name);
-            Debug.Log(mode);
         }
     }
 }

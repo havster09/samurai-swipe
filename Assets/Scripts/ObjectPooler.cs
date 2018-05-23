@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class ObjectPooler : MonoBehaviour
 {
-
     public static ObjectPooler Instance;
     public List<ObjectPoolItem> itemsToPool;
     public List<GameObject> pooledObjects;
@@ -27,6 +26,19 @@ public class ObjectPooler : MonoBehaviour
                 GameObject obj = Instantiate(item.objectToPool);
                 obj.SetActive(false);
                 pooledObjects.Add(obj);
+            }
+        }
+        InitializeAllEnemies("Enemy");
+    }
+
+    public void InitializeAllEnemies(string tag)
+    {
+        for (int i = 0; i < pooledObjects.Count; i++)
+        {
+            if (!pooledObjects[i].activeInHierarchy && pooledObjects[i].tag == tag)
+            {
+                pooledObjects[i].transform.position = new Vector3(pooledObjects[i].transform.position.x - i, 0, 0);
+                pooledObjects[i].SetActive(true);
             }
         }
     }
@@ -61,18 +73,6 @@ public class ObjectPooler : MonoBehaviour
             }
         }
         return null;
-    }
-
-    public void InitializeAllEnemies(string tag)
-    {
-        for (int i = 0; i < pooledObjects.Count; i++)
-        {
-            if (!pooledObjects[i].activeInHierarchy && pooledObjects[i].tag == tag)
-            {
-                pooledObjects[i].transform.position = new Vector3(pooledObjects[i].transform.position.x - i, 0, 0);
-                pooledObjects[i].SetActive(true);
-            }
-        }
     }
 
     [System.Serializable]

@@ -18,12 +18,10 @@ namespace Assets.Scripts.GoapHeroActions
         protected bool NpcIsDestroyedReset;
         protected bool HasResetPosition;
         protected NpcAttributesComponent TargetNpcAttribute;
-        protected NpcHeroAttributesComponent NpcHeroAttributes;
         protected static bool IsPerforming;
 
         void Awake()
         {
-            NpcHeroAttributes = GetComponent<NpcHeroAttributesComponent>();
             NpcTargetAttributes = new List<NpcAttributesComponent>();
         }
 

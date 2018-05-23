@@ -12,8 +12,6 @@ namespace Assets.Scripts.GoapHeroTypes
         public GoapAgent GoapAgentScript;
         public GoapHeroAction GoapHeroActionScript;
 
-        public NpcHeroAttributesComponent NpcHeroAttributes { get; set; }
-
         protected HashSet<KeyValuePair<string, object>> WorldData;
         public HashSet<KeyValuePair<string, object>> goal;
 
@@ -29,7 +27,6 @@ namespace Assets.Scripts.GoapHeroTypes
             }
             DontDestroyOnLoad(gameObject);
 
-            NpcHeroAttributes = gameObject.GetComponent<NpcHeroAttributesComponent>();
             GoapAgentScript = GetComponent<GoapAgent>();
             GoapHeroActionScript = GetComponent<GoapHeroAction>();
             goal = new HashSet<KeyValuePair<string, object>>();

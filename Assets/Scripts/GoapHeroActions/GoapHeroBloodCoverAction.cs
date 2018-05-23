@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.GoapAttributeComponents;
+using UnityEngine;
 
 namespace Assets.Scripts.GoapHeroActions
 {
@@ -51,7 +52,7 @@ namespace Assets.Scripts.GoapHeroActions
             {
                 NpcIsDestroyedReset = true;
             }
-            NpcHeroAttributes.ComboCount = 0;
+            NpcHeroAttributesComponent.Instance.ComboCount = 0;
             return NpcIsDestroyedReset;
         }
     }

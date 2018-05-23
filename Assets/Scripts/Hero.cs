@@ -14,7 +14,6 @@ namespace Assets.Scripts
         public GameObject CurrentTarget;
         public bool HeroFlipX;
         public Animator NpcHeroAnimator;
-        public NpcHeroAttributesComponent NpcHeroAttributes;
         public static DashEndStateMachineHandler DashEndStateMachineHandlerScript;
 
         public delegate void OnHeroBlocked();
@@ -34,7 +33,6 @@ namespace Assets.Scripts
             }
             DontDestroyOnLoad(gameObject);
 
-            NpcHeroAttributes = gameObject.GetComponent<NpcHeroAttributesComponent>();
             NpcHeroAnimator = GetComponent<Animator>();
             NpcRenderer = GetComponent<Renderer>();
             DashEndStateMachineHandlerScript =
@@ -119,7 +117,7 @@ namespace Assets.Scripts
         public void BloodCover(bool state)
         {
             NpcHeroAnimator.SetBool("heroBloodCover", state);
-            NpcHeroAttributes.Rage = 0;
+            NpcHeroAttributesComponent.Instance.Rage = 0;
         }
         public void TurnPose(bool state)
         {

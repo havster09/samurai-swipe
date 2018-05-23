@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.Scripts.GoapAttributeComponents;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -70,7 +71,7 @@ namespace Assets.Scripts.GoapHeroActions
                     });
                     damage = 100;
                 }
-                else if (NpcHeroAttributes.Rage > 10)
+                else if (NpcHeroAttributesComponent.Instance.Rage > 10)
                 {
 
                     heroAttacks.AddRange(new List<string>
@@ -100,18 +101,18 @@ namespace Assets.Scripts.GoapHeroActions
                 else
                 {
                     enemyScript.EnemyHitFail();
-                    NpcHeroAttributes.Rage -= 1;
+                    NpcHeroAttributesComponent.Instance.Rage -= 1;
                 }
 
-                NpcHeroAttributes.AttackCount += 1;
+                NpcHeroAttributesComponent.Instance.AttackCount += 1;
             }
 
             if (enemyScript.IsDead)
             {
-                NpcHeroAttributes.KillCount += 1;
-                NpcHeroAttributes.ComboCount += 1;
+                NpcHeroAttributesComponent.Instance.KillCount += 1;
+                NpcHeroAttributesComponent.Instance.ComboCount += 1;
                 NpcTargetAttributes.Remove(TargetNpcAttribute);
-                NpcHeroAttributes.Rage += 5;
+                NpcHeroAttributesComponent.Instance.Rage += 5;
             }
 
             if (NpcTargetAttributes.Count < 1)

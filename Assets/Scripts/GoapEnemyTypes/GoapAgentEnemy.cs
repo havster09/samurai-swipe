@@ -10,7 +10,6 @@ namespace Assets.Scripts.GoapEnemyTypes
         public float MoveSpeed = 2;
 
         public Enemy EnemyScript;
-        public NpcHeroAttributesComponent NpcHeroAttributes;
         public GoapAgent GoapAgentScript;
 
 
@@ -18,7 +17,6 @@ namespace Assets.Scripts.GoapEnemyTypes
         {
             NpcAttributes = gameObject.GetComponent<NpcAttributesComponent>();
             EnemyScript = GetComponent<Enemy>();
-            NpcHeroAttributes = FindObjectOfType<NpcHeroAttributesComponent>();
             GoapAgentScript = GetComponent<GoapAgent>();
         }
         

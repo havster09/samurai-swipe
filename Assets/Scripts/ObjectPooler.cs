@@ -5,19 +5,19 @@ using UnityEngine;
 public class ObjectPooler : MonoBehaviour
 {
 
-    public static ObjectPooler SharedInstance;
+    public static ObjectPooler Instance;
     public List<ObjectPoolItem> itemsToPool;
     public List<GameObject> pooledObjects;
-    [HideInInspector] public string[] bloodDecapitationEffects;
+    [HideInInspector] public string[] BloodDecapitationEffects;
 
     void Awake()
     {
-        SharedInstance = this;
+        Instance = this;
     }
 
     void Start()
     {
-        bloodDecapitationEffects = new string[] { "BloodEffect4", "BloodEffect5" };
+        BloodDecapitationEffects = new string[] { "BloodEffect4", "BloodEffect5" };
         pooledObjects = new List<GameObject>();
         foreach (ObjectPoolItem item in itemsToPool)
         {

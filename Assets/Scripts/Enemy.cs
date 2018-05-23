@@ -19,7 +19,6 @@ namespace Assets.Scripts
         private GoapEnemyAction _goapEnemyAction;
         public bool EnemyFlipX;
         private GameObject _headFromPool;
-        private SlashRenderer _slashRenderer;
         public NpcAttributesComponent NpcAttribute;
         public bool IsTaunting { get; set; }
         public bool IsAttacking { get; set; }
@@ -32,7 +31,6 @@ namespace Assets.Scripts
         private void Awake()
         {
             _goapHeroActionScript = GameObject.FindObjectOfType<GoapHeroAction>();
-            _slashRenderer = GameObject.FindObjectOfType<SlashRenderer>();
             _goapEnemyAction = gameObject.GetComponent<GoapEnemyAction>();
             NpcAttribute = gameObject.GetComponent<NpcAttributesComponent>();
             NpcAnimator = GetComponent<Animator>();
@@ -294,7 +292,7 @@ namespace Assets.Scripts
             NpcAnimator.SetBool("enemyCrossSword", state);
             if (state)
             {
-                _slashRenderer.RemoveSlash();
+                SlashRenderer.Instance.RemoveSlash();
             }
         }
 
@@ -386,10 +384,10 @@ namespace Assets.Scripts
             Vector2 end = start + new Vector2(distance, 0);
             StartCoroutine(PerformMovementGeneral(end));
             string headString = Utilities.ReplaceClone(name) + "Head";
-            _headFromPool = ObjectPooler.SharedInstance.GetPooledObject("BodyPart", headString);
-            int randomDecapitationIndex = Random.Range(0, ObjectPooler.SharedInstance.bloodDecapitationEffects.Length);
+            _headFromPool = ObjectPooler.Instance.GetPooledObject("BodyPart", headString);
+            int randomDecapitationIndex = Random.Range(0, ObjectPooler.Instance.BloodDecapitationEffects.Length);
             GetBloodEffect("BloodDecapitation",
-                ObjectPooler.SharedInstance.bloodDecapitationEffects[randomDecapitationIndex]);
+                ObjectPooler.Instance.BloodDecapitationEffects[randomDecapitationIndex]);
             if (_headFromPool)
             {
                 _headFromPool.transform.position = transform.position;
@@ -449,7 +447,7 @@ namespace Assets.Scripts
 
         public void EnemyHitSuccess(int damage)
         {
-            _slashRenderer.RemoveSlash();
+            SlashRenderer.Instance.RemoveSlash();
             if (NpcAnimator.GetBool("enemyBlock"))
             {
                 EnemyBlock(false);
@@ -463,7 +461,7 @@ namespace Assets.Scripts
 
         public void EnemyHitFail()
         {
-            _slashRenderer.RemoveSlash();
+            SlashRenderer.Instance.RemoveSlash();
             NpcAttribute.DefendCount -= 1;
             MoveBack(_goapEnemyAction.target, .35f, 3, () => EnemyBlock(false));
             if (!NpcAnimator.GetBool("enemyBlock"))
@@ -492,7 +490,7 @@ namespace Assets.Scripts
 
         private void GetBloodEffect(string tag, string name = null)
         {
-            GameObject bloodFromPool = ObjectPooler.SharedInstance.GetPooledObject(tag, name);
+            GameObject bloodFromPool = ObjectPooler.Instance.GetPooledObject(tag, name);
             if (bloodFromPool)
             {
                 bloodFromPool.transform.position = transform.position;

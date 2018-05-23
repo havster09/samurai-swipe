@@ -5,6 +5,7 @@ namespace Assets.Scripts
 {
     public class SlashRenderer : MonoBehaviour
     {
+        public static SlashRenderer Instance;
         private GoapHeroAction _goapHeroActionScript;
         private const int SlashZPosition = 3;
         public Material SlashMaterial;
@@ -21,6 +22,16 @@ namespace Assets.Scripts
 
         void Awake()
         {
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else if (Instance != this)
+            {
+                Destroy(gameObject);
+            }
+            DontDestroyOnLoad(gameObject);
+
             _goapHeroActionScript = FindObjectOfType<GoapHeroAction>();
         }
         void Start()

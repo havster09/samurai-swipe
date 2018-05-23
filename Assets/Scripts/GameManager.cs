@@ -7,10 +7,6 @@ namespace Assets.Scripts
     {
         public static GameManager Instance;
         public Object Hero;
-        public float LevelStartDelay = 5f;                      
-        public float TurnDelay = 0.1f;      
-        public int PlayerFoodPoints = 100;        
-        [HideInInspector] public bool PlayersTurn = true; 
 
         void Awake()
         {
@@ -78,7 +74,7 @@ namespace Assets.Scripts
         public static void RespawnEnemyFromPool()
         {
             float respawnPositionX = GetRespawnCurrentPosition(Random.Range(0f, 10f) > 5 ? "Left" : "Right");
-            GameObject enemyFromPool = ObjectPooler.SharedInstance.GetPooledObject("Enemy");
+            GameObject enemyFromPool = ObjectPooler.Instance.GetPooledObject("Enemy");
             if (enemyFromPool)
             {
                 enemyFromPool.transform.position = new Vector3(respawnPositionX, 0, 0);
@@ -92,7 +88,7 @@ namespace Assets.Scripts
             if (activeEnemies.Length < 1)
             {
                 Debug.Log("Init all enemies");
-                ObjectPooler.SharedInstance.InitializeAllEnemies("Enemy");
+                ObjectPooler.Instance.InitializeAllEnemies("Enemy");
             }
         }
 

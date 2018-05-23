@@ -19,15 +19,12 @@ namespace Assets.Scripts.GoapHeroActions
         protected bool HasResetPosition;
         protected NpcAttributesComponent TargetNpcAttribute;
         protected NpcHeroAttributesComponent NpcHeroAttributes;
-        protected SlashRenderer SlashRendererScript;
-
         protected static bool IsPerforming;
 
         void Awake()
         {
             NpcHeroAttributes = GetComponent<NpcHeroAttributesComponent>();
             NpcTargetAttributes = new List<NpcAttributesComponent>();
-            SlashRendererScript = FindObjectOfType<SlashRenderer>();
         }
 
         public override bool Move()

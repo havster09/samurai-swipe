@@ -43,16 +43,12 @@ namespace Assets.Scripts.GoapHeroActions
                 return false;
             }
 
-            var distanceFromResetPosition = Vector2.Distance(currentHeroPosition, new Vector2(0, 0));
+            var walkResetType = 
+                (Hero.Instance.HeroFlipX && currentHeroPosition.x < 0) ||
+                (!Hero.Instance.HeroFlipX && currentHeroPosition.x > 0) ? 
+                "heroWalkBackLoop" : "heroWalkLoop";
 
-            var walkResetType = Hero.Instance.HeroFlipX ? "heroWalkBackLoop" : "heroWalkLoop";
-
-            if (
-                Mathf.Floor(distanceFromResetPosition) > ResetPositionThreshold &&
-                GoapHeroAction.NpcTargetAttributes.Count < 1 &&
-                Mathf.Abs(currentHeroPosition.x) > (Hero.HeroStep + ResetPositionThreshold) &&
-                GetActiveNpcAttributesComponentsInRangeByDirection(gameObject) < 1
-                )
+            if (Mathf.Abs(currentHeroPosition.x) > (Hero.HeroStep + ResetPositionThreshold))
             {
                 float step = MoveSpeed / 2 * Time.deltaTime;
                 gameObject.transform.position =

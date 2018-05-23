@@ -36,6 +36,13 @@ namespace Assets.Scripts.GoapEnemyTypes
         }
         
         public abstract HashSet<KeyValuePair<string, object>> createGoalState();
+        public HashSet<KeyValuePair<string, object>> createResetState()
+        {
+            HashSet<KeyValuePair<string, object>> goal = new HashSet<KeyValuePair<string, object>>();
+            goal.Add(new KeyValuePair<string, object>("destroyNpc", true));
+            goal.Add(new KeyValuePair<string, object>("enemyWin", true));
+            return goal;
+        }
 
 
         public virtual void planFailed(HashSet<KeyValuePair<string, object>> failedGoal)

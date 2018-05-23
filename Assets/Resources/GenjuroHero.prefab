@@ -244,9 +244,9 @@ MonoBehaviour:
   Rb2D: {fileID: 0}
   NpcRenderer: {fileID: 0}
   CurrentTarget: {fileID: 0}
-  _heroFlipX: 0
+  HeroFlipX: 0
   NpcHeroAnimator: {fileID: 0}
-  NpcHeroAttributes: {fileID: 0}
+  DashEndStateMachineHandlerScript: {fileID: 0}
 --- !u!114 &114577644468037074
 MonoBehaviour:
   m_ObjectHideFlags: 1

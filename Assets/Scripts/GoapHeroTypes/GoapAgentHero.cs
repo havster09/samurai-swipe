@@ -37,10 +37,10 @@ namespace Assets.Scripts.GoapHeroTypes
             WorldData = new HashSet<KeyValuePair<string, object>>
             {
                 new KeyValuePair<string, object>("destroyEnemyNpc", false),
-                new KeyValuePair<string, object>("bloodCover", false),
+                new KeyValuePair<string, object>("crossSword", false),
+                /*new KeyValuePair<string, object>("bloodCover", false),
                 new KeyValuePair<string, object>("wipeBlood", false),
-                new KeyValuePair<string, object>("hasRage", false),
-                new KeyValuePair<string, object>("crossSword", true),
+                new KeyValuePair<string, object>("hasRage", false),*/                
                 new KeyValuePair<string, object>("resetPosition", false)
             };
             return WorldData;
@@ -50,32 +50,49 @@ namespace Assets.Scripts.GoapHeroTypes
         {
             goal.Clear();
             goal.Add(new KeyValuePair<string, object>("destroyEnemyNpc", true));
-            goal.Add(new KeyValuePair<string, object>("resetPosition", true));
             goal.Add(new KeyValuePair<string, object>("bloodCover", true));
             goal.Add(new KeyValuePair<string, object>("wipeBlood", true));
             return goal;
         }
 
+        public HashSet<KeyValuePair<string, object>> createResetState()
+        {
+            goal.Clear();
+            goal.Add(new KeyValuePair<string, object>("resetPosition", true));
+            return goal;
+        }
+
         public void planFailed(HashSet<KeyValuePair<string, object>> failedGoal)
         {
-            // Debug.Log("<color=red>Hero Unhandled plan Failed</color> " + failedGoal);
-            GoapAgentScript.createIdleState();
+            Debug.Log("<color=red>Hero Unhandled plan Failed</color> " + GoapAgent.prettyPrint(failedGoal));
+            if (
+                !Hero.Instance.IsAnimationTagPlaying("dash") &&
+                !Hero.Instance.IsAnimationTagPlaying("dashEnd") &&
+                Mathf.Abs(gameObject.transform.position.x) > (Hero.HeroStep + 1f)
+                )
+            {
+                GoapAgentScript.createResetState();
+            }
+            else
+            {
+                GoapAgentScript.createIdleState();
+            }
         }
 
         public void planFound(HashSet<KeyValuePair<string, object>> goal, Queue<GoapAction> actions)
         {
-            // Debug.Log("<color=green>Hero Plan found</color> " + GoapAgent.prettyPrint(actions));
+            Debug.Log("<color=green>Hero Plan found</color> " + GoapAgent.prettyPrint(actions));
         }
 
         public void actionsFinished()
         {
-            // Debug.Log("<color=blue>Hero Actions completed</color>");
-            goal.Add(new KeyValuePair<string, object>("crossSword", true));
+            Debug.Log("<color=blue>Hero Actions completed</color>");
+            GoapAgentScript.createIdleState();
         }
 
         public void planAborted(GoapAction aborter)
         {
-            // Debug.Log("<color=red>Hero Plan Aborted</color> " + GoapAgent.prettyPrint(aborter));
+            Debug.Log("<color=red>Hero Plan Aborted</color> " + GoapAgent.prettyPrint(aborter));
         }
 
         public bool moveAgent(GoapAction nextAction)

@@ -6,6 +6,7 @@ using System.Collections;
  * used for GOAP planning.
  */
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 
 /**
@@ -29,6 +30,7 @@ public interface IGoap
 	 * the actions needed to fulfill it.
 	 */
 	HashSet<KeyValuePair<string,object>> createGoalState ();
+	[CanBeNull] HashSet<KeyValuePair<string,object>> createResetState ();
 
 	/**
 	 * No sequence of actions could be found for the supplied goal.

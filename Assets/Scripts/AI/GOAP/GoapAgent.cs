@@ -85,8 +85,33 @@ public sealed class GoapAgent : MonoBehaviour {
 				fsm.pushState(performActionState);
 
 			} else {
-				// ugh, we couldn't get a plan
-				// Debug.Log("<color=orange>Failed Plan:</color>"+prettyPrint(goal));
+				dataProvider.planFailed(goal);
+				fsm.popState (); // move back to IdleAction state
+				fsm.pushState (idleState);
+			}
+
+		};
+	}
+
+    public void createResetState() {
+		idleState = (fsm, gameObj) => {
+			// GOAP planning
+
+			// get the world state and the goal we want to plan for
+			var worldState = dataProvider.getWorldState();
+			var goal = dataProvider.createResetState();
+
+			// Plan
+			Queue<GoapAction> plan = planner.plan(gameObject, availableActions, worldState, goal);
+			if (plan != null) {
+				// we have a plan, hooray!
+				currentActions = plan;
+				dataProvider.planFound(goal, plan);
+
+				fsm.popState(); // move to PerformAction state
+				fsm.pushState(performActionState);
+
+			} else {
 				dataProvider.planFailed(goal);
 				fsm.popState (); // move back to IdleAction state
 				fsm.pushState (idleState);

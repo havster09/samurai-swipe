@@ -58,24 +58,24 @@ namespace Assets.Scripts.GoapHeroTypes
 
         public void planFailed(HashSet<KeyValuePair<string, object>> failedGoal)
         {
-            Debug.Log("<color=red>Hero Unhandled plan Failed</color> " + failedGoal);
+            // Debug.Log("<color=red>Hero Unhandled plan Failed</color> " + failedGoal);
             GoapAgentScript.createIdleState();
         }
 
         public void planFound(HashSet<KeyValuePair<string, object>> goal, Queue<GoapAction> actions)
         {
-            Debug.Log("<color=green>Hero Plan found</color> " + GoapAgent.prettyPrint(actions));
+            // Debug.Log("<color=green>Hero Plan found</color> " + GoapAgent.prettyPrint(actions));
         }
 
         public void actionsFinished()
         {
-            Debug.Log("<color=blue>Hero Actions completed</color>");
+            // Debug.Log("<color=blue>Hero Actions completed</color>");
             goal.Add(new KeyValuePair<string, object>("crossSword", true));
         }
 
         public void planAborted(GoapAction aborter)
         {
-            Debug.Log("<color=red>Hero Plan Aborted</color> " + GoapAgent.prettyPrint(aborter));
+            // Debug.Log("<color=red>Hero Plan Aborted</color> " + GoapAgent.prettyPrint(aborter));
         }
 
         public bool moveAgent(GoapAction nextAction)

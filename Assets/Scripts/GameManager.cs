@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts
 {
@@ -26,16 +27,10 @@ namespace Assets.Scripts
             InitGame();
         }
 
-        void OnLevelWasLoaded(int index)
-        {
-            InitGame();
-        }
-
         void InitGame()
         {
             InitHero();
             InitEnemies();
-            AudioManager.Instance.TestLog();
         }
 
         private void InitHero()
@@ -87,7 +82,6 @@ namespace Assets.Scripts
             GameObject[] activeEnemies = GameObject.FindGameObjectsWithTag("Enemy");
             if (activeEnemies.Length < 1)
             {
-                Debug.Log("Init all enemies");
                 ObjectPooler.Instance.InitializeAllEnemies("Enemy");
             }
         }
@@ -95,6 +89,24 @@ namespace Assets.Scripts
         public void GameOver()
         {
             enabled = false;
+        }
+
+        void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnLevelFinishedLoading;
+        }
+
+        void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+        }
+
+        void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
+        {
+            InitGame();
+            Debug.Log("======Level Loaded=======");
+            Debug.Log(scene.name);
+            Debug.Log(mode);
         }
     }
 }

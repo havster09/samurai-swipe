@@ -40,23 +40,23 @@ namespace Assets.Scripts.GoapEnemyTypes
 
         public virtual void planFailed(HashSet<KeyValuePair<string, object>> failedGoal)
         {
-            Debug.Log("<color=red>Enemy Unhandled plan Failed</color> " + failedGoal);
+            // Debug.Log("<color=red>Enemy Unhandled plan Failed</color> " + failedGoal);
             GoapAgentScript.createIdleState();
         }
 
         public void planFound(HashSet<KeyValuePair<string, object>> goal, Queue<GoapAction> actions)
         {
-            Debug.Log("<color=green>Plan found</color> " + GoapAgent.prettyPrint(actions));
+            // Debug.Log("<color=green>Plan found</color> " + GoapAgent.prettyPrint(actions));
         }
 
         public void actionsFinished()
         {
-            Debug.Log("<color=blue>Actions completed</color>");
+            // Debug.Log("<color=blue>Actions completed</color>");
         }
 
         public void planAborted(GoapAction aborter)
         {
-            Debug.Log("<color=red>Plan Aborted</color> " + GoapAgent.prettyPrint(aborter));
+            // Debug.Log("<color=red>Plan Aborted</color> " + GoapAgent.prettyPrint(aborter));
             GoapAgentScript.createIdleState();
         }
 

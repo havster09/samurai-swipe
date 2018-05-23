@@ -156,7 +156,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 1
   target: {fileID: 0}
-  HeroScript: {fileID: 0}
 --- !u!114 &114172263393424522
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -170,7 +169,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 1
   target: {fileID: 0}
-  HeroScript: {fileID: 0}
 --- !u!114 &114323605483184488
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -202,7 +200,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 1
   target: {fileID: 0}
-  HeroScript: {fileID: 0}
 --- !u!114 &114552490541089036
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -225,9 +222,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1369889c7fd184fb8dc523555ad9b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 10
+  cost: 100
   target: {fileID: 0}
-  HeroScript: {fileID: 0}
 --- !u!114 &114636809072535518
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -239,9 +235,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baec37c103c027445968673ebb5a9368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 10
+  cost: 100
   target: {fileID: 0}
-  HeroScript: {fileID: 0}
 --- !u!114 &114694377834436292
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -255,7 +250,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 10
   target: {fileID: 0}
-  HeroScript: {fileID: 0}
 --- !u!114 &114860592310309714
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -268,9 +262,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NpcAttributes: {fileID: 0}
-  MoveSpeed: 2
+  MoveSpeed: 20
   EnemyScript: {fileID: 0}
-  NpcHeroAttributes: {fileID: 0}
   GoapAgentScript: {fileID: 0}
 --- !u!212 &212770613706250732
 SpriteRenderer:

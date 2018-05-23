@@ -14,7 +14,7 @@ namespace Assets.Scripts
         public GameObject CurrentTarget;
         public bool HeroFlipX;
         public Animator NpcHeroAnimator;
-        public static DashEndStateMachineHandler DashEndStateMachineHandlerScript;
+        public DashEndStateMachineHandler DashEndStateMachineHandlerScript;
 
         public delegate void OnHeroBlocked();
         public static event OnHeroBlocked onHeroBlocked;

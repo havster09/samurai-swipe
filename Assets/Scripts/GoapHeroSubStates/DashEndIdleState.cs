@@ -28,6 +28,7 @@ namespace Assets.Scripts.GoapHeroSubStates
             while (true)
             {
                 InvokeTransition();
+                Debug.Log("===Executing DashEndIdleState====");
                 yield return new WaitForSeconds(2f);
             }
         }

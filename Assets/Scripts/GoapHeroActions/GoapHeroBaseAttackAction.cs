@@ -120,7 +120,7 @@ namespace Assets.Scripts.GoapHeroActions
                 NpcIsDestroyed = true;
                 NpcTargetAttributes.Clear();
             }
-            Debug.Log(string.Format("<color=green>Active Targets {0}</color>", NpcTargetAttributes.Count));
+            // Debug.Log(string.Format("<color=green>Active Targets {0}</color>", NpcTargetAttributes.Count));
             return NpcIsDestroyed;
         }
     }

@@ -86,7 +86,7 @@ public sealed class GoapAgent : MonoBehaviour {
 
 			} else {
 				// ugh, we couldn't get a plan
-				Debug.Log("<color=orange>Failed Plan:</color>"+prettyPrint(goal));
+				// Debug.Log("<color=orange>Failed Plan:</color>"+prettyPrint(goal));
 				dataProvider.planFailed(goal);
 				fsm.popState (); // move back to IdleAction state
 				fsm.pushState (idleState);
@@ -101,7 +101,7 @@ public sealed class GoapAgent : MonoBehaviour {
 
 			GoapAction action = currentActions.Peek();
 			if (action.requiresInRange() && action.target == null) {
-				Debug.Log("<color=red>Fatal error:</color> Action requires a target but has none. Planning failed. You did not assign the target in your Action.checkProceduralPrecondition()");
+				// Debug.Log("<color=red>Fatal error:</color> Action requires a target but has none. Planning failed. You did not assign the target in your Action.checkProceduralPrecondition()");
 				fsm.popState(); // move
 				fsm.popState(); // perform
 				fsm.pushState(idleState);
@@ -122,7 +122,7 @@ public sealed class GoapAgent : MonoBehaviour {
 
 			if (!hasActionPlan()) {
 				// no actions to perform
-				Debug.Log("<color=red>Done actions</color>");
+				// Debug.Log("<color=red>Done actions</color>");
 				fsm.popState();
 				fsm.pushState(idleState);
 				dataProvider.actionsFinished();
@@ -181,7 +181,7 @@ public sealed class GoapAgent : MonoBehaviour {
 		foreach (GoapAction a in actions) {
 			availableActions.Add (a);
 		}
-		Debug.Log("Found actions: "+prettyPrint(actions));
+		// Debug.Log("Found actions: "+prettyPrint(actions));
 	}
 
 	public static string prettyPrint(HashSet<KeyValuePair<string,object>> state) {

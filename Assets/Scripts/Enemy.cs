@@ -60,7 +60,6 @@ namespace Assets.Scripts
                         functionName = attackFunctionName,
                         stringParameter = "end"
                     };
-                    Debug.Log(attackMidEvent.functionName);
                     a.AddEvent(attackEndEvent);
                 });
 
@@ -120,7 +119,7 @@ namespace Assets.Scripts
 
         private void EnemyAttackOneEventHandler(string stringParameter)
         {
-            Debug.Log(stringParameter);
+            // Debug.Log(stringParameter);
             if (stringParameter == "end")
             {
                 IsAttacking = false;

@@ -42,7 +42,7 @@ public class GoapPlanner
 
 		if (!success) {
 			// oh no, we didn't get a plan
-			Debug.Log("NO PLAN");
+			// Debug.Log("NO PLAN");
 			return null;
 		}
 
@@ -95,7 +95,6 @@ public class GoapPlanner
 
 				// apply the action's effects to the parent state
 				HashSet<KeyValuePair<string,object>> currentState = populateState (parent.state, action.Effects);
-				//Debug.Log(GoapAgent.prettyPrint(currentState));
 				Node node = new Node(parent, parent.runningCost+action.cost, currentState, action);
 
 				if (inState(goal, currentState)) {

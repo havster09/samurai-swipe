@@ -29,6 +29,7 @@ namespace Assets.Scripts
 
         public IEnumerator WaitForCheck(Action callback, float duration, bool cancel)
         {
+            // todo refactor use frame count instead of time depending on performance tests
             float start = Time.time;
             while (Time.time <= start + duration && cancel)
             {

@@ -35,7 +35,7 @@ namespace Assets.Scripts.GoapHeroActions
         public override bool perform(GameObject agent)
         {
             if (
-                GetActiveNpcAttributesComponentsInRange(gameObject, PoseThreshold) < 1 &&
+                GetActiveNpcAttributesComponentsInRange(gameObject, PoseThreshold).Length < 1 &&
                 !Hero.Instance.NpcHeroAnimator.GetBool("heroBloodCover") &&
                 InResetRange() // todo review this check
                 )

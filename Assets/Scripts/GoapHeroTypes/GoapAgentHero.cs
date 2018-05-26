@@ -38,9 +38,9 @@ namespace Assets.Scripts.GoapHeroTypes
             {
                 new KeyValuePair<string, object>("destroyEnemyNpc", false),
                 new KeyValuePair<string, object>("crossSword", false),
-                /*new KeyValuePair<string, object>("bloodCover", false),
+                new KeyValuePair<string, object>("bloodCover", false),
                 new KeyValuePair<string, object>("wipeBlood", false),
-                new KeyValuePair<string, object>("hasRage", false),*/                
+                new KeyValuePair<string, object>("hasRage", false),                
                 new KeyValuePair<string, object>("resetPosition", false)
             };
             return WorldData;
@@ -68,7 +68,7 @@ namespace Assets.Scripts.GoapHeroTypes
             if (
                 !Hero.Instance.IsAnimationTagPlaying("dash") &&
                 !Hero.Instance.IsAnimationTagPlaying("dashEnd") &&
-                Mathf.Abs(gameObject.transform.position.x) > (Hero.HeroStep + 1f)
+                Mathf.Abs(gameObject.transform.position.x) > (Hero.HeroStep + Hero.ResetPositionThreshold)
                 )
             {
                 GoapAgentScript.createResetState();

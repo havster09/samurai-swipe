@@ -34,7 +34,7 @@ namespace Assets.Scripts.GoapHeroActions
         }
         public override bool perform(GameObject agent)
         {
-            if (GetActiveNpcAttributesComponentsInRange(gameObject, PoseThreshold) < 1 && InResetRange())
+            if (GetActiveNpcAttributesComponentsInRange(gameObject, PoseThreshold).Length < 1 && InResetRange())
             {
                 Hero.Instance.CleanWeapon();
                 NpcIsDestroyedReset = true;

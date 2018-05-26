@@ -11,6 +11,7 @@ namespace Assets.Scripts
     {
         public static Hero Instance;
         public const float HeroStep = .5f;
+        public const float ResetPositionThreshold = 1f;
         public GameObject CurrentTarget;
         public bool HeroFlipX;
         public Animator NpcHeroAnimator;

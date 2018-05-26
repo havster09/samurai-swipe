@@ -1,6 +1,8 @@
 ﻿using Assets.Scripts.GoapHeroActions;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -21,19 +23,23 @@ namespace Assets.Scripts.GoapHeroSubStates
 
         public IEnumerable Execute()
         {
-            var threshold = 5f;
             while (true)
             {
                 if (Hero.Instance.IsAnimationTagPlaying("dashEnd"))
                 {
-                    var totalNpc =
-                        _goapHeroActionScript.GetActiveNpcAttributesComponentsInRange(Hero.Instance.gameObject, threshold);
-                    if (totalNpc < 1)
+                    var totalNpc = Object.FindObjectsOfType<Enemy>();
+                    var totalNpcWithAlpha = totalNpc.ToList().Where((n) =>
+                    {
+                        var spriteRenderer = n.GetComponent<SpriteRenderer>();
+                        return spriteRenderer.color.a >= 1f;
+                    }).ToList();
+
+                    if (totalNpcWithAlpha.Count < 1)
                     {
                         InvokeTransition();
                     }
                 }
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(1f);
             }
         }
 

@@ -9,7 +9,6 @@ namespace Assets.Scripts.GoapHeroActions
     {
         public static List<NpcAttributesComponent> NpcTargetAttributes;
         protected float MoveSpeed = 2;
-        protected const float ResetPositionThreshold = 1f;
         protected float DistanceToTargetThreshold = 1f;
         protected float InRangeToTargetThreshold = 5f;
         protected float PoseThreshold = 10f;
@@ -27,10 +26,16 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool Move()
         {
-            if (!Hero.Instance.IsFrozenPosition() && !Hero.Instance.IsAnimationTagPlaying("attack") && !IsPerforming)
+            float distanceFromTarget = Vector2.Distance(new Vector2(gameObject.transform.position.x, 0), new Vector2(target.transform.position.x, 0));
+            if (
+                !Hero.Instance.IsFrozenPosition() &&
+                !Hero.Instance.IsAnimationTagPlaying("attack") &&
+                !IsPerforming ||
+                distanceFromTarget <= InRangeToTargetThreshold
+                )
             {
-                float distanceFromTarget = Vector2.Distance(new Vector2(gameObject.transform.position.x, 0), new Vector2(target.transform.position.x, 0));
-                if (distanceFromTarget >= DistanceToTargetThreshold && distanceFromTarget <= InRangeToTargetThreshold)
+                
+                if (distanceFromTarget >= DistanceToTargetThreshold)
                 {
                     Hero.Instance.FaceTarget(target);
                     float step = (MoveSpeed * 2) * Time.deltaTime;
@@ -99,7 +104,9 @@ namespace Assets.Scripts.GoapHeroActions
         {
             NpcAttributesComponent furthest = null;
 
-            furthest = NpcTargetAttributes.OrderBy(n => n.transform.position.x).LastOrDefault();
+            furthest = NpcTargetAttributes
+                .Where((n) => n.Health > 0)
+                .OrderBy(n => n.transform.position.x).LastOrDefault();
 
             if (furthest == null)
             {
@@ -140,7 +147,7 @@ namespace Assets.Scripts.GoapHeroActions
 
         protected bool InResetRange()
         {
-            return Mathf.Abs(gameObject.transform.position.x) < ResetPositionThreshold;
+            return Mathf.Abs(gameObject.transform.position.x) < Hero.ResetPositionThreshold;
         }
     }
 }

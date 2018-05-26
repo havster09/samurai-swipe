@@ -531,7 +531,6 @@ namespace Assets.Scripts
 
         protected override void OnEnable()
         {
-            _goapHeroActionScript.RemoveTargetFromList(NpcAttribute);
             Hero.onHeroBlocked += FromEnemyHeroBlockHandler;
             base.OnEnable();
         }
@@ -539,6 +538,7 @@ namespace Assets.Scripts
         protected void OnDisable()
         {
             Hero.onHeroBlocked -= FromEnemyHeroBlockHandler;
+            _goapHeroActionScript.RemoveTargetFromList(NpcAttribute);
             Reset();
         }
 

@@ -132,7 +132,7 @@ public abstract class GoapAction : MonoBehaviour {
         return totalNpc.Length;
     }
 
-    public int GetActiveNpcAttributesComponentsInRange(GameObject from, float threshold)
+    public NpcAttributesComponent[] GetActiveNpcAttributesComponentsInRange(GameObject from, float threshold)
     {
         var totalNpc = FindObjectsOfType<NpcAttributesComponent>()
             .Where(npc => npc.Health > 0 &&
@@ -140,7 +140,7 @@ public abstract class GoapAction : MonoBehaviour {
                           Vector2.Distance(from.transform.position, npc.transform.position) < threshold)
             .ToArray();
 
-        return totalNpc.Length;
+        return totalNpc;
     }
 
     public int GetActiveNpcAttributesComponentsInRangeByDirection(GameObject from, float threshold = 5f)

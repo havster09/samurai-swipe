@@ -10,7 +10,7 @@ namespace Assets.Scripts.GoapHeroActions
         public GoapHeroDashAttackAction()
         {
             addEffect("destroyEnemyNpc", true);
-            DistanceToTargetThreshold = 2f;
+            DistanceToTargetThreshold = 1f;
         }
 
         public override void reset()
@@ -62,17 +62,17 @@ namespace Assets.Scripts.GoapHeroActions
                 Debug.DrawLine(startPosition, new Vector3(0, boxCollider2D.offset.y, 0) + dashRaycastEndPosition, Color.green, 5f);
                 
                 Hero.Instance.Dash(dashEndPosition, 6f, hits);
-                ResetDashTargets();
+                ResetDashAttack();
                 // Debug.Log(string.Format("<color=green>Active Targets {0}</color>", NpcTargetAttributes.Count));
             }
             return NpcIsDestroyed;
         }
 
-        private void ResetDashTargets()
+        private void ResetDashAttack()
         {
-            NpcTargetAttributes.Clear();
             NpcIsDestroyed = true;
             IsPerforming = false;
+            setInRange(false);
         }
     }
 }

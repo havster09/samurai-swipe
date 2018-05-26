@@ -48,7 +48,7 @@ namespace Assets.Scripts.GoapHeroActions
                 (!Hero.Instance.HeroFlipX && currentHeroPosition.x > 0) ? 
                 "heroWalkBackLoop" : "heroWalkLoop";
 
-            if (Mathf.Abs(currentHeroPosition.x) > (Hero.HeroStep + ResetPositionThreshold))
+            if (Mathf.Abs(currentHeroPosition.x) > (Hero.HeroStep + Hero.ResetPositionThreshold))
             {
                 float step = MoveSpeed / 2 * Time.deltaTime;
                 gameObject.transform.position =

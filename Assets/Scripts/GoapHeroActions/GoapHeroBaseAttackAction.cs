@@ -111,14 +111,12 @@ namespace Assets.Scripts.GoapHeroActions
             {
                 NpcHeroAttributesComponent.Instance.KillCount += 1;
                 NpcHeroAttributesComponent.Instance.ComboCount += 1;
-                NpcTargetAttributes.Remove(TargetNpcAttribute);
                 NpcHeroAttributesComponent.Instance.Rage += 5;
             }
 
             if (NpcTargetAttributes.Count < 1)
             {
                 NpcIsDestroyed = true;
-                NpcTargetAttributes.Clear();
             }
             // Debug.Log(string.Format("<color=green>Active Targets {0}</color>", NpcTargetAttributes.Count));
             return NpcIsDestroyed;

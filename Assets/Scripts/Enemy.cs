@@ -439,7 +439,7 @@ namespace Assets.Scripts
             {
                 if (NpcAttribute.Health > 0)
                 {
-                    _goapHeroActionScript.AddTargetToList(NpcAttribute);
+                    GoapHeroAction.Instance.AddTargetToList(NpcAttribute);
                 }
             }
         }
@@ -538,7 +538,7 @@ namespace Assets.Scripts
         protected void OnDisable()
         {
             Hero.onHeroBlocked -= FromEnemyHeroBlockHandler;
-            _goapHeroActionScript.RemoveTargetFromList(NpcAttribute);
+            GoapHeroAction.Instance.RemoveTargetFromList(NpcAttribute);
             Reset();
         }
 

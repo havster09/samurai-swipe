@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.GoapAttributeComponents;
 using UnityEngine;
 using Object = UnityEngine.GameObject;
 
@@ -26,8 +27,11 @@ namespace Assets.Scripts.GoapHeroSubStates
             {
                 if (Hero.Instance.IsAnimationTagPlaying("dashEnd"))
                 {
-                    var totalNpc = GoapHeroAction.NpcTargetAttributes;
-                    var totalNpcWithAlpha = totalNpc.Where((n) =>
+                    List<NpcAttributesComponent> totalNpcAttributeHits = UnityEngine.Object.FindObjectOfType<GoapHeroDashAttackAction>().Hits
+                        .Select(h => h.collider.GetComponent<NpcAttributesComponent>())
+                        .ToList();
+                    
+                    var totalNpcWithAlpha = totalNpcAttributeHits.Where((n) =>
                     {
                         var spriteRenderer = n.GetComponent<SpriteRenderer>();
                         return spriteRenderer.color.a >= 1f;

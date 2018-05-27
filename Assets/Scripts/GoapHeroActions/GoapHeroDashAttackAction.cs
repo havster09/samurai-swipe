@@ -1,10 +1,12 @@
 ﻿using System.Linq;
+using Assets.Scripts.GoapAttributeComponents;
 using UnityEngine;
 
 namespace Assets.Scripts.GoapHeroActions
 {
     public class GoapHeroDashAttackAction : GoapHeroBaseAttackAction
     {
+        public RaycastHit2D[] Hits;
         private const float DashOffset = 1f;
 
         public GoapHeroDashAttackAction()
@@ -57,11 +59,15 @@ namespace Assets.Scripts.GoapHeroActions
                     : Vector3.Min(dashEnd, new Vector3(3.5f, 0, 0));
                 var dashRaycastEndPosition = dashEndPosition + new Vector3(Hero.Instance.HeroFlipX ? -1f : 1f, 0, 0);
                 var startPosition = new Vector2(transform.position.x, boxCollider2D.offset.y);
-                RaycastHit2D[] hits = Physics2D.RaycastAll(startPosition, Hero.Instance.HeroFlipX ? Vector2.left : Vector2.right, Vector2.Distance(startPosition, dashRaycastEndPosition));
-                // todo move contents of hits to NpcTargetAttributes and use it instead to remove targets via Enemy script
+                Hits = Physics2D.RaycastAll(
+                    startPosition,
+                    Hero.Instance.HeroFlipX ? Vector2.left : Vector2.right,
+                    Vector2.Distance(startPosition, dashRaycastEndPosition),
+                    512);
+
                 Debug.DrawLine(startPosition, new Vector3(0, boxCollider2D.offset.y, 0) + dashRaycastEndPosition, Color.green, 5f);
                 
-                Hero.Instance.Dash(dashEndPosition, 6f, hits);
+                Hero.Instance.Dash(dashEndPosition, 6f, Hits);
                 // Debug.Log(string.Format("<color=green>Active Targets {0}</color>", NpcTargetAttributes.Count));
             }
             return NpcIsDestroyed;
@@ -72,6 +78,7 @@ namespace Assets.Scripts.GoapHeroActions
             NpcIsDestroyed = true;
             IsPerforming = false;
             setInRange(false);
+            GoapHeroAction.Instance.ClearAllTargetsFromList();
         }
     }
 }

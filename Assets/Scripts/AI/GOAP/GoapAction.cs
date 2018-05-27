@@ -123,13 +123,13 @@ public abstract class GoapAction : MonoBehaviour {
 		}
 	}
 
-    public int GetActiveNpcAttributesComponents()
+    public NpcAttributesComponent[] GetActiveNpcAttributesComponents()
     {
         var totalNpc = FindObjectsOfType<NpcAttributesComponent>()
             .Where(npc => npc.Health > 0 && npc.isActiveAndEnabled)
             .ToArray();
 
-        return totalNpc.Length;
+        return totalNpc;
     }
 
     public NpcAttributesComponent[] GetActiveNpcAttributesComponentsInRange(GameObject from, float threshold)
@@ -143,7 +143,7 @@ public abstract class GoapAction : MonoBehaviour {
         return totalNpc;
     }
 
-    public int GetActiveNpcAttributesComponentsInRangeByDirection(GameObject from, float threshold = 5f)
+    public NpcAttributesComponent[] GetActiveNpcAttributesComponentsInRangeByDirection(GameObject from, float threshold = 5f)
     {
         var directionRight = from.transform.position.x < 0;
         var totalNpc = FindObjectsOfType<NpcAttributesComponent>()
@@ -157,6 +157,6 @@ public abstract class GoapAction : MonoBehaviour {
                           )
             .ToArray();
 
-        return totalNpc.Length;
+        return totalNpc;
     }
 }

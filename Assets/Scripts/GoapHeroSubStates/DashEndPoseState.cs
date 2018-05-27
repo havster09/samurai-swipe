@@ -4,21 +4,20 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Object = UnityEngine.Object;
+using Object = UnityEngine.GameObject;
 
 namespace Assets.Scripts.GoapHeroSubStates
 {
     class DashEndPoseState : IState
     {
-        private GoapHeroAction _goapHeroActionScript;
         public void BeginEnter()
         {
-            _goapHeroActionScript = Object.FindObjectOfType<GoapHeroAction>();
+
         }
 
         public void EndEnter()
         {
-            
+
         }
 
         public IEnumerable Execute()
@@ -27,8 +26,8 @@ namespace Assets.Scripts.GoapHeroSubStates
             {
                 if (Hero.Instance.IsAnimationTagPlaying("dashEnd"))
                 {
-                    var totalNpc = Object.FindObjectsOfType<Enemy>();
-                    var totalNpcWithAlpha = totalNpc.ToList().Where((n) =>
+                    var totalNpc = GoapHeroAction.NpcTargetAttributes;
+                    var totalNpcWithAlpha = totalNpc.Where((n) =>
                     {
                         var spriteRenderer = n.GetComponent<SpriteRenderer>();
                         return spriteRenderer.color.a >= 1f;
@@ -36,20 +35,21 @@ namespace Assets.Scripts.GoapHeroSubStates
 
                     if (totalNpcWithAlpha.Count < 1)
                     {
-                        InvokeTransition();
+                        InvokeIdleTransition();
+                        UnityEngine.Object.FindObjectOfType<GoapHeroDashAttackAction>().ResetDashAttack();
                     }
                 }
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForFixedUpdate();
             }
         }
 
         public event EventHandler<StateBeginExitEventArgs> OnBeginExit;
         public void EndExit()
         {
-            
+
         }
 
-        private void InvokeTransition()
+        private void InvokeIdleTransition()
         {
             var nextState = new DashEndIdleState();
             var transition = new SimpleDelayTransition();

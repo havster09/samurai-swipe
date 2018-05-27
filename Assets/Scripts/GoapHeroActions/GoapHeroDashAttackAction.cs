@@ -36,7 +36,7 @@ namespace Assets.Scripts.GoapHeroActions
                 return false;
             }
 
-            if (target != null) return target;
+            if (target != null || IsPerforming) return true;
             return FindLastNpcDashTarget(agent);
         }
 
@@ -50,7 +50,6 @@ namespace Assets.Scripts.GoapHeroActions
                 )
             {
                 IsPerforming = true;
-                Hero.Instance.FaceTarget(target);
                 BoxCollider2D boxCollider2D = gameObject.GetComponent<BoxCollider2D>();
                 var dashEnd = target.transform.position + new Vector3(Hero.Instance.HeroFlipX ? -1f : DashOffset, 0, 0);
                 var dashEndPosition = Hero.Instance.HeroFlipX
@@ -59,16 +58,16 @@ namespace Assets.Scripts.GoapHeroActions
                 var dashRaycastEndPosition = dashEndPosition + new Vector3(Hero.Instance.HeroFlipX ? -1f : 1f, 0, 0);
                 var startPosition = new Vector2(transform.position.x, boxCollider2D.offset.y);
                 RaycastHit2D[] hits = Physics2D.RaycastAll(startPosition, Hero.Instance.HeroFlipX ? Vector2.left : Vector2.right, Vector2.Distance(startPosition, dashRaycastEndPosition));
+                // todo move contents of hits to NpcTargetAttributes and use it instead to remove targets via Enemy script
                 Debug.DrawLine(startPosition, new Vector3(0, boxCollider2D.offset.y, 0) + dashRaycastEndPosition, Color.green, 5f);
                 
                 Hero.Instance.Dash(dashEndPosition, 6f, hits);
-                ResetDashAttack();
                 // Debug.Log(string.Format("<color=green>Active Targets {0}</color>", NpcTargetAttributes.Count));
             }
             return NpcIsDestroyed;
         }
 
-        private void ResetDashAttack()
+        public void ResetDashAttack()
         {
             NpcIsDestroyed = true;
             IsPerforming = false;

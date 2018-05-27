@@ -7,6 +7,7 @@ namespace Assets.Scripts.GoapHeroActions
 {
     public class GoapHeroAction : GoapAction
     {
+        public static GoapHeroAction Instance;
         public static List<NpcAttributesComponent> NpcTargetAttributes;
         protected float MoveSpeed = 2;
         protected float DistanceToTargetThreshold = 1f;
@@ -17,10 +18,14 @@ namespace Assets.Scripts.GoapHeroActions
         protected bool NpcIsDestroyedReset;
         protected bool HasResetPosition;
         protected NpcAttributesComponent TargetNpcAttribute;
-        protected static bool IsPerforming;
+        protected bool IsPerforming;
 
         void Awake()
         {
+            if (Instance == null)
+            {
+                Instance = this;
+            }
             NpcTargetAttributes = new List<NpcAttributesComponent>();
         }
 
@@ -102,19 +107,20 @@ namespace Assets.Scripts.GoapHeroActions
 
         public bool FindLastNpcDashTarget(GameObject agent)
         {
-            NpcAttributesComponent furthest = null;
-
-            furthest = NpcTargetAttributes
-                .Where((n) => n.Health > 0)
-                .OrderBy(n => n.transform.position.x).LastOrDefault();
-
-            if (furthest == null)
+            if (target != null)
             {
-                return false;
+                return true;
             }
 
-            TargetNpcAttribute = furthest;
-            target = TargetNpcAttribute.gameObject;
+            Debug.LogWarning("=====FindLastNpcDashTarget======");
+            var furthest = NpcTargetAttributes
+                .Where((n) => n.Health > 0)
+                .OrderBy(n => n.transform.position.x);
+
+            TargetNpcAttribute = Hero.Instance.HeroFlipX ?
+                furthest.LastOrDefault() :
+                furthest.FirstOrDefault();
+            if (TargetNpcAttribute != null) target = TargetNpcAttribute.gameObject;
             return true;
         }
 
@@ -144,7 +150,7 @@ namespace Assets.Scripts.GoapHeroActions
         {
             NpcTargetAttributes.Remove(npcAttribute);
         }
-
+        
         protected bool InResetRange()
         {
             return Mathf.Abs(gameObject.transform.position.x) < Hero.ResetPositionThreshold;

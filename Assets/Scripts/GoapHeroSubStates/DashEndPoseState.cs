@@ -1,11 +1,9 @@
-﻿using Assets.Scripts.GoapHeroActions;
+﻿using Assets.Scripts.GoapAttributeComponents;
+using Assets.Scripts.GoapHeroActions;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts.GoapAttributeComponents;
 using UnityEngine;
-using Object = UnityEngine.GameObject;
 
 namespace Assets.Scripts.GoapHeroSubStates
 {
@@ -27,7 +25,7 @@ namespace Assets.Scripts.GoapHeroSubStates
             {
                 if (Hero.Instance.IsAnimationTagPlaying("dashEnd"))
                 {
-                    List<NpcAttributesComponent> totalNpcAttributeHits = UnityEngine.Object.FindObjectOfType<GoapHeroDashAttackAction>().Hits
+                    var totalNpcAttributeHits = UnityEngine.Object.FindObjectOfType<GoapHeroDashAttackAction>().Hits
                         .Select(h => h.collider.GetComponent<NpcAttributesComponent>())
                         .ToList();
                     

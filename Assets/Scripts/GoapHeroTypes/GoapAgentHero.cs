@@ -65,9 +65,11 @@ namespace Assets.Scripts.GoapHeroTypes
         public void planFailed(HashSet<KeyValuePair<string, object>> failedGoal)
         {
             Debug.Log("<color=red>Hero Unhandled plan Failed</color> " + GoapAgent.prettyPrint(failedGoal));
+            var slashCollider = GameObject.FindGameObjectWithTag("SlashCollider");
             if (
                 !Hero.Instance.IsAnimationTagPlaying("dash") &&
                 !Hero.Instance.IsAnimationTagPlaying("dashEnd") &&
+                slashCollider == null &&
                 Mathf.Abs(gameObject.transform.position.x) > (Hero.HeroStep + Hero.ResetPositionThreshold)
                 )
             {

@@ -9,12 +9,12 @@ namespace Assets.Scripts.GoapHeroSubStates
     {
         public IEnumerable Exit()
         {
-            return TransitionDelay(.2f).Cast<object>();
+            return TransitionDelay(.1f).Cast<object>();
         }
 
         public IEnumerable Enter()
         {
-            return TransitionDelay(.2f).Cast<object>();
+            return TransitionDelay(.1f).Cast<object>();
         }
 
         private IEnumerable TransitionDelay(

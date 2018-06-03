@@ -6,7 +6,7 @@ namespace Assets.Scripts.GoapHeroActions
 {
     public class GoapHeroDashAttackAction : GoapHeroBaseAttackAction
     {
-        public RaycastHit2D[] Hits;
+        public static RaycastHit2D[] Hits;
         private const float DashOffset = 1f;
 
         public GoapHeroDashAttackAction()
@@ -53,12 +53,12 @@ namespace Assets.Scripts.GoapHeroActions
             {
                 IsPerforming = true;
                 BoxCollider2D boxCollider2D = gameObject.GetComponent<BoxCollider2D>();
-                var dashEnd = target.transform.position + new Vector3(Hero.Instance.HeroFlipX ? -1f : DashOffset, 0, 0);
+                var dashEnd = target.transform.position + new Vector3(Hero.Instance.HeroFlipX ? -DashOffset : DashOffset, 0, 0);
                 var dashEndPosition = Hero.Instance.HeroFlipX
                     ? Vector3.Max(dashEnd, new Vector3(-3.5f, 0, 0))
                     : Vector3.Min(dashEnd, new Vector3(3.5f, 0, 0));
-                var dashRaycastEndPosition = dashEndPosition + new Vector3(Hero.Instance.HeroFlipX ? -1f : 1f, 0, 0);
-                var startPosition = new Vector2(transform.position.x, boxCollider2D.offset.y);
+                var dashRaycastEndPosition = dashEndPosition + new Vector3(Hero.Instance.HeroFlipX ? -DashOffset : DashOffset, 0, 0);
+                var startPosition = new Vector2(transform.position.x - (Hero.Instance.HeroFlipX ? DashOffset : DashOffset), boxCollider2D.offset.y);
                 Hits = Physics2D.RaycastAll(
                     startPosition,
                     Hero.Instance.HeroFlipX ? Vector2.left : Vector2.right,
@@ -78,7 +78,6 @@ namespace Assets.Scripts.GoapHeroActions
             NpcIsDestroyed = true;
             IsPerforming = false;
             setInRange(false);
-            GoapHeroAction.Instance.ClearAllTargetsFromList();
         }
     }
 }

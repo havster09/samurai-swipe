@@ -21,6 +21,8 @@ namespace Assets.Scripts
         public static event OnHeroBlocked onHeroBlocked;
 
         public bool IsAttacking { get; set; }
+        public bool IsInPoseState;
+        public bool IsInResetState;
 
         void Awake()
         {
@@ -50,7 +52,7 @@ namespace Assets.Scripts
         {
             base.OnEnable();
         }
-        
+
         private void AttachAnimationClipEvents()
         {
             var blockClip = NpcHeroAnimator.runtimeAnimatorController.animationClips[23];
@@ -73,7 +75,7 @@ namespace Assets.Scripts
             {
                 onHeroBlocked();
             }
-    }
+        }
 
         public void HeroBlock(bool state, GameObject target = null)
         {
@@ -156,13 +158,19 @@ namespace Assets.Scripts
             }
         }
 
-        public bool HeroVulnerable()
+        public bool IsVulnerable()
         {
             return IsAnimationTagPlaying("idle");
         }
 
+        public bool IsAttackable()
+        {
+            return !IsInPoseState && !IsInResetState;
+        }
+
         public void Dash(Vector3 end, float speed, RaycastHit2D[] hits)
         {
+            SlashRenderer.Instance.RemoveSlash();
             NpcHeroAnimator.SetFloat("heroDashAttack", 1);
             StartCoroutine(PerformMovementTo(end, speed, false,
                 () =>

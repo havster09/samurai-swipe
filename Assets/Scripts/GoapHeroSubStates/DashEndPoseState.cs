@@ -11,7 +11,7 @@ namespace Assets.Scripts.GoapHeroSubStates
     {
         public void BeginEnter()
         {
-
+            
         }
 
         public void EndEnter()
@@ -25,7 +25,14 @@ namespace Assets.Scripts.GoapHeroSubStates
             {
                 if (Hero.Instance.IsAnimationTagPlaying("dashEnd"))
                 {
-                    var totalNpcAttributeHits = UnityEngine.Object.FindObjectOfType<GoapHeroDashAttackAction>().Hits
+                    Hero.Instance.IsInPoseState = true;
+                    var slashCollider = GameObject.FindGameObjectWithTag("SlashCollider");
+                    if (slashCollider != null)
+                    {
+                        ResetDashAttack();
+                    }
+
+                    var totalNpcAttributeHits = GoapHeroDashAttackAction.Hits
                         .Select(h => h.collider.GetComponent<NpcAttributesComponent>())
                         .ToList();
                     
@@ -37,12 +44,18 @@ namespace Assets.Scripts.GoapHeroSubStates
 
                     if (totalNpcWithAlpha.Count < 1)
                     {
-                        InvokeIdleTransition();
-                        UnityEngine.Object.FindObjectOfType<GoapHeroDashAttackAction>().ResetDashAttack();
+                        ResetDashAttack();
+                        GoapHeroAction.Instance.ClearAllTargetsFromList();
                     }
                 }
                 yield return new WaitForFixedUpdate();
             }
+        }
+
+        private void ResetDashAttack()
+        {
+            InvokeIdleTransition();
+            UnityEngine.Object.FindObjectOfType<GoapHeroDashAttackAction>().ResetDashAttack();
         }
 
         public event EventHandler<StateBeginExitEventArgs> OnBeginExit;

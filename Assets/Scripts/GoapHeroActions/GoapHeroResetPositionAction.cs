@@ -34,6 +34,7 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool Move()
         {
+            Hero.Instance.IsInResetState = true;
             Vector2 currentHeroPosition = gameObject.transform.position;
             if (
                 Hero.Instance.IsFrozenPosition() ||
@@ -43,9 +44,9 @@ namespace Assets.Scripts.GoapHeroActions
                 return false;
             }
 
-            var walkResetType = 
+            var walkResetType =
                 (Hero.Instance.HeroFlipX && currentHeroPosition.x < 0) ||
-                (!Hero.Instance.HeroFlipX && currentHeroPosition.x > 0) ? 
+                (!Hero.Instance.HeroFlipX && currentHeroPosition.x > 0) ?
                 "heroWalkBackLoop" : "heroWalkLoop";
 
             if (Mathf.Abs(currentHeroPosition.x) > (Hero.HeroStep + Hero.ResetPositionThreshold))
@@ -66,6 +67,7 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool perform(GameObject agent)
         {
+            Hero.Instance.IsInResetState = false;
             HasResetPosition = true;
             return HasResetPosition;
         }

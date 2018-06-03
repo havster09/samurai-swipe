@@ -16,6 +16,7 @@ namespace Assets.Scripts.GoapHeroSubStates
             
             _npcHeroAnimator = Hero.Instance.GetComponent<Animator>();
             _npcHeroAnimator.Play("heroIdle");
+            Hero.Instance.IsInPoseState = false;
         }
 
         public void EndEnter()

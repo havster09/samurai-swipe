@@ -74,13 +74,17 @@ namespace Assets.Scripts.GoapEnemyActions
 
         public override bool perform(GameObject agent)
         {
-        
+
             if (TargetNpcHeroAttribute != null)
             {
-                if (TargetNpcHeroAttribute.Health > 0 && !EnemyScript.IsAnimationTagPlaying("attack"))
+                if (
+                    TargetNpcHeroAttribute.Health > 0 &&
+                    !EnemyScript.IsAnimationTagPlaying("attack") &&
+                    Hero.Instance.IsAttackable()
+                    )
                 {
                     EnemyScript.Attack("enemyAttackOne");
-                }            
+                }
                 NpcAttributes.AttackCount += 1;
                 if (TargetNpcHeroAttribute.Health < 1)
                 {

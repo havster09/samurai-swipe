@@ -127,7 +127,7 @@ namespace Assets.Scripts
 
             if (stringParameter == "mid")
             {
-                if (Hero.Instance.HeroVulnerable() && NpcAttribute.Health > 0)
+                if (Hero.Instance.IsVulnerable() && NpcAttribute.Health > 0)
                 {
                     if (!Hero.Instance.NpcHeroAnimator.GetBool("heroBlock") && !Hero.Instance.IsCoroutineMoving)
                     {
@@ -218,7 +218,8 @@ namespace Assets.Scripts
             float xDir = 0;
             IsCanWalk = false;
 
-            bool walkBackwards = Random.Range(0, 5) < 2 && Utilities.ReplaceClone(name) != "Ukyo";
+            bool walkBackwards = Random.Range(0, 5) < 2 &&
+                Utilities.ReplaceClone(name) != "Ukyo";
             if (!walkBackwards)
             {
                 xDir = _goapEnemyAction.target.transform.position.x > transform.position.x ? .5f : -.5f;
@@ -539,6 +540,10 @@ namespace Assets.Scripts
         {
             Hero.onHeroBlocked -= FromEnemyHeroBlockHandler;
             GoapHeroAction.Instance.RemoveTargetFromList(NpcAttribute);
+            
+            GoapHeroDashAttackAction.Hits = GoapHeroDashAttackAction.Hits
+                .Where(hit => hit.collider.gameObject != gameObject)
+                .ToArray();
             Reset();
         }
 

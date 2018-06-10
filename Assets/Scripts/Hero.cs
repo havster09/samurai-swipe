@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.GoapAttributeComponents;
 using Assets.Scripts.GoapHeroActions;
 using Assets.Scripts.GoapHeroSubStates;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Assets.Scripts
 {
@@ -23,6 +25,7 @@ namespace Assets.Scripts
         public bool IsAttacking { get; set; }
         public bool IsInPoseState;
         public bool IsInResetState;
+        public GameObject Target;
 
         void Awake()
         {
@@ -70,7 +73,8 @@ namespace Assets.Scripts
 
         private void HeroBlockEndEventHandler()
         {
-            MoveBack(CurrentTarget, .35f, 5f, () => HeroBlock(false));
+            MoveBack(CurrentTarget, .1f, 1f, () => HeroBlock(false));
+            // todo reafactor this
             if (onHeroBlocked != null)
             {
                 onHeroBlocked();
@@ -79,7 +83,11 @@ namespace Assets.Scripts
 
         public void HeroBlock(bool state, GameObject target = null)
         {
-            if (target != null) FaceTarget(target);
+            if (target != null)
+            {
+                FaceTarget(target);
+                GoapHeroAction.Instance.TargetNpcAttribute = null;
+            }
             NpcHeroAnimator.SetBool("heroBlock", state);
         }
 
@@ -163,6 +171,44 @@ namespace Assets.Scripts
             return IsAnimationTagPlaying("idle");
         }
 
+        public int GetAttackTypeAndDamage(GameObject target)
+        {
+            var heroAttacks = new List<string>();
+
+            var damage = 0;
+            if (target.transform.position.y > 0)
+            {
+                heroAttacks.AddRange(new List<string>
+                {
+                    "heroAttackFour", // slash high
+                    "heroAttackSix", // crouch slash high
+                });
+                damage = 100;
+            }
+            else if (NpcHeroAttributesComponent.Instance.Rage > 10)
+            {
+
+                heroAttacks.AddRange(new List<string>
+                {
+                    "heroDoubleSlashMid",
+                    "heroDoubleSlashHigh",
+                    "heroDoubleSlashLow",
+                });
+                damage = 50;
+            }
+            else
+            {
+                heroAttacks.AddRange(new List<string>
+                {
+                    "heroAttackOne", // slash down
+                    "heroAttackSeven" // step strong slash
+                });
+                damage = 100;
+            }
+            Attack(heroAttacks[Random.Range(0, heroAttacks.Count)]);
+            return damage;
+        }
+
         public bool IsAttackable()
         {
             return !IsInPoseState && !IsInResetState;
@@ -188,6 +234,7 @@ namespace Assets.Scripts
 
         public void DamageRayCastTargets(RaycastHit2D[] hits)
         {
+            
             hits.ToList().ForEach(h =>
             {
                 var slashTarget = h.collider.gameObject;

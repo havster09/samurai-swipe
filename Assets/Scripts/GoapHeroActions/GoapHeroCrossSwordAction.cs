@@ -53,7 +53,7 @@ namespace Assets.Scripts.GoapHeroActions
         public override bool checkProceduralPrecondition(GameObject agent)
         {
             if (IsPerforming && target != null) return true;
-            return FindNpcTarget(agent);
+            return FindNpcTargets(agent);
         }
 
         public override bool perform(GameObject agent)

@@ -540,10 +540,13 @@ namespace Assets.Scripts
         {
             Hero.onHeroBlocked -= FromEnemyHeroBlockHandler;
             GoapHeroAction.Instance.RemoveTargetFromList(NpcAttribute);
-            
-            GoapHeroDashAttackAction.Hits = GoapHeroDashAttackAction.Hits
-                .Where(hit => hit.collider.gameObject != gameObject)
-                .ToArray();
+
+            if (GoapHeroDashAttackAction.Hits != null)
+            {
+                GoapHeroDashAttackAction.Hits = GoapHeroDashAttackAction.Hits
+                                .Where(hit => hit.collider.gameObject != gameObject)
+                                .ToArray();
+            }
             Reset();
         }
 

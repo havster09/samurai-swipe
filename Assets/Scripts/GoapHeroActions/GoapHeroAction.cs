@@ -17,7 +17,7 @@ namespace Assets.Scripts.GoapHeroActions
         protected bool HasCrossedSword;
         protected bool NpcIsDestroyedReset;
         protected bool HasResetPosition;
-        protected NpcAttributesComponent TargetNpcAttribute;
+        public NpcAttributesComponent TargetNpcAttribute;
         protected bool IsPerforming;
 
         void Awake()
@@ -31,7 +31,14 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool Move()
         {
-            float distanceFromTarget = Vector2.Distance(new Vector2(gameObject.transform.position.x, 0), new Vector2(target.transform.position.x, 0));
+            var distanceFromTarget = DistanceFromTarget();
+
+            if (Hero.Instance.IsAnimationTagPlaying("attack"))
+            {
+                // Hero.Instance.NpcHeroAnimator.Play("heroIdle");
+                return false;
+            }
+
             if (
                 !Hero.Instance.IsFrozenPosition() &&
                 !Hero.Instance.IsAnimationTagPlaying("attack") &&
@@ -39,11 +46,11 @@ namespace Assets.Scripts.GoapHeroActions
                 distanceFromTarget <= InRangeToTargetThreshold
                 )
             {
-                
+
                 if (distanceFromTarget >= DistanceToTargetThreshold)
                 {
                     Hero.Instance.FaceTarget(target);
-                    float step = (MoveSpeed * 2) * Time.deltaTime;
+                    var step = (MoveSpeed * 2) * Time.deltaTime;
                     gameObject.transform.position =
                         Vector3.MoveTowards(gameObject.transform.position, new Vector3(target.transform.position.x, 0), step);
                     Hero.Instance.NpcHeroAnimator.SetBool("heroRun", true);
@@ -56,6 +63,11 @@ namespace Assets.Scripts.GoapHeroActions
                 }
             }
             return false;
+        }
+
+        protected float DistanceFromTarget()
+        {
+            return Vector2.Distance(new Vector2(gameObject.transform.position.x, 0), new Vector2(target.transform.position.x, 0));
         }
 
         public override void reset()
@@ -76,10 +88,10 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool checkProceduralPrecondition(GameObject agent)
         {
-            return FindNpcTarget(agent);
+            return FindNpcTargets(agent);
         }
 
-        public bool FindNpcTarget(GameObject agent)
+        public bool FindNpcTargets(GameObject agent)
         {
             NpcAttributesComponent closest = null;
             float closestDist = 5f;
@@ -124,6 +136,35 @@ namespace Assets.Scripts.GoapHeroActions
             return true;
         }
 
+        public bool FindFirstTarget(GameObject agent)
+        {
+            if (TargetNpcAttribute != null)
+            {
+                return true;
+            }
+
+            var closest = NpcTargetAttributes
+                .Where((n) => n.Health > 0)
+                .OrderBy(n => n.transform.position.x);
+
+            if (!Hero.Instance.HeroFlipX)
+            {
+                closest = closest.OrderByDescending(n => n.transform.position.x);
+            }
+
+            TargetNpcAttribute = closest.FirstOrDefault();
+
+            if (TargetNpcAttribute != null)
+            {
+                target = TargetNpcAttribute.gameObject;
+                ClearAllTargetsFromList();
+            }
+
+            
+
+            return true;
+        }
+
         public override bool perform(GameObject agent)
         {
             if (TargetNpcAttribute != null)
@@ -150,7 +191,7 @@ namespace Assets.Scripts.GoapHeroActions
         {
             NpcTargetAttributes.Remove(npcAttribute);
         }
-        
+
         protected bool InResetRange()
         {
             return Mathf.Abs(gameObject.transform.position.x) < Hero.ResetPositionThreshold;

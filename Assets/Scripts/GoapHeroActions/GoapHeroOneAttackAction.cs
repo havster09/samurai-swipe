@@ -6,9 +6,9 @@ using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.GoapHeroActions
 {
-    public class GoapHeroBaseAttackAction : GoapHeroAction
+    public class GoapHeroOneAttackAction : GoapHeroAction
     {
-        public GoapHeroBaseAttackAction()
+        public GoapHeroOneAttackAction()
         {
             addEffect("destroyEnemyNpc", true);
             DistanceToTargetThreshold = .6f;
@@ -16,13 +16,7 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override void reset()
         {
-            if (Random.Range(0, 10) < 5)
-            {
-                addPrecondition("crossSword", true);
-            }
-
             NpcIsDestroyed = false;
-            TargetNpcAttribute = null;
         }
 
         public override bool isDone()
@@ -37,9 +31,8 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool checkProceduralPrecondition(GameObject agent)
         {
-            return FindNpcTargets(agent) &&
+            return FindFirstTarget(agent) &&
                    Hero.Instance.NpcHeroAnimator.GetFloat("heroDashAttack") < .1f;
-            
         }
 
         public override bool perform(GameObject agent)
@@ -49,7 +42,6 @@ namespace Assets.Scripts.GoapHeroActions
             {
                 enemyScript.StopCoroutine(enemyScript.MoveEnemyCoroutine);
             }
-            
 
             if (
                 !Hero.Instance.IsAnimationTagPlaying("attack") &&
@@ -77,14 +69,16 @@ namespace Assets.Scripts.GoapHeroActions
                 NpcHeroAttributesComponent.Instance.KillCount += 1;
                 NpcHeroAttributesComponent.Instance.ComboCount += 1;
                 NpcHeroAttributesComponent.Instance.Rage += 5;
+                NpcIsDestroyed = true;
+                ResetOneAttack();
             }
 
-            if (NpcTargetAttributes.Count < 1)
-            {
-                NpcIsDestroyed = true;
-            }
-            // Debug.Log(string.Format("<color=green>Active Targets {0}</color>", NpcTargetAttributes.Count));
             return NpcIsDestroyed;
+        }
+
+        public void ResetOneAttack()
+        {
+            TargetNpcAttribute = null;
         }
     }
 }

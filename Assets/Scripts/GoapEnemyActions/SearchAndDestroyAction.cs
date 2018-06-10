@@ -21,6 +21,7 @@ namespace Assets.Scripts.GoapEnemyActions
             EnemyScript.FaceTarget();
             float distanceFromTarget = Vector2.Distance(gameObject.transform.position, target.transform.position);
             if (distanceFromTarget > 2 &&
+                !Hero.Instance.IsInResetState &&
                 !EnemyScript.IsAnimationTagPlaying("attack") &&
                 !EnemyScript.IsAnimationTagPlaying("walk") && EnemyScript.IsCanWalk)
             {

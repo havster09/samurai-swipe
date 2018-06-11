@@ -34,8 +34,8 @@ GameObject:
   - component: {fileID: 114255630672500134}
   - component: {fileID: 114455469550128652}
   - component: {fileID: 114980174523487964}
-  - component: {fileID: 114577644468037074}
   - component: {fileID: 114439658435341224}
+  - component: {fileID: 114577644468037074}
   m_Layer: 10
   m_Name: GenjuroHero
   m_TagString: Player

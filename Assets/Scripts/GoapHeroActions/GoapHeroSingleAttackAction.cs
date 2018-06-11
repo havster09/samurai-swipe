@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.GoapAttributeComponents;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.GoapHeroActions
 {
-    public class GoapHeroOneAttackAction : GoapHeroAction
+    public class GoapHeroSingleAttackAction : GoapHeroAction
     {
-        public GoapHeroOneAttackAction()
+        public GoapHeroSingleAttackAction()
         {
-            addEffect("destroyEnemyNpc", true);
+            addEffect("destroySingleEnemyNpc", true);
             DistanceToTargetThreshold = .6f;
         }
 
@@ -31,7 +32,7 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool checkProceduralPrecondition(GameObject agent)
         {
-            return FindFirstTarget(agent) &&
+            return FindSingleTarget(agent) &&
                    Hero.Instance.NpcHeroAnimator.GetFloat("heroDashAttack") < .1f;
         }
 

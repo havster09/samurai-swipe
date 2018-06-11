@@ -248,8 +248,6 @@
     <Compile Include="Assets\Scripts\DropOffLogsAction.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
     <Compile Include="Assets\Scripts\FiniteStateMachine.cs" />
-    <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroOneAttackAction.cs" />
-    <Compile Include="Assets\Scripts\TimingUtilities.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\GoapAttributeComponents\NpcAttributesComponent.cs" />
     <Compile Include="Assets\Scripts\GoapAttributeComponents\NpcHeroAttributesComponent.cs" />
@@ -269,11 +267,12 @@
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroCrossSwordAction.cs" />
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroDashAttackAction.cs" />
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroResetPositionAction.cs" />
+    <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroSingleAttackAction.cs" />
     <Compile Include="Assets\Scripts\GoapHeroActions\GoapHeroWipeBloodAction.cs" />
-    <Compile Include="Assets\Scripts\GoapHeroSubStates\SimpleDelayTransition.cs" />
     <Compile Include="Assets\Scripts\GoapHeroSubStates\DashEndIdleState.cs" />
     <Compile Include="Assets\Scripts\GoapHeroSubStates\DashEndPoseState.cs" />
     <Compile Include="Assets\Scripts\GoapHeroSubStates\DashEndStateMachineHandler.cs" />
+    <Compile Include="Assets\Scripts\GoapHeroSubStates\SimpleDelayTransition.cs" />
     <Compile Include="Assets\Scripts\GoapHeroTypes\GoapAgentHero.cs" />
     <Compile Include="Assets\Scripts\Hero.cs" />
     <Compile Include="Assets\Scripts\MovingObject.cs" />
@@ -282,6 +281,7 @@
     <Compile Include="Assets\Scripts\SimpleAnimatedGameObject.cs" />
     <Compile Include="Assets\Scripts\SimpleMoveAnimation.cs" />
     <Compile Include="Assets\Scripts\SlashRenderer.cs" />
+    <Compile Include="Assets\Scripts\TimingUtilities.cs" />
     <Compile Include="Assets\Scripts\ToolComponent.cs" />
     <Compile Include="Assets\Scripts\TreeComponent.cs" />
     <Compile Include="Assets\Scripts\Utilities.cs" />

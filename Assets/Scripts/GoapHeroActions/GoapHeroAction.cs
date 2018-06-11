@@ -135,7 +135,7 @@ namespace Assets.Scripts.GoapHeroActions
             return true;
         }
 
-        public bool FindFirstTarget(GameObject agent)
+        public bool FindSingleTarget(GameObject agent)
         {
             if (TargetNpcAttribute != null)
             {

@@ -7,7 +7,7 @@ namespace Assets.Scripts.GoapHeroActions
     {
         public GoapHeroSingleAttackAction()
         {
-            addEffect("destroyEnemyNpc", true);
+            addEffect("destroyEnemyNpcSingle", true);
             DistanceToTargetThreshold = .6f;
         }
 
@@ -28,7 +28,7 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool checkProceduralPrecondition(GameObject agent)
         {
-            return false; // todo add logic for which attack is used in goap planner (use SlashRenderer and NpcHeroAttributes)
+            // return false; // todo add logic for which attack is used in goap planner (use SlashRenderer and NpcHeroAttributes)
             return FindSingleTarget(agent) &&
                    Hero.Instance.NpcHeroAnimator.GetFloat("heroDashAttack") < .1f;
         }
@@ -66,7 +66,7 @@ namespace Assets.Scripts.GoapHeroActions
             {
                 NpcHeroAttributesComponent.Instance.KillCount += 1;
                 NpcHeroAttributesComponent.Instance.ComboCount += 1;
-                NpcHeroAttributesComponent.Instance.Rage += 1;
+                NpcHeroAttributesComponent.Instance.Rage += 100;
                 NpcIsDestroyed = true;
                 ResetSingleAttack();
             }

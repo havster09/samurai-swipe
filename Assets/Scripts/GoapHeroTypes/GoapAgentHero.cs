@@ -36,12 +36,13 @@ namespace Assets.Scripts.GoapHeroTypes
         {
             WorldData = new HashSet<KeyValuePair<string, object>>
             {
-                new KeyValuePair<string, object>("destroyEnemyNpc", false),
-                new KeyValuePair<string, object>("crossSword", false),
+                // todo create different state makers for behaviour
+                new KeyValuePair<string, object>("destroyEnemyNpcSingle", false),
+                /*new KeyValuePair<string, object>("crossSword", false),
                 new KeyValuePair<string, object>("bloodCover", false),
                 new KeyValuePair<string, object>("wipeBlood", false),
                 new KeyValuePair<string, object>("hasRage", false),                
-                new KeyValuePair<string, object>("resetPosition", false)
+                new KeyValuePair<string, object>("resetPosition", false)*/
             };
             return WorldData;
         }
@@ -49,9 +50,9 @@ namespace Assets.Scripts.GoapHeroTypes
         public HashSet<KeyValuePair<string, object>> createGoalState()
         {
             goal.Clear();
-            goal.Add(new KeyValuePair<string, object>("destroyEnemyNpc", true));
-            goal.Add(new KeyValuePair<string, object>("bloodCover", true));
-            goal.Add(new KeyValuePair<string, object>("wipeBlood", true));
+            goal.Add(new KeyValuePair<string, object>("destroyEnemyNpcSingle", true));
+            /*goal.Add(new KeyValuePair<string, object>("bloodCover", true));
+            goal.Add(new KeyValuePair<string, object>("wipeBlood", true));*/
             return goal;
         }
 

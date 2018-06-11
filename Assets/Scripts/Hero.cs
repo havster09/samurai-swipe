@@ -86,7 +86,6 @@ namespace Assets.Scripts
             if (target != null)
             {
                 FaceTarget(target);
-                GoapHeroAction.Instance.TargetNpcAttribute = null;
             }
             NpcHeroAnimator.SetBool("heroBlock", state);
         }

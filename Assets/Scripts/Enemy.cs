@@ -135,7 +135,8 @@ namespace Assets.Scripts
                     }
                     else
                     {
-                        Hero.Instance.NpcHeroAnimator.Play("heroBlock", 1, .8f);
+                        Hero.Instance.NpcHeroAnimator.Play("heroBlock", 0, 1f);
+                        TimingUtilities.Instance.WaitFor(() => Hero.Instance.NpcHeroAnimator.Play("heroIdle"), .2f);
                     }
                 }
             }

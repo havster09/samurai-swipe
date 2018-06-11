@@ -68,17 +68,17 @@ namespace Assets.Scripts.GoapHeroActions
             {
                 NpcHeroAttributesComponent.Instance.KillCount += 1;
                 NpcHeroAttributesComponent.Instance.ComboCount += 1;
-                NpcHeroAttributesComponent.Instance.Rage += 5;
+                NpcHeroAttributesComponent.Instance.Rage += 1;
                 NpcIsDestroyed = true;
                 ResetOneAttack();
             }
-
             return NpcIsDestroyed;
         }
 
         public void ResetOneAttack()
         {
             TargetNpcAttribute = null;
+            NpcTargetAttributes.Clear();
         }
     }
 }

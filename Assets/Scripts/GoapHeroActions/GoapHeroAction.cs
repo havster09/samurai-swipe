@@ -35,7 +35,6 @@ namespace Assets.Scripts.GoapHeroActions
 
             if (Hero.Instance.IsAnimationTagPlaying("attack"))
             {
-                // Hero.Instance.NpcHeroAnimator.Play("heroIdle");
                 return false;
             }
 
@@ -140,29 +139,22 @@ namespace Assets.Scripts.GoapHeroActions
         {
             if (TargetNpcAttribute != null)
             {
+                target = TargetNpcAttribute.gameObject;
                 return true;
             }
 
-            var closest = NpcTargetAttributes
+            TargetNpcAttribute = NpcTargetAttributes
                 .Where((n) => n.Health > 0)
-                .OrderBy(n => n.transform.position.x);
-
-            if (!Hero.Instance.HeroFlipX)
-            {
-                closest = closest.OrderByDescending(n => n.transform.position.x);
-            }
-
-            TargetNpcAttribute = closest.FirstOrDefault();
+                .OrderBy(n => Vector2.Distance(n.transform.position, Hero.Instance.transform.position))
+                .FirstOrDefault();
 
             if (TargetNpcAttribute != null)
             {
                 target = TargetNpcAttribute.gameObject;
                 ClearAllTargetsFromList();
+                return true;
             }
-
-            
-
-            return true;
+            return false;
         }
 
         public override bool perform(GameObject agent)

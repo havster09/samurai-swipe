@@ -131,6 +131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 5
   target: {fileID: 0}
+  TargetNpcAttribute: {fileID: 0}
 --- !u!114 &114155218341992806
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -144,6 +145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 20
   target: {fileID: 0}
+  TargetNpcAttribute: {fileID: 0}
 --- !u!114 &114191996681220228
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -157,6 +159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 10
   target: {fileID: 0}
+  TargetNpcAttribute: {fileID: 0}
 --- !u!114 &114255630672500134
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -170,6 +173,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 1
   target: {fileID: 0}
+  TargetNpcAttribute: {fileID: 0}
 --- !u!114 &114264782463166122
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -200,6 +204,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 1
   target: {fileID: 0}
+  TargetNpcAttribute: {fileID: 0}
 --- !u!114 &114442440405982196
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -213,6 +218,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 1
   target: {fileID: 0}
+  TargetNpcAttribute: {fileID: 0}
 --- !u!114 &114446266854294874
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -235,8 +241,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2314f844e94bfab439bb166447e55447, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 1
+  cost: 100
   target: {fileID: 0}
+  TargetNpcAttribute: {fileID: 0}
 --- !u!114 &114567955020767244
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -302,6 +309,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 10
   target: {fileID: 0}
+  TargetNpcAttribute: {fileID: 0}
 --- !u!212 &212617807016556368
 SpriteRenderer:
   m_ObjectHideFlags: 1

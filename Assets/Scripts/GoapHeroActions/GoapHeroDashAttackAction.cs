@@ -33,6 +33,7 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool checkProceduralPrecondition(GameObject agent)
         {
+            // return false;
             if (NpcTargetAttributes.Count < 1)
             {
                 return false;

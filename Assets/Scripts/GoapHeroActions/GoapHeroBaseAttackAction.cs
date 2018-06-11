@@ -37,6 +37,7 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool checkProceduralPrecondition(GameObject agent)
         {
+            return false;
             return FindNpcTargets(agent) &&
                    Hero.Instance.NpcHeroAnimator.GetFloat("heroDashAttack") < .1f;
             

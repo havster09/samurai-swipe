@@ -119,6 +119,26 @@ public sealed class GoapAgent : MonoBehaviour {
 
 		};
 	}
+
+    public void createIdleStateFromGoal(HashSet<KeyValuePair<string, object>> goal) {
+		idleState = (fsm, gameObj) => {
+			var worldState = dataProvider.getWorldState();
+			Queue<GoapAction> plan = planner.plan(gameObject, availableActions, worldState, goal);
+			if (plan != null) {
+				currentActions = plan;
+				dataProvider.planFound(goal, plan);
+
+				fsm.popState(); 
+				fsm.pushState(performActionState);
+
+			} else {
+				dataProvider.planFailed(goal);
+				fsm.popState ();
+			    fsm.pushState (idleState);
+			}
+
+		};
+	}
 	
 	public void createMoveToState() {
 		moveToState = (fsm, gameObj) => {

@@ -7,7 +7,7 @@ namespace Assets.Scripts.GoapHeroActions
     {
         public GoapHeroBloodCoverAction()
         {
-            addPrecondition("destroyEnemyNpc", true);
+            addPrecondition("destroyEnemyNpcSingle", true);
             addEffect("bloodCover", true);
             DistanceToTargetThreshold = 1f;
         }
@@ -35,11 +35,12 @@ namespace Assets.Scripts.GoapHeroActions
         public override bool perform(GameObject agent)
         {
             if (
-                GetActiveNpcAttributesComponentsInRange(gameObject, PoseThreshold).Length < 1 &&
+                GetActiveNpcAttributesComponentsInRange(gameObject, PoseThreshold).Length < 10 &&
                 !Hero.Instance.NpcHeroAnimator.GetBool("heroBloodCover") &&
                 InResetRange() // todo review this check
                 )
             {
+                Hero.Instance.IsInPoseState = true;
                 Hero.Instance.BloodCover(true);
                 NpcIsDestroyedReset = true;
                 float coverBloodCountPauseDuration = 5f;
@@ -50,6 +51,7 @@ namespace Assets.Scripts.GoapHeroActions
             }
             else
             {
+                Hero.Instance.IsInPoseState = false;
                 NpcIsDestroyedReset = true;
             }
             NpcHeroAttributesComponent.Instance.ComboCount = 0;

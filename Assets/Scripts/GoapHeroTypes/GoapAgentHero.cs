@@ -56,6 +56,16 @@ namespace Assets.Scripts.GoapHeroTypes
             return goal;
         }
 
+        public HashSet<KeyValuePair<string, object>> createPoseState()
+        {
+            goal.Clear();
+            goal.Add(new KeyValuePair<string, object>("destroyEnemyNpcSingle", true));
+            goal.Add(new KeyValuePair<string, object>("bloodCover", true));
+            goal.Add(new KeyValuePair<string, object>("wipeBlood", true));
+            goal.Add(new KeyValuePair<string, object>("resetPosition", true));
+            return goal;
+        }
+
         public HashSet<KeyValuePair<string, object>> createResetState()
         {
             goal.Clear();
@@ -74,11 +84,14 @@ namespace Assets.Scripts.GoapHeroTypes
                 Mathf.Abs(gameObject.transform.position.x) > (Hero.HeroStep + Hero.ResetPositionThreshold)
                 )
             {
-                GoapAgentScript.createResetState();
+                // GoapAgentScript.createResetState();
+                var goalReset = createResetState();
+                GoapAgentScript.createIdleStateFromGoal(goalReset);
             }
             else
             {
-                GoapAgentScript.createIdleState();
+                var goalPose = createPoseState();
+                GoapAgentScript.createIdleStateFromGoal(goalPose);
             }
         }
 

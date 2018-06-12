@@ -6,6 +6,7 @@ namespace Assets.Scripts.GoapHeroActions
     {
         public GoapHeroResetPositionAction()
         {
+            addPrecondition("destroyEnemyNpcSingle", true);
             addEffect("resetPosition", true);
         }
 

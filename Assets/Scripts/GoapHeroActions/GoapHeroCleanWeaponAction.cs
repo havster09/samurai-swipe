@@ -7,7 +7,7 @@ namespace Assets.Scripts.GoapHeroActions
     {
         public GoapHeroCleanWeaponAction()
         {
-            addPrecondition("destroyEnemyNpc", true);
+            addPrecondition("bloodCover", true);
             addEffect("wipeBlood", true);
             DistanceToTargetThreshold = 1f;
         }
@@ -34,7 +34,7 @@ namespace Assets.Scripts.GoapHeroActions
         }
         public override bool perform(GameObject agent)
         {
-            if (GetActiveNpcAttributesComponentsInRange(gameObject, PoseThreshold).Length < 1 && InResetRange())
+            if (GetActiveNpcAttributesComponentsInRange(gameObject, PoseThreshold).Length < 10 && InResetRange())
             {
                 Hero.Instance.CleanWeapon();
                 NpcIsDestroyedReset = true;

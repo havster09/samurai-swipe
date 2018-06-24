@@ -28,7 +28,7 @@ namespace Assets.Scripts.GoapAttributeComponents
         public NpcHeroAttributesComponent()
         {
             Health = 100;
-            Brave = 100;
+            Brave = 0;
             Rage = 0;
             AttackCount = 0;
             ComboCount = 0;

@@ -123,7 +123,7 @@ namespace Assets.Scripts.GoapHeroActions
                 return true;
             }
 
-            Debug.LogWarning("=====FindLastNpcDashTarget======");
+            // Debug.LogWarning("=====FindLastNpcDashTarget======");
             var furthest = NpcTargetAttributes
                 .Where((n) => n.Health > 0)
                 .OrderBy(n => n.transform.position.x);

@@ -184,7 +184,7 @@ namespace Assets.Scripts
                 });
                 damage = 100;
             }
-            else if (NpcHeroAttributesComponent.Instance.Rage > 10)
+            else if (SlashRenderer.Instance.CrossSlashCounter > 2)
             {
 
                 heroAttacks.AddRange(new List<string>
@@ -200,6 +200,9 @@ namespace Assets.Scripts
                 heroAttacks.AddRange(new List<string>
                 {
                     "heroAttackOne", // slash down
+                    "heroAttackThree", // slash dash
+                    "heroAttackFour", // slash high
+                    "heroAttackSix", // crouch slash high
                     "heroAttackSeven" // step strong slash
                 });
                 damage = 100;

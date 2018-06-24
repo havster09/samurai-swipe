@@ -11,7 +11,7 @@ namespace Assets.Scripts.GoapHeroActions
 
         public GoapHeroDashAttackAction()
         {
-            addEffect("destroyEnemyNpc", true);
+            addEffect("destroyEnemyNpcDash", true);
             DistanceToTargetThreshold = 1f;
         }
 
@@ -33,7 +33,6 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool checkProceduralPrecondition(GameObject agent)
         {
-            return false;
             if (NpcTargetAttributes.Count < 1)
             {
                 return false;
@@ -76,6 +75,7 @@ namespace Assets.Scripts.GoapHeroActions
 
         public void ResetDashAttack()
         {
+            NpcHeroAttributesComponent.Instance.Brave = 0;
             NpcIsDestroyed = true;
             IsPerforming = false;
             setInRange(false);

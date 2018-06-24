@@ -1,4 +1,6 @@
-﻿using Assets.Scripts.GoapHeroActions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Assets.Scripts.GoapHeroActions;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -6,7 +8,6 @@ namespace Assets.Scripts
     public class SlashRenderer : MonoBehaviour
     {
         public static SlashRenderer Instance;
-        private GoapHeroAction _goapHeroActionScript;
         private const int SlashZPosition = 3;
         public Material SlashMaterial;
         public Color C1 = Color.yellow;
@@ -15,8 +16,27 @@ namespace Assets.Scripts
         private LineRenderer _lineRenderer;
         private int _linePoints = 0;
 
-        private Vector3 _mouseDownPos;
-        private Vector3 _mouseUpPos;
+        private Vector3 _touchDownPos;
+        private Vector3 _touchUpPos;
+        public Vector3 LastTouchPos;
+        public int CrossSlashCounter;
+        private bool _rightTouchDirection;
+        public bool RightTouchDirection
+        {
+            get { return _rightTouchDirection; }
+            set
+            {
+                if (value != _rightTouchDirection)
+                {
+                    CrossSlashCounter++;
+                }
+                _rightTouchDirection = value;
+                
+            }
+        }
+
+        private List<Vector3> _linePositions = new List<Vector3>();
+        
 
         public BoxCollider2D SlashCollider;
 
@@ -31,8 +51,6 @@ namespace Assets.Scripts
                 Destroy(gameObject);
             }
             DontDestroyOnLoad(gameObject);
-
-            _goapHeroActionScript = FindObjectOfType<GoapHeroAction>();
         }
         void Start()
         {
@@ -51,32 +69,87 @@ namespace Assets.Scripts
 
         void Update()
         {
-            if (Input.touchCount > 0)
+
+           if (Input.touchCount > 0)
             {
                 Touch touch = Input.GetTouch(0);
 
+                if (touch.phase == TouchPhase.Stationary)
+                {
+                    Debug.Log("Stationary");
+                    // use for power moves power up
+                }
+
+                if (touch.phase == TouchPhase.Began)
+                {
+                    Debug.Log("Began");
+                    CrossSlashCounter = 0;
+                    _touchDownPos = new Vector3(touch.position.x, touch.position.y, SlashZPosition);
+                }
+
                 if (touch.phase == TouchPhase.Moved)
                 {
+                    _touchUpPos = new Vector3(touch.position.x, touch.position.y, SlashZPosition);
+
+                    RightTouchDirection = _touchDownPos.x < LastTouchPos.x;
+                    _linePositions.Add(LastTouchPos);
+
+                    LastTouchPos = new Vector3(touch.position.x, touch.position.y, SlashZPosition);
+                    
                     AddSlash();
+                    Debug.Log("Moved");
                 }
 
                 if (touch.phase == TouchPhase.Ended)
                 {
                     RemoveSlash();
+                    _touchUpPos = new Vector3(touch.position.x, touch.position.y, SlashZPosition);
+                    _linePositions.Add(_touchUpPos);
+
+                    var maxPosition = 0f;
+                    var maxPointPosition = new Vector3();
+
+                    foreach (var linePosition in _linePositions)
+                    {
+                        if (Vector2.Distance(_touchDownPos, linePosition) > maxPosition)
+                        {
+                            maxPointPosition = linePosition;
+                        }
+                    }
+
+                    Debug.Log("===========");
+                    Debug.Log(Vector3.Distance(_touchDownPos, _touchUpPos));
+                    Debug.Log(Vector3.Distance(_touchDownPos, maxPointPosition));
+                    Debug.Log("===========");
+
+                    AddColliderToLine(_lineRenderer, Camera.main.ScreenToWorldPoint(_touchDownPos), Camera.main.ScreenToWorldPoint(maxPointPosition));
+                    _linePositions.Clear();
+
+                    Debug.Log("Ended");
+                    Debug.Log(CrossSlashCounter);
                 }
             }
 
-            if (Input.GetMouseButtonDown(0))
+            /* if (Input.GetMouseButtonDown(0))
             {
-                _mouseDownPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, SlashZPosition);
+                _touchDownPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, SlashZPosition);
             }
 
             if (Input.GetMouseButtonUp(0))
             {
                 RemoveSlash();
-                _mouseUpPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, SlashZPosition);
+                _touchUpPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, SlashZPosition);
                 AddMouseSlash();
-            }
+            }*/
+        }
+
+        private void AddSlash()
+        {
+            GoapHeroAction.Instance.ClearAllTargetsFromList();
+            _lineRenderer.positionCount = _linePoints + 1;
+            Vector3 mPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, SlashZPosition);
+            _lineRenderer.SetPosition(_linePoints, Camera.main.ScreenToWorldPoint(mPosition));
+            _linePoints++;
         }
 
         public void RemoveSlash()
@@ -84,29 +157,20 @@ namespace Assets.Scripts
             _lineRenderer.positionCount = 0;
             _linePoints = 0;
 
-            GameObject slashCollider = GameObject.FindGameObjectWithTag("SlashCollider");
-            Destroy(slashCollider);
-        }
-
-        private void AddSlash()
-        {
-            _goapHeroActionScript.ClearAllTargetsFromList();
-            _lineRenderer.positionCount = _linePoints + 1;
-            Vector3 mPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, SlashZPosition);
-            _lineRenderer.SetPosition(_linePoints, Camera.main.ScreenToWorldPoint(mPosition));
-            _linePoints++;
-
-            BoxCollider2D bc = _slashGo.AddComponent<BoxCollider2D>();
-            bc.transform.position = _lineRenderer.transform.position;
-            bc.size = new Vector2(0.1f, 0.1f);
+            GameObject[] slashColliders = GameObject.FindGameObjectsWithTag("SlashCollider");
+            // Debug.Log(slashColliders.Length);
+            foreach (GameObject s in slashColliders)
+            {
+                Destroy(s);
+            }
         }
 
         private void AddMouseSlash()
         {
             _lineRenderer.positionCount = 2;
-            _lineRenderer.SetPosition(0, Camera.main.ScreenToWorldPoint(_mouseDownPos));
-            _lineRenderer.SetPosition(1, Camera.main.ScreenToWorldPoint(_mouseUpPos));
-            AddColliderToLine(_lineRenderer, Camera.main.ScreenToWorldPoint(_mouseDownPos), Camera.main.ScreenToWorldPoint(_mouseUpPos));
+            _lineRenderer.SetPosition(0, Camera.main.ScreenToWorldPoint(_touchDownPos));
+            _lineRenderer.SetPosition(1, Camera.main.ScreenToWorldPoint(_touchUpPos));
+            AddColliderToLine(_lineRenderer, Camera.main.ScreenToWorldPoint(_touchDownPos), Camera.main.ScreenToWorldPoint(_touchUpPos));
         }
 
         private void AddColliderToLine(LineRenderer line, Vector3 startPoint, Vector3 endPoint)

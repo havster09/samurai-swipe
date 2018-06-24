@@ -66,7 +66,8 @@ namespace Assets.Scripts.GoapHeroActions
             {
                 NpcHeroAttributesComponent.Instance.KillCount += 1;
                 NpcHeroAttributesComponent.Instance.ComboCount += 1;
-                NpcHeroAttributesComponent.Instance.Rage += 100;
+                NpcHeroAttributesComponent.Instance.Rage += 1;
+                NpcHeroAttributesComponent.Instance.Brave += 1;
                 NpcIsDestroyed = true;
                 ResetSingleAttack();
             }

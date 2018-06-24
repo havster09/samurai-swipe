@@ -12,7 +12,6 @@ namespace Assets.Scripts
     {
         public int PlayerDamage;
         public float RunSpeed;
-        private GoapHeroAction _goapHeroActionScript;
         public bool HasWalkAbility;
 
         public Animator NpcAnimator;
@@ -30,7 +29,6 @@ namespace Assets.Scripts
 
         private void Awake()
         {
-            _goapHeroActionScript = GameObject.FindObjectOfType<GoapHeroAction>();
             _goapEnemyAction = gameObject.GetComponent<GoapEnemyAction>();
             NpcAttribute = gameObject.GetComponent<NpcAttributesComponent>();
             NpcAnimator = GetComponent<Animator>();
@@ -40,6 +38,7 @@ namespace Assets.Scripts
 
         private void AttachAnimationClipEvents()
         {
+            // copy to hero to damage enemies in range of an active attack
             NpcAnimator.runtimeAnimatorController.animationClips
                 .Where(a => a.name.Contains("Attack"))
                 .ToList()
@@ -109,7 +108,7 @@ namespace Assets.Scripts
 
         public void FromEnemyHeroBlockHandler()
         {
-            Debug.LogWarning("=====from enemy delegate handler=====");
+            // Debug.LogWarning("=====from enemy delegate handler=====");
         }
 
         private void EnemyBlockEndEventHandler()
@@ -125,7 +124,7 @@ namespace Assets.Scripts
                 IsAttacking = false;
             }
 
-            if (stringParameter == "mid")
+            /*if (stringParameter == "mid")
             {
                 if (Hero.Instance.IsVulnerable() && NpcAttribute.Health > 0)
                 {
@@ -139,7 +138,7 @@ namespace Assets.Scripts
                         TimingUtilities.Instance.WaitFor(() => Hero.Instance.NpcHeroAnimator.Play("heroIdle"), .2f);
                     }
                 }
-            }
+            }*/
         }
 
         private void EnemyAttackTwoEventHandler(string stringParameter)

@@ -186,7 +186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Health: 100
-  Brave: 100
+  Brave: 0
   Rage: 0
   AttackCount: 0
   ComboCount: 0
@@ -281,7 +281,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: 2
   GoapAgentScript: {fileID: 0}
-  GoapHeroActionScript: {fileID: 0}
 --- !u!114 &114699053788278220
 MonoBehaviour:
   m_ObjectHideFlags: 1

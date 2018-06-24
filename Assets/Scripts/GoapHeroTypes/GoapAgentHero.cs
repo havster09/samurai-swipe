@@ -10,7 +10,6 @@ namespace Assets.Scripts.GoapHeroTypes
         public static GoapAgentHero Instance;
         public float MoveSpeed = 2;
         public GoapAgent GoapAgentScript;
-        public GoapHeroAction GoapHeroActionScript;
 
         protected HashSet<KeyValuePair<string, object>> WorldData;
         public HashSet<KeyValuePair<string, object>> goal;
@@ -28,7 +27,6 @@ namespace Assets.Scripts.GoapHeroTypes
             DontDestroyOnLoad(gameObject);
 
             GoapAgentScript = GetComponent<GoapAgent>();
-            GoapHeroActionScript = GetComponent<GoapHeroAction>();
             goal = new HashSet<KeyValuePair<string, object>>();
         }
 
@@ -37,9 +35,11 @@ namespace Assets.Scripts.GoapHeroTypes
             WorldData = new HashSet<KeyValuePair<string, object>>
             {
                 // todo create different state makers for behaviour
+                // new KeyValuePair<string, object>("destroyEnemyNpc", false),
                 new KeyValuePair<string, object>("destroyEnemyNpcSingle", false),
-                /*new KeyValuePair<string, object>("crossSword", false),
-                new KeyValuePair<string, object>("bloodCover", false),
+                new KeyValuePair<string, object>("destroyEnemyNpcDash", false),
+                new KeyValuePair<string, object>("crossSword", false),
+                /*new KeyValuePair<string, object>("bloodCover", false),
                 new KeyValuePair<string, object>("wipeBlood", false),
                 new KeyValuePair<string, object>("hasRage", false),                
                 new KeyValuePair<string, object>("resetPosition", false)*/
@@ -50,7 +50,15 @@ namespace Assets.Scripts.GoapHeroTypes
         public HashSet<KeyValuePair<string, object>> createGoalState()
         {
             goal.Clear();
-            goal.Add(new KeyValuePair<string, object>("destroyEnemyNpcSingle", true));
+            if (NpcHeroAttributesComponent.Instance.Brave > 10)
+            {
+                goal.Add(new KeyValuePair<string, object>("destroyEnemyNpcDash", true));
+
+            }
+            else
+            {
+                goal.Add(new KeyValuePair<string, object>("destroyEnemyNpcSingle", true));
+            }
             /*goal.Add(new KeyValuePair<string, object>("bloodCover", true));
             goal.Add(new KeyValuePair<string, object>("wipeBlood", true));*/
             return goal;
@@ -90,25 +98,26 @@ namespace Assets.Scripts.GoapHeroTypes
             }
             else
             {
-                var goalPose = createPoseState();
-                GoapAgentScript.createIdleStateFromGoal(goalPose);
+                // var goal = createPoseState();
+                var goal = createGoalState();
+                GoapAgentScript.createIdleStateFromGoal(goal);
             }
         }
 
         public void planFound(HashSet<KeyValuePair<string, object>> goal, Queue<GoapAction> actions)
         {
-            Debug.Log("<color=green>Hero Plan found</color> " + GoapAgent.prettyPrint(actions));
+            // Debug.Log("<color=green>Hero Plan found</color> " + GoapAgent.prettyPrint(actions));
         }
 
         public void actionsFinished()
         {
-            Debug.Log("<color=blue>Hero Actions completed</color>");
+            // Debug.Log("<color=blue>Hero Actions completed</color>");
             GoapAgentScript.createIdleState();
         }
 
         public void planAborted(GoapAction aborter)
         {
-            Debug.Log("<color=red>Hero Plan Aborted</color> " + GoapAgent.prettyPrint(aborter));
+            // Debug.Log("<color=red>Hero Plan Aborted</color> " + GoapAgent.prettyPrint(aborter));
         }
 
         public bool moveAgent(GoapAction nextAction)

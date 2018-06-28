@@ -82,55 +82,21 @@ namespace Assets.Scripts
 
                 if (touch.phase == TouchPhase.Began)
                 {
-                    Debug.Log("Began");
-                    CrossSlashCounter = 0;
-                    _touchDownPos = new Vector3(touch.position.x, touch.position.y, SlashZPosition);
+                    HandleTouchBegan(touch);
                 }
 
                 if (touch.phase == TouchPhase.Moved)
                 {
-                    _touchUpPos = new Vector3(touch.position.x, touch.position.y, SlashZPosition);
-
-                    RightTouchDirection = _touchDownPos.x < LastTouchPos.x;
-                    _linePositions.Add(LastTouchPos);
-
-                    LastTouchPos = new Vector3(touch.position.x, touch.position.y, SlashZPosition);
-                    
-                    AddSlash();
-                    Debug.Log("Moved");
+                    HandleTouchMoved(touch);
                 }
 
                 if (touch.phase == TouchPhase.Ended)
                 {
-                    RemoveSlash();
-                    _touchUpPos = new Vector3(touch.position.x, touch.position.y, SlashZPosition);
-                    _linePositions.Add(_touchUpPos);
-
-                    var maxPosition = 0f;
-                    var maxPointPosition = new Vector3();
-
-                    foreach (var linePosition in _linePositions)
-                    {
-                        if (Vector2.Distance(_touchDownPos, linePosition) > maxPosition)
-                        {
-                            maxPointPosition = linePosition;
-                        }
-                    }
-
-                    Debug.Log("===========");
-                    Debug.Log(Vector3.Distance(_touchDownPos, _touchUpPos));
-                    Debug.Log(Vector3.Distance(_touchDownPos, maxPointPosition));
-                    Debug.Log("===========");
-
-                    AddColliderToLine(_lineRenderer, Camera.main.ScreenToWorldPoint(_touchDownPos), Camera.main.ScreenToWorldPoint(maxPointPosition));
-                    _linePositions.Clear();
-
-                    Debug.Log("Ended");
-                    Debug.Log(CrossSlashCounter);
+                    HandleTouchEnded(touch);
                 }
             }
 
-            /* if (Input.GetMouseButtonDown(0))
+             if (Input.GetMouseButtonDown(0))
             {
                 _touchDownPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, SlashZPosition);
             }
@@ -140,7 +106,48 @@ namespace Assets.Scripts
                 RemoveSlash();
                 _touchUpPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, SlashZPosition);
                 AddMouseSlash();
-            }*/
+            }
+        }
+
+        private void HandleTouchBegan(Touch touch)
+        {
+            Debug.Log("Began");
+            CrossSlashCounter = 0;
+            _touchDownPos = new Vector3(touch.position.x, touch.position.y, SlashZPosition);
+        }
+
+        private void HandleTouchEnded(Touch touch)
+        {
+            RemoveSlash();
+            _touchUpPos = new Vector3(touch.position.x, touch.position.y, SlashZPosition);
+            _linePositions.Add(_touchUpPos);
+
+            var startPoint = _linePositions.OrderByDescending(lp => lp.x).FirstOrDefault();
+            var endPoint = _linePositions.OrderByDescending(lp => lp.x).LastOrDefault();
+
+            Debug.Log("===========");
+            Debug.Log(Vector3.Distance(startPoint, endPoint));
+            Debug.Log("===========");
+
+            AddColliderToLine(_lineRenderer, Camera.main.ScreenToWorldPoint(startPoint),
+                Camera.main.ScreenToWorldPoint(endPoint));
+            _linePositions.Clear();
+
+            Debug.Log("Ended");
+            Debug.Log(CrossSlashCounter);
+        }
+
+        private void HandleTouchMoved(Touch touch)
+        {
+            _touchUpPos = new Vector3(touch.position.x, touch.position.y, SlashZPosition);
+
+            RightTouchDirection = _touchDownPos.x < LastTouchPos.x;
+            _linePositions.Add(LastTouchPos);
+
+            LastTouchPos = new Vector3(touch.position.x, touch.position.y, SlashZPosition);
+
+            AddSlash();
+            Debug.Log("Moved");
         }
 
         private void AddSlash()

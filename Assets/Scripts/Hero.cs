@@ -27,6 +27,8 @@ namespace Assets.Scripts
         public bool IsInResetState;
         public GameObject Target;
 
+        private GoapAction GoapActionScript;
+
         void Awake()
         {
             if (Instance == null)
@@ -43,6 +45,8 @@ namespace Assets.Scripts
             NpcRenderer = GetComponent<Renderer>();
             DashEndStateMachineHandlerScript =
                 GameObject.FindObjectOfType<DashEndStateMachineHandler>();
+            GoapActionScript =
+                GameObject.FindObjectOfType<GoapAction>();
             AttachAnimationClipEvents();
         }
 
@@ -117,6 +121,18 @@ namespace Assets.Scripts
         {
             IsAttacking = true;
             NpcHeroAnimator.SetTrigger(attackType);
+            CheckEnemiesInRangeOfAttack();
+        }
+
+        private void CheckEnemiesInRangeOfAttack()
+        {
+            var totalNpcInRangeOfAttack = GoapActionScript.GetActiveNpcAttributesComponentsInRangeByDirection(gameObject, 1.2f);
+            totalNpcInRangeOfAttack.ToList()
+                .ForEach((npc) =>
+                {
+                    var enemyScript = npc.GetComponent<Enemy>();
+                    enemyScript.EnemyHitSuccess(50);
+                });
         }
 
         public void BloodCover(bool state)
@@ -184,7 +200,7 @@ namespace Assets.Scripts
                 });
                 damage = 100;
             }
-            else if (SlashRenderer.Instance.CrossSlashCounter > 2)
+            else if (SlashRenderer.Instance.CrossSlashCounter > 1)
             {
 
                 heroAttacks.AddRange(new List<string>

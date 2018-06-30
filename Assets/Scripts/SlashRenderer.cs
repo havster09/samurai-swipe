@@ -161,11 +161,15 @@ namespace Assets.Scripts
 
         public void RemoveSlash()
         {
+            if (_lineRenderer.positionCount == 0)
+            {
+                return;
+            }
+
             _lineRenderer.positionCount = 0;
             _linePoints = 0;
 
             GameObject[] slashColliders = GameObject.FindGameObjectsWithTag("SlashCollider");
-            // Debug.Log(slashColliders.Length);
             foreach (GameObject s in slashColliders)
             {
                 Destroy(s);

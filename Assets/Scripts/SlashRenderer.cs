@@ -21,6 +21,8 @@ namespace Assets.Scripts
         public Vector3 LastTouchPos;
         public int CrossSlashCounter;
         private bool _rightTouchDirection;
+
+        public float SWIPE_THRESHOLD = 20f;
         public bool RightTouchDirection
         {
             get { return _rightTouchDirection; }
@@ -76,7 +78,7 @@ namespace Assets.Scripts
 
                 if (touch.phase == TouchPhase.Stationary)
                 {
-                    Debug.Log("Stationary");
+                    // Debug.Log("Stationary");
                     // use for power moves power up
                 }
 
@@ -96,7 +98,7 @@ namespace Assets.Scripts
                 }
             }
 
-             if (Input.GetMouseButtonDown(0))
+            /*if (Input.GetMouseButtonDown(0))
             {
                 _touchDownPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, SlashZPosition);
             }
@@ -106,12 +108,12 @@ namespace Assets.Scripts
                 RemoveSlash();
                 _touchUpPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, SlashZPosition);
                 AddMouseSlash();
-            }
+            }*/
         }
 
         private void HandleTouchBegan(Touch touch)
         {
-            Debug.Log("Began");
+            // Debug.Log("Began");
             CrossSlashCounter = 0;
             _touchDownPos = new Vector3(touch.position.x, touch.position.y, SlashZPosition);
         }
@@ -122,19 +124,21 @@ namespace Assets.Scripts
             _touchUpPos = new Vector3(touch.position.x, touch.position.y, SlashZPosition);
             _linePositions.Add(_touchUpPos);
 
+            CheckSwipe();
+
             var startPoint = _linePositions.OrderByDescending(lp => lp.x).FirstOrDefault();
             var endPoint = _linePositions.OrderByDescending(lp => lp.x).LastOrDefault();
 
-            Debug.Log("===========");
-            Debug.Log(Vector3.Distance(startPoint, endPoint));
-            Debug.Log("===========");
+            //Debug.Log("===========");
+            //Debug.Log(Vector3.Distance(startPoint, endPoint));
+            //Debug.Log("===========");
 
             AddColliderToLine(_lineRenderer, Camera.main.ScreenToWorldPoint(startPoint),
                 Camera.main.ScreenToWorldPoint(endPoint));
             _linePositions.Clear();
 
-            Debug.Log("Ended");
-            Debug.Log(CrossSlashCounter);
+            // Debug.Log("Ended");
+            // Debug.Log(CrossSlashCounter);
         }
 
         private void HandleTouchMoved(Touch touch)
@@ -147,7 +151,7 @@ namespace Assets.Scripts
             LastTouchPos = new Vector3(touch.position.x, touch.position.y, SlashZPosition);
 
             AddSlash();
-            Debug.Log("Moved");
+            // Debug.Log("Moved");
         }
 
         private void AddSlash()
@@ -184,6 +188,55 @@ namespace Assets.Scripts
             AddColliderToLine(_lineRenderer, Camera.main.ScreenToWorldPoint(_touchDownPos), Camera.main.ScreenToWorldPoint(_touchUpPos));
         }
 
+        void CheckSwipe()
+        {
+            //Check if Vertical swipe
+            if (VerticalMove() > SWIPE_THRESHOLD && VerticalMove() > horizontalValMove())
+            {
+                //Debug.Log("Vertical");
+                if (_touchDownPos.y - _touchUpPos.y < 0)//up swipe
+                {
+                    OnSwipeUp();
+                }
+                else if (_touchDownPos.y - _touchUpPos.y > 0)//Down swipe
+                {
+                    OnSwipeDown();
+                }
+                _touchUpPos = _touchDownPos;
+            }
+
+            //Check if Horizontal swipe
+            else if (horizontalValMove() > SWIPE_THRESHOLD && horizontalValMove() > VerticalMove())
+            {
+                //Debug.Log("Horizontal");
+                if (_touchDownPos.x - _touchUpPos.x < 0)//Right swipe
+                {
+                    OnSwipeRight();
+                }
+                else if (_touchDownPos.x - _touchUpPos.x > 0)//Left swipe
+                {
+                    OnSwipeLeft();
+                }
+                _touchUpPos = _touchDownPos;
+            }
+
+            //No Movement at-all
+            else
+            {
+                //Debug.Log("No Swipe!");
+            }
+        }
+
+        float VerticalMove()
+        {
+            return Mathf.Abs(_touchDownPos.y - _touchUpPos.y);
+        }
+
+        float horizontalValMove()
+        {
+            return Mathf.Abs(_touchDownPos.x - _touchUpPos.x);
+        }
+
         private void AddColliderToLine(LineRenderer line, Vector3 startPoint, Vector3 endPoint)
         {
             SlashCollider = new GameObject("SlashCollider").AddComponent<BoxCollider2D>();
@@ -197,6 +250,26 @@ namespace Assets.Scripts
             float angle = Mathf.Atan2((endPoint.y - startPoint.y), (endPoint.x - startPoint.x));
             angle *= Mathf.Rad2Deg;
             SlashCollider.transform.Rotate(0, 0, angle);
+        }
+
+        void OnSwipeUp()
+        {
+            Debug.Log("Swipe UP");
+        }
+
+        void OnSwipeDown()
+        {
+            Debug.Log("Swipe Down");
+        }
+
+        void OnSwipeLeft()
+        {
+            Debug.Log("Swipe Left");
+        }
+
+        void OnSwipeRight()
+        {
+            Debug.Log("Swipe Right");
         }
     }
 }

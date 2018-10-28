@@ -177,6 +177,7 @@ namespace Assets.Scripts.GoapHeroActions
         public void ClearAllTargetsFromList()
         {
             NpcTargetAttributes.Clear();
+            SlashRenderer.Instance.RemoveSlashCollider();
         }
 
         public void RemoveTargetFromList(NpcAttributesComponent npcAttribute)

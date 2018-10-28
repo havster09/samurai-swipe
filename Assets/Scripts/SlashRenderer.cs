@@ -129,29 +129,18 @@ namespace Assets.Scripts
             var startPoint = _linePositions.OrderByDescending(lp => lp.x).FirstOrDefault();
             var endPoint = _linePositions.OrderByDescending(lp => lp.x).LastOrDefault();
 
-            //Debug.Log("===========");
-            //Debug.Log(Vector3.Distance(startPoint, endPoint));
-            //Debug.Log("===========");
-
             AddColliderToLine(_lineRenderer, Camera.main.ScreenToWorldPoint(startPoint),
                 Camera.main.ScreenToWorldPoint(endPoint));
             _linePositions.Clear();
-
-            // Debug.Log("Ended");
-            // Debug.Log(CrossSlashCounter);
         }
 
         private void HandleTouchMoved(Touch touch)
         {
             _touchUpPos = new Vector3(touch.position.x, touch.position.y, SlashZPosition);
-
             RightTouchDirection = _touchDownPos.x < LastTouchPos.x;
             _linePositions.Add(LastTouchPos);
-
             LastTouchPos = new Vector3(touch.position.x, touch.position.y, SlashZPosition);
-
             AddSlash();
-            // Debug.Log("Moved");
         }
 
         private void AddSlash()
@@ -172,7 +161,11 @@ namespace Assets.Scripts
 
             _lineRenderer.positionCount = 0;
             _linePoints = 0;
+            RemoveSlashCollider();
+        }
 
+        public void RemoveSlashCollider()
+        {
             GameObject[] slashColliders = GameObject.FindGameObjectsWithTag("SlashCollider");
             foreach (GameObject s in slashColliders)
             {
@@ -193,12 +186,11 @@ namespace Assets.Scripts
             //Check if Vertical swipe
             if (VerticalMove() > SWIPE_THRESHOLD && VerticalMove() > horizontalValMove())
             {
-                //Debug.Log("Vertical");
-                if (_touchDownPos.y - _touchUpPos.y < 0)//up swipe
+                if (_touchDownPos.y - _touchUpPos.y < 0)
                 {
                     OnSwipeUp();
                 }
-                else if (_touchDownPos.y - _touchUpPos.y > 0)//Down swipe
+                else if (_touchDownPos.y - _touchUpPos.y > 0)
                 {
                     OnSwipeDown();
                 }
@@ -208,12 +200,11 @@ namespace Assets.Scripts
             //Check if Horizontal swipe
             else if (horizontalValMove() > SWIPE_THRESHOLD && horizontalValMove() > VerticalMove())
             {
-                //Debug.Log("Horizontal");
-                if (_touchDownPos.x - _touchUpPos.x < 0)//Right swipe
+                if (_touchDownPos.x - _touchUpPos.x < 0)
                 {
                     OnSwipeRight();
                 }
-                else if (_touchDownPos.x - _touchUpPos.x > 0)//Left swipe
+                else if (_touchDownPos.x - _touchUpPos.x > 0)
                 {
                     OnSwipeLeft();
                 }
@@ -223,7 +214,7 @@ namespace Assets.Scripts
             //No Movement at-all
             else
             {
-                //Debug.Log("No Swipe!");
+                Debug.Log("No Swipe!");
             }
         }
 

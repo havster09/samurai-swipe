@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Assets.Scripts.GoapAttributeComponents;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -36,7 +37,7 @@ namespace Assets.Scripts
             Utilities.ResetSpriteAlpha(SpriteRenderer);
         }
 
-        public void MoveBack(GameObject target, float to, float speed, Action action)
+        public void MoveBack(GameObject target, float to, float speed, Action action = null)
         {
             float distance = target.transform.position.x > transform.position.x ? -to : to;
             Vector2 end = new Vector2(transform.position.x, 0) + new Vector2(distance, 0);
@@ -81,6 +82,17 @@ namespace Assets.Scripts
             if (callback != null) TimingUtilities.Instance.WaitFor(callback, callbackDuration);
 
             IsCoroutineMoving = false;
+        }
+
+        public void GetBloodEffect(string tag, string name = null)
+        {
+            GameObject bloodFromPool = ObjectPooler.Instance.GetPooledObject(tag, name);
+            if (bloodFromPool)
+            {
+                bloodFromPool.transform.position = transform.position;
+                bloodFromPool.transform.rotation = transform.rotation;
+                bloodFromPool.SetActive(true);
+            }
         }
 
         public abstract bool IsFrozenPosition();

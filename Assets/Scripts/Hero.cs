@@ -19,13 +19,9 @@ namespace Assets.Scripts
         public Animator NpcHeroAnimator;
         public DashEndStateMachineHandler DashEndStateMachineHandlerScript;
 
-        public delegate void OnHeroBlocked();
-        public static event OnHeroBlocked onHeroBlocked;
-
         public bool IsAttacking { get; set; }
         public bool IsInPoseState;
         public bool IsInResetState;
-        public GameObject Target;
 
         private GoapAction GoapActionScript;
 
@@ -53,6 +49,7 @@ namespace Assets.Scripts
         protected override void Start()
         {
             StartSubStateMachines();
+
         }
 
         protected override void OnEnable()
@@ -63,11 +60,18 @@ namespace Assets.Scripts
         private void AttachAnimationClipEvents()
         {
             var blockClip = NpcHeroAnimator.runtimeAnimatorController.animationClips[23];
+            
+            var blockEventEnd = new AnimationEvent();
+            blockEventEnd.time = blockClip.length;
+            blockEventEnd.functionName = "HeroBlockEndEventHandler";
+            blockClip.AddEvent(blockEventEnd);
 
-            var blockEventMid = new AnimationEvent();
-            blockEventMid.time = blockClip.length / 2;
-            blockEventMid.functionName = "HeroBlockEndEventHandler";
-            blockClip.AddEvent(blockEventMid);
+            var hitClip = NpcHeroAnimator.runtimeAnimatorController.animationClips[28];
+
+            var hitEventEnd = new AnimationEvent();
+            hitEventEnd.time = hitClip.length;
+            hitEventEnd.functionName = "HeroHitEndEventHandler";
+            hitClip.AddEvent(hitEventEnd);
         }
 
         private void StartSubStateMachines()
@@ -78,11 +82,8 @@ namespace Assets.Scripts
         private void HeroBlockEndEventHandler()
         {
             MoveBack(CurrentTarget, .1f, 1f, () => HeroBlock(false));
-            // todo reafactor this
-            if (onHeroBlocked != null)
-            {
-                onHeroBlocked();
-            }
+            TimingUtilities.Instance.WaitFor(() => NpcHeroAnimator.Play("heroIdle"), .2f);
+            // todo use broadcast callback for block event
         }
 
         public void HeroBlock(bool state, GameObject target = null)
@@ -92,6 +93,36 @@ namespace Assets.Scripts
                 FaceTarget(target);
             }
             NpcHeroAnimator.SetBool("heroBlock", state);
+        }
+
+        private void HeroHitEndEventHandler()
+        {
+            MoveBack(CurrentTarget, .1f, 1f);
+            TimingUtilities.Instance.WaitFor(() => HeroHit(false), .1f);
+            // todo add delegate
+            //if (onHeroHit != null)
+            //{
+            //    onHeroHit();
+            //}
+        }
+
+        public void HeroHit(bool state, GameObject target = null)
+        {
+            if (target != null)
+            {
+                FaceTarget(target);
+            }
+            NpcHeroAnimator.SetBool("heroHit", state);
+            if (state)
+            {
+                EnemyHit(1);
+            }
+        }
+
+        public void EnemyHit(int damage)
+        {
+            GetBloodEffect("Blood", "BloodEffect1");
+            IsHit = true;
         }
 
         public void FaceTarget(GameObject target)
@@ -188,6 +219,7 @@ namespace Assets.Scripts
 
         public int GetAttackTypeAndDamage(GameObject target)
         {
+            Broadcaster<Transform>.SendEvent("FindChild", transform);
             var heroAttacks = new List<string>();
 
             var damage = 0;

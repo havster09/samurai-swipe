@@ -10,10 +10,6 @@ namespace Assets.Scripts
 {
     public class Enemy : MovingObject
     {
-        public int PlayerDamage;
-        public float RunSpeed;
-        public bool HasWalkAbility;
-
         public Animator NpcAnimator;
         private GoapEnemyAction _goapEnemyAction;
         public bool EnemyFlipX;
@@ -34,6 +30,11 @@ namespace Assets.Scripts
             NpcAnimator = GetComponent<Animator>();
             NpcRenderer = GetComponent<Renderer>();
             AttachAnimationClipEvents();
+        }
+
+        public void OnTransformFind(Transform child)
+        {
+            Debug.Log(transform.localPosition.x);
         }
 
         private void AttachAnimationClipEvents()
@@ -106,11 +107,6 @@ namespace Assets.Scripts
             blockClip.AddEvent(blockEventEnd);
         }
 
-        public void FromEnemyHeroBlockHandler()
-        {
-            // Debug.LogWarning("=====from enemy delegate handler=====");
-        }
-
         private void EnemyBlockEndEventHandler()
         {
             NpcAnimator.speed = .8f;
@@ -118,27 +114,34 @@ namespace Assets.Scripts
 
         private void EnemyAttackOneEventHandler(string stringParameter)
         {
-            // Debug.Log(stringParameter);
             if (stringParameter == "end")
             {
                 IsAttacking = false;
             }
 
-            /*if (stringParameter == "mid")
+            if (stringParameter == "mid")
             {
                 if (Hero.Instance.IsVulnerable() && NpcAttribute.Health > 0)
                 {
-                    if (!Hero.Instance.NpcHeroAnimator.GetBool("heroBlock") && !Hero.Instance.IsCoroutineMoving)
+                    if (!Hero.Instance.IsCoroutineMoving)
                     {
-                        Hero.Instance.HeroBlock(true, gameObject);
-                    }
-                    else
-                    {
-                        Hero.Instance.NpcHeroAnimator.Play("heroBlock", 0, 1f);
-                        TimingUtilities.Instance.WaitFor(() => Hero.Instance.NpcHeroAnimator.Play("heroIdle"), .2f);
+                        if (!Hero.Instance.NpcHeroAnimator.GetBool("heroHit"))
+                        {
+                            Hero.Instance.HeroHit(true, gameObject);
+                        }
+                        return;
+
+                        if (!Hero.Instance.NpcHeroAnimator.GetBool("heroBlock"))
+                        {
+                            Hero.Instance.HeroBlock(true, gameObject);
+                        }
+                        else
+                        {
+                            Hero.Instance.NpcHeroAnimator.Play("heroBlock", 0, 1f);
+                        }
                     }
                 }
-            }*/
+            }
         }
 
         private void EnemyAttackTwoEventHandler(string stringParameter)
@@ -223,7 +226,7 @@ namespace Assets.Scripts
             if (!walkBackwards)
             {
                 xDir = _goapEnemyAction.target.transform.position.x > transform.position.x ? .5f : -.5f;
-                NpcAnimator.SetTrigger("enemyWalk");
+                NpcAnimator.SetTrigger("enemyWalk"); // todo convert to a bool to be cancelable
             }
             else
             {
@@ -234,7 +237,7 @@ namespace Assets.Scripts
             Vector2 end = new Vector2(transform.position.x, 0) + new Vector2(xDir, 0);
             if (!IsCoroutineMoving)
             {
-                MoveEnemyCoroutine = StartCoroutine(PerformMovementTo(end, .8f));
+                MoveEnemyCoroutine = StartCoroutine(PerformMovementTo(end, .8f, false, null, 1f, NpcAnimator, "enemyWalk"));
             }
         }
 
@@ -488,17 +491,6 @@ namespace Assets.Scripts
             }
         }
 
-        private void GetBloodEffect(string tag, string name = null)
-        {
-            GameObject bloodFromPool = ObjectPooler.Instance.GetPooledObject(tag, name);
-            if (bloodFromPool)
-            {
-                bloodFromPool.transform.position = transform.position;
-                bloodFromPool.transform.rotation = transform.rotation;
-                bloodFromPool.SetActive(true);
-            }
-        }
-
         public override bool IsFrozenPosition()
         {
             if (
@@ -532,13 +524,13 @@ namespace Assets.Scripts
 
         protected override void OnEnable()
         {
-            Hero.onHeroBlocked += FromEnemyHeroBlockHandler;
+            Broadcaster<Transform>.EnableListener("FindChild", OnTransformFind);
             base.OnEnable();
         }
 
         protected void OnDisable()
         {
-            Hero.onHeroBlocked -= FromEnemyHeroBlockHandler;
+            Broadcaster<Transform>.DisableListener("FindChild", OnTransformFind);
             GoapHeroAction.Instance.RemoveTargetFromList(NpcAttribute);
 
             if (GoapHeroDashAttackAction.Hits != null)

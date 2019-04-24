@@ -35,6 +35,7 @@ namespace Assets.Scripts
         public void OnTransformFind(Transform child)
         {
             Debug.Log(transform.localPosition.x);
+            Debug.Log("From Broadcast");
         }
 
         private void AttachAnimationClipEvents()
@@ -182,7 +183,7 @@ namespace Assets.Scripts
 
         private void EnemyWalkBackEventHandler()
         {
-            TimingUtilities.Instance.WaitFor(() => IsCanWalk = true, 4f);
+            TimingUtilities.Instance.WaitFor(() => IsCanWalk = true, 3f);
         }
 
         public void FaceTarget()
@@ -226,7 +227,7 @@ namespace Assets.Scripts
             if (!walkBackwards)
             {
                 xDir = _goapEnemyAction.target.transform.position.x > transform.position.x ? .5f : -.5f;
-                NpcAnimator.SetTrigger("enemyWalk"); // todo convert to a bool to be cancelable
+                NpcAnimator.SetBool("enemyWalk", true); 
             }
             else
             {

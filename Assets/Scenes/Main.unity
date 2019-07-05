@@ -426,7 +426,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemsToPool:
-  - amountToPool: 1
+  - amountToPool: 8
     objectToPool: {fileID: 1662671873553116, guid: 7b17081931e49a046b8c51148a18009b,
       type: 2}
     shouldExpand: 0
@@ -527,7 +527,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SlashMaterial: {fileID: 2100000, guid: f40a2815b9f92aa4ea9d9d84d8c33bf5, type: 2}
-  C1: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  C1: {r: 1, g: 0.50484097, b: 0.015686274, a: 1}
   C2: {r: 1, g: 0, b: 0, a: 1}
   LastTouchPos: {x: 0, y: 0, z: 0}
   CrossSlashCounter: 0

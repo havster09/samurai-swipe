@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.FsmHeroStates;
 using Assets.Scripts.GoapAttributeComponents;
 using Assets.Scripts.GoapHeroActions;
 using Assets.Scripts.GoapHeroSubStates;
@@ -17,6 +18,7 @@ namespace Assets.Scripts
         public GameObject CurrentTarget;
         public bool HeroFlipX;
         public Animator NpcHeroAnimator;
+        public FsmHeroBaseStateMachineHandler FsmHeroBaseStateMachineHandlerScript;
         public DashEndStateMachineHandler DashEndStateMachineHandlerScript;
 
         public bool IsAttacking { get; set; }
@@ -39,6 +41,8 @@ namespace Assets.Scripts
 
             NpcHeroAnimator = GetComponent<Animator>();
             NpcRenderer = GetComponent<Renderer>();
+            FsmHeroBaseStateMachineHandlerScript =
+                GameObject.FindObjectOfType<FsmHeroBaseStateMachineHandler>();
             DashEndStateMachineHandlerScript =
                 GameObject.FindObjectOfType<DashEndStateMachineHandler>();
             GoapActionScript =
@@ -48,6 +52,7 @@ namespace Assets.Scripts
 
         protected override void Start()
         {
+            StartStateMachines();
             StartSubStateMachines();
 
         }
@@ -74,6 +79,10 @@ namespace Assets.Scripts
             hitClip.AddEvent(hitEventEnd);
         }
 
+        private void StartStateMachines()
+        {
+            FsmHeroBaseStateMachineHandlerScript.StartFsmHeroIdleStateMachineHandler();
+        }
         private void StartSubStateMachines()
         {
             DashEndStateMachineHandlerScript.StartDashEndStateMachineHandler();

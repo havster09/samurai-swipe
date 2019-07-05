@@ -1,17 +1,18 @@
-﻿using Assets.Scripts.GoapAttributeComponents;
-using Assets.Scripts.GoapHeroActions;
-using System;
+﻿using System;
 using System.Collections;
 using System.Linq;
+using Assets.Scripts.GoapAttributeComponents;
+using Assets.Scripts.GoapHeroActions;
+using Assets.Scripts.GoapHeroSubStates;
 using UnityEngine;
 
-namespace Assets.Scripts.GoapHeroSubStates
+namespace Assets.Scripts.FsmHeroStates
 {
-    class DashEndPoseState : IState
+    class FsmHeroBaseAttackState : IState
     {
         public void BeginEnter()
         {
-            
+
         }
 
         public void EndEnter()
@@ -35,7 +36,7 @@ namespace Assets.Scripts.GoapHeroSubStates
                     var totalNpcAttributeHits = GoapHeroDashAttackAction.Hits
                         .Select(h => h.collider.GetComponent<NpcAttributesComponent>())
                         .ToList();
-                    
+
                     var totalNpcWithAlpha = totalNpcAttributeHits.Where((n) =>
                     {
                         var spriteRenderer = n.GetComponent<SpriteRenderer>();

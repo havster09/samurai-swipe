@@ -43,7 +43,7 @@ namespace Assets.Scripts.GoapHeroSubStates
         private void InvokeTransition()
         {
             var nextState = new DashEndPoseState();
-            var transition = new SimpleDelayTransition();
+            var transition = new FSMHeroBaseAttack();
             var eventArgs = new StateBeginExitEventArgs(nextState, transition);
             OnBeginExit(this, eventArgs);
         }

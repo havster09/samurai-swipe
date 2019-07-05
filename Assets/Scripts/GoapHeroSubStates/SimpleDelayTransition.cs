@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.GoapHeroSubStates
 {
-    class SimpleDelayTransition : IStateTransition
+    class FSMHeroBaseAttack : IStateTransition
     {
         public IEnumerable Exit()
         {

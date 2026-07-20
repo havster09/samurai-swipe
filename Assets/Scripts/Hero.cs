@@ -234,6 +234,7 @@ namespace Assets.Scripts
             string queued = HeroSwipeController.DequeueAttack();
             if (queued != null)
             {
+                Debug.Log(string.Format("[Attack] dequeued -> {0}", queued));
                 Attack(queued);
                 // Derive damage tier from the attack name
                 if (queued == "heroDoubleSlashHigh" || queued == "heroDoubleSlashLow" ||

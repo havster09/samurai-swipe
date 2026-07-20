@@ -32,13 +32,16 @@ namespace Assets.Scripts
 
         // ── Direction → animator trigger ─────────────────────────────────────────
         //
-        //  Dir         Light               Medium              Heavy
-        //  ─────────── ─────────────────── ─────────────────── ───────────────────
-        //  Up          heroAttackFour      heroAttackFour      heroAttackSeven
-        //  Down        heroAttackOne       heroAttackOne       heroDoubleSlashLow
-        //  Left/Right  heroAttackTwo       heroAttackThree     heroDashAttack
-        //  UpDiag      heroAttackSix       heroAttackFour      heroDoubleSlashHigh
-        //  DownDiag    heroAttackOne       heroAttackFive      heroDoubleSlashLow
+        //  Dir         Light                Medium               Heavy
+        //  ─────────── ──────────────────── ──────────────────── ────────────────────
+        //  Up          heroAttackFour       heroAttackFour       heroAttackSeven
+        //  Down        heroAttackOne        heroAttackOne        heroDoubleSlashLow
+        //  Right       heroAttackTwo        heroAttackThree      heroDashAttack
+        //  Left        heroAttackSix        heroAttackFive       heroDoubleSlashMid
+        //  UpRight     heroAttackSix        heroAttackFour       heroDoubleSlashHigh
+        //  UpLeft      heroAttackTwo        heroAttackFour       heroDoubleSlashHigh
+        //  DownRight   heroAttackOne        heroAttackFive       heroDoubleSlashLow
+        //  DownLeft    heroAttackOne        heroAttackFive       heroDoubleSlashLow
         //
         public static string Resolve(ImprovedSwipeDetector.SwipeDirection dir, float velocity)
         {
@@ -49,42 +52,58 @@ namespace Assets.Scripts
                 case ImprovedSwipeDetector.SwipeDirection.Up:
                     switch (tier)
                     {
-                        case VelocityTier.Heavy:  return "heroAttackSeven";
-                        default:                  return "heroAttackFour";
+                        case VelocityTier.Heavy:  return "heroAttackSeven";   // step strong slash
+                        case VelocityTier.Medium: return "heroAttackFour";    // high slash
+                        default:                  return "heroAttackFour";    // high slash
                     }
 
                 case ImprovedSwipeDetector.SwipeDirection.Down:
                     switch (tier)
                     {
-                        case VelocityTier.Heavy:  return "heroDoubleSlashLow";
-                        default:                  return "heroAttackOne";
+                        case VelocityTier.Heavy:  return "heroDoubleSlashLow"; // double low
+                        case VelocityTier.Medium: return "heroAttackOne";      // slash down
+                        default:                  return "heroAttackOne";      // slash down
                     }
 
-                case ImprovedSwipeDetector.SwipeDirection.Left:
                 case ImprovedSwipeDetector.SwipeDirection.Right:
                     switch (tier)
                     {
-                        case VelocityTier.Heavy:  return "heroDashAttack";
-                        case VelocityTier.Medium: return "heroAttackThree";
-                        default:                  return "heroAttackTwo";
+                        case VelocityTier.Heavy:  return "heroDashAttack";    // dash attack
+                        case VelocityTier.Medium: return "heroAttackThree";   // dash slash
+                        default:                  return "heroAttackTwo";     // side slash
+                    }
+
+                case ImprovedSwipeDetector.SwipeDirection.Left:
+                    switch (tier)
+                    {
+                        case VelocityTier.Heavy:  return "heroDoubleSlashMid"; // double mid
+                        case VelocityTier.Medium: return "heroAttackFive";     // crouch slash
+                        default:                  return "heroAttackSix";      // crouch slash high
                     }
 
                 case ImprovedSwipeDetector.SwipeDirection.UpRight:
+                    switch (tier)
+                    {
+                        case VelocityTier.Heavy:  return "heroDoubleSlashHigh"; // double high
+                        case VelocityTier.Medium: return "heroAttackFour";      // high slash
+                        default:                  return "heroAttackSix";       // crouch slash high
+                    }
+
                 case ImprovedSwipeDetector.SwipeDirection.UpLeft:
                     switch (tier)
                     {
-                        case VelocityTier.Heavy:  return "heroDoubleSlashHigh";
-                        case VelocityTier.Medium: return "heroAttackFour";
-                        default:                  return "heroAttackSix";
+                        case VelocityTier.Heavy:  return "heroDoubleSlashHigh"; // double high
+                        case VelocityTier.Medium: return "heroAttackFour";      // high slash
+                        default:                  return "heroAttackTwo";       // side slash
                     }
 
                 case ImprovedSwipeDetector.SwipeDirection.DownRight:
                 case ImprovedSwipeDetector.SwipeDirection.DownLeft:
                     switch (tier)
                     {
-                        case VelocityTier.Heavy:  return "heroDoubleSlashLow";
-                        case VelocityTier.Medium: return "heroAttackFive";
-                        default:                  return "heroAttackOne";
+                        case VelocityTier.Heavy:  return "heroDoubleSlashLow"; // double low
+                        case VelocityTier.Medium: return "heroAttackFive";     // crouch slash
+                        default:                  return "heroAttackOne";      // slash down
                     }
 
                 default:

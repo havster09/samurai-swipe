@@ -24,8 +24,8 @@ namespace Assets.Scripts
 
         [Header("Queue Settings")]
         [SerializeField] private int   maxQueueSize  = 3;
-        [SerializeField] private float entryLifetime = 3f;   // seconds before a queued move expires
-        [SerializeField] private float stallTimeout  = 4f;   // seconds before safety fallback fires
+        [SerializeField] private float entryLifetime = 15f;  // seconds before a queued move expires (long enough to walk to enemy)
+        [SerializeField] private float stallTimeout  = 5f;   // seconds IN-RANGE with empty queue before safety fallback
 
         [Header("Debug Overlay")]
         [SerializeField] private bool showOverlay = true;
@@ -107,8 +107,15 @@ namespace Assets.Scripts
 
         void Update()
         {
-            // Only tick stall timer when no pending attack in queue
-            if (!HasPending)
+            // Stall timer only ticks when the hero is in range of a target AND the queue is empty.
+            // While the hero is still walking, the timer stays at zero.
+            bool heroInRange = Hero.Instance != null
+                && Hero.Instance.CurrentTarget != null
+                && UnityEngine.Vector2.Distance(
+                    Hero.Instance.transform.position,
+                    Hero.Instance.CurrentTarget.transform.position) <= 1.2f;
+
+            if (!HasPending && heroInRange)
                 _stallTimer += Time.deltaTime;
             else
                 _stallTimer = 0f;

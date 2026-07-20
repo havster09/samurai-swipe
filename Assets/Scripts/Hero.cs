@@ -229,43 +229,32 @@ namespace Assets.Scripts
         public int GetAttackTypeAndDamage(GameObject target)
         {
             Broadcaster<Transform>.SendEvent("FindChild", transform);
-            var heroAttacks = new List<string>();
 
-            var damage = 0;
-            if (target.transform.position.y > 0)
+            // ── Player queue takes priority ───────────────────────────────────────
+            string queued = HeroSwipeController.DequeueAttack();
+            if (queued != null)
             {
-                heroAttacks.AddRange(new List<string>
-                {
-                    "heroAttackFour", // slash high
-                    "heroAttackSix", // crouch slash high
-                });
-                damage = 100;
+                Attack(queued);
+                // Derive damage tier from the attack name
+                if (queued == "heroDoubleSlashHigh" || queued == "heroDoubleSlashLow" ||
+                    queued == "heroDoubleSlashMid"  || queued == "heroAttackSeven")
+                    return 150;
+                if (queued == "heroAttackThree" || queued == "heroAttackFour" ||
+                    queued == "heroAttackFive"   || queued == "heroDashAttack")
+                    return 100;
+                return 60;
             }
-            else if (SlashRenderer.Instance.CrossSlashCounter > 1)
-            {
 
-                heroAttacks.AddRange(new List<string>
-                {
-                    "heroDoubleSlashMid",
-                    "heroDoubleSlashHigh",
-                    "heroDoubleSlashLow",
-                });
-                damage = 50;
-            }
-            else
-            {
-                heroAttacks.AddRange(new List<string>
-                {
-                    "heroAttackOne", // slash down
-                    "heroAttackThree", // slash dash
-                    "heroAttackFour", // slash high
-                    "heroAttackSix", // crouch slash high
-                    "heroAttackSeven" // step strong slash
-                });
-                damage = 100;
-            }
-            Attack(heroAttacks[Random.Range(0, heroAttacks.Count)]);
-            return damage;
+            // ── Stall: no swipe queued — wait for player input ───────────────────
+            // After stallTimeout seconds idle, fire a safety fallback so hero
+            // doesn't freeze indefinitely next to an enemy.
+            if (HeroSwipeController.StallSeconds < HeroSwipeController.StallTimeoutCfg)
+                return 0; // signal to GOAP: skip this frame
+
+            // Safety fallback after timeout
+            Debug.Log("[Hero] Stall timeout — firing fallback heroAttackOne");
+            Attack("heroAttackOne");
+            return 60;
         }
 
         public bool IsAttackable()

@@ -49,6 +49,10 @@ namespace Assets.Scripts.GoapHeroActions
                 )
             {
                 var damage = Hero.Instance.GetAttackTypeAndDamage(target);
+
+                // 0 = no swipe queued yet; skip this frame and wait for player input
+                if (damage == 0) return false;
+
                 if (TargetNpcAttribute.DefendCount < 1)
                 {
                     enemyScript.EnemyHitSuccess(damage);
@@ -69,6 +73,7 @@ namespace Assets.Scripts.GoapHeroActions
                 NpcHeroAttributesComponent.Instance.Rage += 1;
                 NpcHeroAttributesComponent.Instance.Brave += 1;
                 NpcIsDestroyed = true;
+                HeroSwipeController.ClearQueue(); // fresh queue for next enemy
                 ResetSingleAttack();
             }
             return NpcIsDestroyed;

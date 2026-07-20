@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.GoapHeroActions;
 using UnityEngine;
@@ -214,7 +214,7 @@ namespace Assets.Scripts
             //No Movement at-all
             else
             {
-                Debug.Log("No Swipe!");
+                // Debug.Log("No Swipe!");
             }
         }
 
@@ -245,22 +245,22 @@ namespace Assets.Scripts
 
         void OnSwipeUp()
         {
-            Debug.Log("Swipe UP");
+            // Debug.Log("Swipe UP");
         }
 
         void OnSwipeDown()
         {
-            Debug.Log("Swipe Down");
+            // Debug.Log("Swipe Down");
         }
 
         void OnSwipeLeft()
         {
-            Debug.Log("Swipe Left");
+            // Debug.Log("Swipe Left");
         }
 
         void OnSwipeRight()
         {
-            Debug.Log("Swipe Right");
+            // Debug.Log("Swipe Right");
         }
     }
 }

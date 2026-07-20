@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.GoapAttributeComponents;
+using Assets.Scripts.GoapAttributeComponents;
 using Assets.Scripts.GoapEnemyActions;
 using Assets.Scripts.GoapHeroActions;
 using System.Collections;
@@ -34,8 +34,8 @@ namespace Assets.Scripts
 
         public void OnTransformFind(Transform child)
         {
-            Debug.Log(transform.localPosition.x);
-            Debug.Log("From Broadcast");
+            // Debug.Log(transform.localPosition.x);
+            // Debug.Log("From Broadcast");
         }
 
         private void AttachAnimationClipEvents()

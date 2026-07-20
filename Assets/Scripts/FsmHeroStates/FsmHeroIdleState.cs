@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Linq;
 using Assets.Scripts.GoapAttributeComponents;
@@ -12,12 +12,12 @@ namespace Assets.Scripts.FsmHeroStates
     {
         public void BeginEnter()
         {
-            Debug.Log("FsmHeroIdleState begin enter");
+            // Debug.Log("FsmHeroIdleState begin enter");
         }
 
         public void EndEnter()
         {
-            Debug.Log("FsmHeroIdleState end enter");
+            // Debug.Log("FsmHeroIdleState end enter");
         }
 
         public IEnumerable Execute()
@@ -35,7 +35,7 @@ namespace Assets.Scripts.FsmHeroStates
         public event EventHandler<StateBeginExitEventArgs> OnBeginExit;
         public void EndExit()
         {
-            Debug.Log("FsmHeroIdleState EndExit");
+            // Debug.Log("FsmHeroIdleState EndExit");
         }
     }
 }

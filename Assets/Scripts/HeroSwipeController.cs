@@ -3,11 +3,25 @@ using UnityEngine;
 namespace Assets.Scripts
 {
     /// <summary>
+    /// Book of Five Rings combat modes (Miyamoto Musashi). Currently Earth only on this branch;
+    /// retained so ModeBasedSpriteTinter compiles without changes.
+    /// </summary>
+    public enum BookOfFiveRingsMode
+    {
+        Earth, Water, Fire, Wind, Void
+    }
+
+    /// <summary>
     /// Listens for swipe input and immediately fires the matching attack animation on the hero.
     /// GOAP continues to handle movement, targeting, and hit outcomes unchanged.
     /// </summary>
     public class HeroSwipeController : MonoBehaviour
     {
+        [Header("Mode")]
+        [SerializeField] private BookOfFiveRingsMode currentMode = BookOfFiveRingsMode.Earth;
+
+        public BookOfFiveRingsMode GetCurrentMode() { return currentMode; }
+
         [Header("Swipe Detector")]
         [SerializeField] private ImprovedSwipeDetector swipeDetector;
 

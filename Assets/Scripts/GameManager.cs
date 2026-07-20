@@ -31,6 +31,9 @@ namespace Assets.Scripts
         private void InitHero()
         {
             Hero = Instantiate(Resources.Load("GenjuroHero"));
+            var heroGO = Hero as GameObject;
+            if (heroGO != null && heroGO.GetComponent<HeroSwipeController>() == null)
+                heroGO.AddComponent<HeroSwipeController>();
         }
 
         private void InitEnemies()

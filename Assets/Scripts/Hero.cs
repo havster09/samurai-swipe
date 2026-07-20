@@ -246,16 +246,37 @@ namespace Assets.Scripts
                 return 60;
             }
 
-            // ── Stall: no swipe queued — wait for player input ───────────────────
-            // After stallTimeout seconds idle, fire a safety fallback so hero
-            // doesn't freeze indefinitely next to an enemy.
-            if (HeroSwipeController.StallSeconds < HeroSwipeController.StallTimeoutCfg)
-                return 0; // signal to GOAP: skip this frame
+            // ── No swipe queued — fall back to original contextual GOAP attack immediately ──
+            // Hero keeps fighting without pause; player swipes only override the next move.
+            var heroAttacks = new System.Collections.Generic.List<string>();
+            var damage = 0;
 
-            // Safety fallback after timeout
-            Debug.Log("[Hero] Stall timeout — firing fallback heroAttackOne");
-            Attack("heroAttackOne");
-            return 60;
+            if (target.transform.position.y > 0)
+            {
+                heroAttacks.Add("heroAttackFour");
+                heroAttacks.Add("heroAttackSix");
+                damage = 100;
+            }
+            else if (SlashRenderer.Instance.CrossSlashCounter > 1)
+            {
+                heroAttacks.Add("heroDoubleSlashMid");
+                heroAttacks.Add("heroDoubleSlashHigh");
+                heroAttacks.Add("heroDoubleSlashLow");
+                damage = 50;
+            }
+            else
+            {
+                heroAttacks.Add("heroAttackOne");
+                heroAttacks.Add("heroAttackThree");
+                heroAttacks.Add("heroAttackFour");
+                heroAttacks.Add("heroAttackSix");
+                heroAttacks.Add("heroAttackSeven");
+                damage = 100;
+            }
+
+            string fallback = heroAttacks[UnityEngine.Random.Range(0, heroAttacks.Count)];
+            Attack(fallback);
+            return damage;
         }
 
         public bool IsAttackable()

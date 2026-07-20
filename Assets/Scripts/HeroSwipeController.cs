@@ -24,15 +24,13 @@ namespace Assets.Scripts
 
         [Header("Queue Settings")]
         [SerializeField] private int   maxQueueSize  = 3;
-        [SerializeField] private float entryLifetime = 15f;  // seconds before a queued move expires (long enough to walk to enemy)
-        [SerializeField] private float stallTimeout  = 5f;   // seconds IN-RANGE with empty queue before safety fallback
+        [SerializeField] private float entryLifetime = 15f;  // seconds before a queued move expires
 
         [Header("Debug Overlay")]
         [SerializeField] private bool showOverlay = true;
 
         // ── Static queue (read by Hero.GetAttackTypeAndDamage) ───────────────────
         private static readonly Queue<QueuedAttack> _queue = new Queue<QueuedAttack>();
-        private static float _stallTimer = 0f;
 
         private struct QueuedAttack
         {
@@ -48,13 +46,11 @@ namespace Assets.Scripts
         /// </summary>
         public static string DequeueAttack()
         {
-            // Expire stale entries
+            // Expire stale entries first
             while (_queue.Count > 0 && _queue.Peek().ExpiresAt <= Time.time)
                 _queue.Dequeue();
 
             if (_queue.Count == 0) return null;
-
-            _stallTimer = 0f; // reset stall clock on successful dequeue
             return _queue.Dequeue().Attack;
         }
 
@@ -68,13 +64,6 @@ namespace Assets.Scripts
                 return _queue.Count > 0;
             }
         }
-
-        /// <summary>
-        /// Seconds the hero has been idle next to an enemy with no queued attack.
-        /// Hero.cs uses this to fire a safety fallback after stallTimeout.
-        /// </summary>
-        public static float StallSeconds    { get { return _stallTimer; } }
-        public static float StallTimeoutCfg { get { return _instance != null ? _instance.stallTimeout : 4f; } }
 
         // ── Singleton ref for config access ──────────────────────────────────────
         private static HeroSwipeController _instance;
@@ -107,18 +96,9 @@ namespace Assets.Scripts
 
         void Update()
         {
-            // Stall timer only ticks when the hero is in range of a target AND the queue is empty.
-            // While the hero is still walking, the timer stays at zero.
-            bool heroInRange = Hero.Instance != null
-                && Hero.Instance.CurrentTarget != null
-                && UnityEngine.Vector2.Distance(
-                    Hero.Instance.transform.position,
-                    Hero.Instance.CurrentTarget.transform.position) <= 1.2f;
-
-            if (!HasPending && heroInRange)
-                _stallTimer += Time.deltaTime;
-            else
-                _stallTimer = 0f;
+            // Expire stale queue entries each frame so the overlay stays accurate
+            while (_queue.Count > 0 && _queue.Peek().ExpiresAt <= Time.time)
+                _queue.Dequeue();
         }
 
         // ── Swipe handler ─────────────────────────────────────────────────────────
@@ -136,14 +116,12 @@ namespace Assets.Scripts
                 ExpiresAt = Time.time + entryLifetime
             });
 
-            _stallTimer = 0f; // player swiped — reset stall clock
-
             Debug.Log(string.Format("[Swipe] {0} {1:F0}px/s -> {2}  (queue:{3})",
                 direction, velocity, attack, _queue.Count));
         }
 
         // ── Clear queue on enemy death ────────────────────────────────────────────
-        public static void ClearQueue() { _queue.Clear(); _stallTimer = 0f; }
+        public static void ClearQueue() { _queue.Clear(); }
 
         // ── On-screen queue visualizer ────────────────────────────────────────────
         void OnGUI()
@@ -193,16 +171,13 @@ namespace Assets.Scripts
                 }
             }
 
-            // Stall indicator
-            if (!HasPending && _stallTimer > 1f)
+            // Empty state hint
+            if (!HasPending)
             {
-                GUIStyle stall = new GUIStyle(style);
-                stall.normal.textColor = new Color(1f, 0.4f, 0.4f, 1f);
-                stall.fontSize = 16;
-                float countdown = stallTimeout - _stallTimer;
-                if (countdown > 0f)
-                    GUI.Label(new Rect(x, y + 8f, w, 22f),
-                        string.Format("  fallback in {0:F1}s", countdown), stall);
+                GUIStyle hint = new GUIStyle(hdr);
+                hint.normal.textColor = new Color(0.6f, 0.6f, 0.6f, 0.7f);
+                hint.fontSize = 14;
+                GUI.Label(new Rect(x, y + 8f, w, 22f), "  auto-attacking", hint);
             }
         }
     }

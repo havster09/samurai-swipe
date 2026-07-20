@@ -73,8 +73,8 @@ namespace Assets.Scripts
         /// Seconds the hero has been idle next to an enemy with no queued attack.
         /// Hero.cs uses this to fire a safety fallback after stallTimeout.
         /// </summary>
-        public static float StallSeconds    => _stallTimer;
-        public static float StallTimeoutCfg => _instance != null ? _instance.stallTimeout : 4f;
+        public static float StallSeconds    { get { return _stallTimer; } }
+        public static float StallTimeoutCfg { get { return _instance != null ? _instance.stallTimeout : 4f; } }
 
         // ── Singleton ref for config access ──────────────────────────────────────
         private static HeroSwipeController _instance;

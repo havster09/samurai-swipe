@@ -41,6 +41,7 @@ namespace Assets.Scripts.GoapHeroActions
                 enemyScript.StopCoroutine(enemyScript.MoveEnemyCoroutine);
             }
 
+            // Only fire the next attack when not already mid-animation
             if (
                 !Hero.Instance.IsAnimationTagPlaying("attack") &&
                 !Hero.Instance.IsAnimationTagPlaying("cross") &&
@@ -49,9 +50,6 @@ namespace Assets.Scripts.GoapHeroActions
                 )
             {
                 var damage = Hero.Instance.GetAttackTypeAndDamage(target);
-
-                // 0 = no swipe queued yet; skip this frame and wait for player input
-                if (damage == 0) return false;
 
                 if (TargetNpcAttribute.DefendCount < 1)
                 {
@@ -73,10 +71,13 @@ namespace Assets.Scripts.GoapHeroActions
                 NpcHeroAttributesComponent.Instance.Rage += 1;
                 NpcHeroAttributesComponent.Instance.Brave += 1;
                 NpcIsDestroyed = true;
-                HeroSwipeController.ClearQueue(); // fresh queue for next enemy
+                HeroSwipeController.ClearQueue();
                 ResetSingleAttack();
             }
-            return NpcIsDestroyed;
+
+            // Return true = "still performing successfully" so GOAP does NOT abort the plan.
+            // isDone() returning true (NpcIsDestroyed) signals completion to GOAP.
+            return true;
         }
 
         public void ResetSingleAttack()

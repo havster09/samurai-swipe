@@ -38,74 +38,61 @@ namespace Assets.Scripts
             // Debug.Log("From Broadcast");
         }
 
+        private static bool _enemyClipEventsAttached = false;
+
         private void AttachAnimationClipEvents()
         {
-            // copy to hero to damage enemies in range of an active attack
-            NpcAnimator.runtimeAnimatorController.animationClips
-                .Where(a => a.name.Contains("Attack"))
+            // AnimationClip assets are shared across all enemy instances.
+            // Adding events is a one-time operation per play session; subsequent
+            // instances must skip to avoid accumulating duplicate event firings.
+            if (_enemyClipEventsAttached) return;
+            _enemyClipEventsAttached = true;
+
+            var clips = NpcAnimator.runtimeAnimatorController.animationClips;
+
+            // Attack clips — matched by name so reordering the animator won't break this.
+            clips.Where(a => a.name.Contains("Attack"))
                 .ToList()
                 .ForEach(a =>
                 {
-                    var attackFunctionName = char.ToUpper(a.name[0]) + a.name.Substring(1) + "EventHandler";
-                    var attackMidEvent = new AnimationEvent
-                    {
-                        time = a.length / 2,
-                        functionName = attackFunctionName,
-                        stringParameter = "mid"
-                    };
-                    a.AddEvent(attackMidEvent);
-
-                    var attackEndEvent = new AnimationEvent
-                    {
-                        time = a.length,
-                        functionName = attackFunctionName,
-                        stringParameter = "end"
-                    };
-                    a.AddEvent(attackEndEvent);
+                    var fn = char.ToUpper(a.name[0]) + a.name.Substring(1) + "EventHandler";
+                    a.AddEvent(new AnimationEvent { time = a.length / 2, functionName = fn, stringParameter = "mid" });
+                    a.AddEvent(new AnimationEvent { time = a.length,     functionName = fn, stringParameter = "end" });
                 });
 
-            var tauntEvent = new AnimationEvent();
-            var tauntEndFrameEvent = new AnimationEvent();
-            var tauntClip = NpcAnimator.runtimeAnimatorController.animationClips[13];
-            tauntEvent.time = tauntClip.length;
-            tauntEndFrameEvent.time = tauntClip.length - .1f;
-            tauntEvent.stringParameter = "tauntEvent end";
-            tauntEvent.functionName = "TauntEventHandler";
-            tauntEndFrameEvent.functionName = "TauntEventEndFrameHandler";
-            tauntClip.AddEvent(tauntEvent);
-            tauntClip.AddEvent(tauntEndFrameEvent);
+            AddClipEvent(clips, "taunt",    "TauntEventHandler",        c => c.length,       "tauntEvent end");
+            AddClipEvent(clips, "taunt",    "TauntEventEndFrameHandler", c => c.length - .1f, "");
+            AddClipEvent(clips, "win",      "WinEventHandler",           c => c.length,       "winEvent end");
+            AddClipEvent(clips, "hit",      "EnemyHitEventHandler",      c => c.length,       "");
+            AddClipEvent(clips, "walkBack", "EnemyWalkBackEventHandler", c => c.length,       "");
+            AddClipEvent(clips, "walk",     "EnemyWalkEventHandler",     c => c.length,       "");
+            AddClipEvent(clips, "block",    "EnemyBlockEndEventHandler", c => c.length,       "");
+        }
 
-            var winEvent = new AnimationEvent();
-            var winClip = NpcAnimator.runtimeAnimatorController.animationClips[10];
-            winEvent.time = winClip.length;
-            winEvent.stringParameter = "winEvent end";
-            winEvent.functionName = "WinEventHandler";
-            winClip.AddEvent(winEvent);
-
-            var hitEvent = new AnimationEvent();
-            var hitClip = NpcAnimator.runtimeAnimatorController.animationClips[7];
-            hitEvent.time = hitClip.length;
-            hitEvent.functionName = "EnemyHitEventHandler";
-            hitClip.AddEvent(hitEvent);
-
-            var walkEvent = new AnimationEvent();
-            var walkClip = NpcAnimator.runtimeAnimatorController.animationClips[2];
-            walkEvent.time = walkClip.length;
-            walkEvent.functionName = "EnemyWalkEventHandler";
-            walkClip.AddEvent(walkEvent);
-
-            var walkBackEvent = new AnimationEvent();
-            var walkBackClip = NpcAnimator.runtimeAnimatorController.animationClips[3];
-            walkBackEvent.time = walkBackClip.length;
-            walkBackEvent.functionName = "EnemyWalkBackEventHandler";
-            walkBackClip.AddEvent(walkBackEvent);
-
-            var blockClip = NpcAnimator.runtimeAnimatorController.animationClips[16];
-
-            var blockEventEnd = new AnimationEvent();
-            blockEventEnd.time = blockClip.length;
-            blockEventEnd.functionName = "EnemyBlockEndEventHandler";
-            blockClip.AddEvent(blockEventEnd);
+        /// <summary>
+        /// Finds the first clip whose name contains <paramref name="namePart"/> (case-insensitive)
+        /// and adds a single AnimationEvent to it.
+        /// </summary>
+        private static void AddClipEvent(
+            AnimationClip[] clips, string namePart,
+            string functionName,
+            System.Func<AnimationClip, float> timeFn,
+            string stringParam)
+        {
+            var clip = System.Array.Find(clips,
+                c => c.name.IndexOf(namePart, System.StringComparison.OrdinalIgnoreCase) >= 0);
+            if (clip == null)
+            {
+                Debug.LogWarning(string.Format("[Enemy] AttachEvents: clip '{0}' not found", namePart));
+                return;
+            }
+            var ev = new AnimationEvent
+            {
+                time            = timeFn(clip),
+                functionName    = functionName,
+                stringParameter = stringParam
+            };
+            clip.AddEvent(ev);
         }
 
         private void EnemyBlockEndEventHandler()
@@ -442,6 +429,7 @@ namespace Assets.Scripts
         {
             if (collider.gameObject.tag == "SlashCollider")
             {
+                Debug.Log(string.Format("[GOAP] SLASH HIT  {0}  hp:{1}", gameObject.name, NpcAttribute.Health));
                 if (NpcAttribute.Health > 0)
                 {
                     GoapHeroAction.Instance.AddTargetToList(NpcAttribute);
@@ -525,12 +513,14 @@ namespace Assets.Scripts
 
         protected override void OnEnable()
         {
+            Debug.Log(string.Format("[GOAP] ENEMY ENABLE  {0}  (recycled from pool)", gameObject.name));
             Broadcaster<Transform>.EnableListener("FindChild", OnTransformFind);
             base.OnEnable();
         }
 
         protected void OnDisable()
         {
+            Debug.Log(string.Format("[GOAP] ENEMY DISABLE  {0}  isDead:{1}", gameObject.name, IsDead));
             Broadcaster<Transform>.DisableListener("FindChild", OnTransformFind);
             GoapHeroAction.Instance.RemoveTargetFromList(NpcAttribute);
 

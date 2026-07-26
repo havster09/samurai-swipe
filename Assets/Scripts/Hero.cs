@@ -63,25 +63,30 @@ namespace Assets.Scripts
             base.OnEnable();
         }
 
+        private static bool _heroClipEventsAttached = false;
+
         private void AttachAnimationClipEvents()
         {
+            // AnimationClip assets are shared; attach once per play session.
+            if (_heroClipEventsAttached) return;
+            _heroClipEventsAttached = true;
+
             var clips = NpcHeroAnimator.runtimeAnimatorController.animationClips;
-            if (clips.Length > 23)
+
+            AttachHeroClipEvent(clips, "block", "HeroBlockEndEventHandler");
+            AttachHeroClipEvent(clips, "hit",   "HeroHitEndEventHandler");
+        }
+
+        private static void AttachHeroClipEvent(AnimationClip[] clips, string namePart, string functionName)
+        {
+            var clip = System.Array.Find(clips,
+                c => c.name.IndexOf(namePart, System.StringComparison.OrdinalIgnoreCase) >= 0);
+            if (clip == null)
             {
-                var blockClip = clips[23];
-                var blockEventEnd = new AnimationEvent();
-                blockEventEnd.time = blockClip.length;
-                blockEventEnd.functionName = "HeroBlockEndEventHandler";
-                blockClip.AddEvent(blockEventEnd);
+                Debug.LogWarning(string.Format("[Hero] AttachEvents: clip '{0}' not found", namePart));
+                return;
             }
-            if (clips.Length > 28)
-            {
-                var hitClip = clips[28];
-                var hitEventEnd = new AnimationEvent();
-                hitEventEnd.time = hitClip.length;
-                hitEventEnd.functionName = "HeroHitEndEventHandler";
-                hitClip.AddEvent(hitEventEnd);
-            }
+            clip.AddEvent(new AnimationEvent { time = clip.length, functionName = functionName });
         }
 
         private void StartStateMachines()

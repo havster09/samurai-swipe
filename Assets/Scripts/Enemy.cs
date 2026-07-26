@@ -117,16 +117,6 @@ namespace Assets.Scripts
                         {
                             Hero.Instance.HeroHit(true, gameObject);
                         }
-                        return;
-
-                        if (!Hero.Instance.NpcHeroAnimator.GetBool("heroBlock"))
-                        {
-                            Hero.Instance.HeroBlock(true, gameObject);
-                        }
-                        else
-                        {
-                            Hero.Instance.NpcHeroAnimator.Play("heroBlock", 0, 1f);
-                        }
                     }
                 }
             }
@@ -196,10 +186,6 @@ namespace Assets.Scripts
 
         public void MoveEnemy()
         {
-            if (!NpcAnimator.GetBool("enemyRun"))
-            {
-                NpcAnimator.SetBool("enemyRun", false);
-            }
 
             if (IsFrozenPosition())
             {

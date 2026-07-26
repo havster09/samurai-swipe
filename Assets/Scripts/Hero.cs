@@ -26,8 +26,6 @@ namespace Assets.Scripts
         public bool IsInPoseState;
         public bool IsInResetState;
 
-        private GoapAction GoapActionScript;
-
         void Awake()
         {
             if (Instance == null)
@@ -46,8 +44,6 @@ namespace Assets.Scripts
                 GameObject.FindObjectOfType<FsmHeroBaseStateMachineHandler>();
             DashEndStateMachineHandlerScript =
                 GameObject.FindObjectOfType<DashEndStateMachineHandler>();
-            GoapActionScript =
-                GameObject.FindObjectOfType<GoapAction>();
             AttachAnimationClipEvents();
         }
 
@@ -56,11 +52,6 @@ namespace Assets.Scripts
             StartStateMachines();
             StartSubStateMachines();
 
-        }
-
-        protected override void OnEnable()
-        {
-            base.OnEnable();
         }
 
         private static bool _heroClipEventsAttached = false;

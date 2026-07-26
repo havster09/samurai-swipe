@@ -34,13 +34,6 @@ public sealed class GoapAgent : MonoBehaviour {
 		loadActions ();
 	}
 
-    void OnEnable()
-    {
-        
-    }
-
-	
-
 	void Update () {
 		stateMachine.Update (this.gameObject);
 	}

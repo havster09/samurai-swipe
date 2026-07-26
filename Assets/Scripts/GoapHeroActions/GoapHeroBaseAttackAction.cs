@@ -37,10 +37,9 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override bool checkProceduralPrecondition(GameObject agent)
         {
+            // Intentionally disabled — this action is not used in any current goal.
+            // SingleAttackAction handles all hero attacks.
             return false;
-            return FindNpcTargets(agent) &&
-                   Hero.Instance.NpcHeroAnimator.GetFloat("heroDashAttack") < .1f;
-            
         }
 
         public override bool perform(GameObject agent)

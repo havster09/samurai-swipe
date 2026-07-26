@@ -26,40 +26,36 @@ namespace Assets.Scripts.GoapHeroActions
             {
                 Instance = this;
             }
-            NpcTargetAttributes = new List<NpcAttributesComponent>();
+            // Guard: all GoapHeroAction subclasses are components on the same hero
+            // GameObject. Without this check every subclass Awake() would wipe the
+            // shared list, losing any targets added by earlier-running siblings.
+            if (NpcTargetAttributes == null)
+                NpcTargetAttributes = new List<NpcAttributesComponent>();
         }
 
         public override bool Move()
         {
+            // Yield movement control to player-driven walk or any blocking state
+            if (HeroSwipeController.IsPlayerWalking)   return false;
+            if (Hero.Instance.IsBlockingMovement())    return false;
+            if (Hero.Instance.IsFrozenPosition())      return false;
+
             var distanceFromTarget = DistanceFromTarget();
 
-            if (Hero.Instance.IsAnimationTagPlaying("attack"))
+            if (distanceFromTarget >= DistanceToTargetThreshold)
             {
-                return false;
+                Hero.Instance.FaceTarget(target);
+                var step = (MoveSpeed * 2) * Time.deltaTime;
+                gameObject.transform.position =
+                    Vector3.MoveTowards(gameObject.transform.position,
+                        new Vector3(target.transform.position.x, 0), step);
+                Hero.Instance.NpcHeroAnimator.SetBool("heroRun", true);
             }
-
-            if (
-                !Hero.Instance.IsFrozenPosition() &&
-                !Hero.Instance.IsAnimationTagPlaying("attack") &&
-                !IsPerforming ||
-                distanceFromTarget <= InRangeToTargetThreshold
-                )
+            else
             {
-
-                if (distanceFromTarget >= DistanceToTargetThreshold)
-                {
-                    Hero.Instance.FaceTarget(target);
-                    var step = (MoveSpeed * 2) * Time.deltaTime;
-                    gameObject.transform.position =
-                        Vector3.MoveTowards(gameObject.transform.position, new Vector3(target.transform.position.x, 0), step);
-                    Hero.Instance.NpcHeroAnimator.SetBool("heroRun", true);
-                }
-                else
-                {
-                    Hero.Instance.NpcHeroAnimator.SetBool("heroRun", false);
-                    setInRange(true);
-                    return true;
-                }
+                Hero.Instance.NpcHeroAnimator.SetBool("heroRun", false);
+                setInRange(true);
+                return true;
             }
             return false;
         }
@@ -171,17 +167,23 @@ namespace Assets.Scripts.GoapHeroActions
             if (!NpcTargetAttributes.Contains(npcAttribute))
             {
                 NpcTargetAttributes.Add(npcAttribute);
+                Debug.Log(string.Format("[GOAP] TARGET ADD  {0}  (list:{1})",
+                    npcAttribute.gameObject.name, NpcTargetAttributes.Count));
             }
         }
 
         public void ClearAllTargetsFromList()
         {
+            Debug.Log(string.Format("[GOAP] TARGET CLEAR  all {0} targets", NpcTargetAttributes.Count));
             NpcTargetAttributes.Clear();
             SlashRenderer.Instance.RemoveSlashCollider();
         }
 
         public void RemoveTargetFromList(NpcAttributesComponent npcAttribute)
         {
+            Debug.Log(string.Format("[GOAP] TARGET REMOVE  {0}  (list:{1})",
+                npcAttribute != null ? npcAttribute.gameObject.name : "null",
+                NpcTargetAttributes.Count - 1));
             NpcTargetAttributes.Remove(npcAttribute);
         }
 

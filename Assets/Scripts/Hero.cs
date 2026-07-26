@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.FsmHeroStates;
@@ -64,28 +65,35 @@ namespace Assets.Scripts
 
         private void AttachAnimationClipEvents()
         {
-            var blockClip = NpcHeroAnimator.runtimeAnimatorController.animationClips[23];
-            
-            var blockEventEnd = new AnimationEvent();
-            blockEventEnd.time = blockClip.length;
-            blockEventEnd.functionName = "HeroBlockEndEventHandler";
-            blockClip.AddEvent(blockEventEnd);
-
-            var hitClip = NpcHeroAnimator.runtimeAnimatorController.animationClips[28];
-
-            var hitEventEnd = new AnimationEvent();
-            hitEventEnd.time = hitClip.length;
-            hitEventEnd.functionName = "HeroHitEndEventHandler";
-            hitClip.AddEvent(hitEventEnd);
+            var clips = NpcHeroAnimator.runtimeAnimatorController.animationClips;
+            if (clips.Length > 23)
+            {
+                var blockClip = clips[23];
+                var blockEventEnd = new AnimationEvent();
+                blockEventEnd.time = blockClip.length;
+                blockEventEnd.functionName = "HeroBlockEndEventHandler";
+                blockClip.AddEvent(blockEventEnd);
+            }
+            if (clips.Length > 28)
+            {
+                var hitClip = clips[28];
+                var hitEventEnd = new AnimationEvent();
+                hitEventEnd.time = hitClip.length;
+                hitEventEnd.functionName = "HeroHitEndEventHandler";
+                hitClip.AddEvent(hitEventEnd);
+            }
         }
 
         private void StartStateMachines()
         {
-            FsmHeroBaseStateMachineHandlerScript.StartFsmHeroIdleStateMachineHandler();
+            if (FsmHeroBaseStateMachineHandlerScript != null)
+                FsmHeroBaseStateMachineHandlerScript.StartFsmHeroIdleStateMachineHandler();
         }
+
         private void StartSubStateMachines()
         {
-            DashEndStateMachineHandlerScript.StartDashEndStateMachineHandler();
+            if (DashEndStateMachineHandlerScript != null)
+                DashEndStateMachineHandlerScript.StartDashEndStateMachineHandler();
         }
 
         private void HeroBlockEndEventHandler()
@@ -160,19 +168,9 @@ namespace Assets.Scripts
         public void Attack(string attackType)
         {
             IsAttacking = true;
+            NpcHeroAnimator.SetBool("heroRun", false);
+            StopWalkAnimation();
             NpcHeroAnimator.SetTrigger(attackType);
-            CheckEnemiesInRangeOfAttack();
-        }
-
-        private void CheckEnemiesInRangeOfAttack()
-        {
-            var totalNpcInRangeOfAttack = GoapActionScript.GetActiveNpcAttributesComponentsInRangeByDirection(gameObject, 1.2f);
-            totalNpcInRangeOfAttack.ToList()
-                .ForEach((npc) =>
-                {
-                    var enemyScript = npc.GetComponent<Enemy>();
-                    enemyScript.EnemyHitSuccess(50);
-                });
         }
 
         public void BloodCover(bool state)
@@ -185,13 +183,39 @@ namespace Assets.Scripts
             NpcHeroAnimator.SetBool("heroTurnPause", state);
         }
 
+        /// <summary>
+        /// Instantly flips the hero's facing direction with no animation.
+        /// </summary>
+        public void TurnAround()
+        {
+            if (IsBlockingMovement()) return;
+
+            HeroFlipX = !HeroFlipX;
+            transform.localRotation = HeroFlipX
+                ? Quaternion.Euler(0, 180, 0)
+                : Quaternion.Euler(0, 0, 0);
+
+            Debug.Log(string.Format("[Turn] now facing {0}", HeroFlipX ? "LEFT" : "RIGHT"));
+        }
+
         public bool IsAnimationTagPlaying(string animationTag)
         {
-            if (NpcHeroAnimator.GetCurrentAnimatorStateInfo(0).IsTag(animationTag))
-            {
-                return true;
-            }
-            return false;
+            return NpcHeroAnimator.GetCurrentAnimatorStateInfo(0).IsTag(animationTag);
+        }
+
+        /// <summary>
+        /// Returns true during any state where player-driven movement must be
+        /// suppressed: attacks, cross-sword clash, hit reactions, turn animations.
+        /// IsAttacking is an explicit flag (set in Attack, cleared in ReturnToIdle)
+        /// so there are no animation-transition gaps during multi-hit combos.
+        /// </summary>
+        public bool IsBlockingMovement()
+        {
+            return IsAttacking                     ||
+                   IsAnimationTagPlaying("cross")  ||
+                   IsAnimationTagPlaying("rest")   ||
+                   IsAnimationTagPlaying("hit")    ||
+                   NpcHeroAnimator.GetBool("heroTurnPause");
         }
 
         public override bool IsFrozenPosition()
@@ -235,7 +259,24 @@ namespace Assets.Scripts
             if (queued != null)
             {
                 Debug.Log(string.Format("[Attack] dequeued -> {0}", queued));
-                Attack(queued);
+
+                if (queued == "heroDashAttack")
+                {
+                    // Real dash: run-up → physical movement toward enemy → damage
+                    StartCoroutine(MomentumDashAttack());
+                    return 100;
+                }
+                else if (queued == "heroAttackThree")
+                {
+                    // Dash slash: run-up → play animation in place
+                    StartCoroutine(MomentumAttack("heroAttackThree"));
+                    return 100;
+                }
+                else
+                {
+                    Attack(queued);
+                }
+
                 // Derive damage tier from the attack name
                 if (queued == "heroDoubleSlashHigh" || queued == "heroDoubleSlashLow" ||
                     queued == "heroDoubleSlashMid"  || queued == "heroAttackSeven")
@@ -247,7 +288,7 @@ namespace Assets.Scripts
             }
 
             // ── No swipe queued — fall back to original contextual GOAP attack immediately ──
-            // Hero keeps fighting without pause; player swipes only override the next move.
+            Debug.Log("[GOAP] FALLBACK ATTACK  no swipe queued — using random contextual");
             var heroAttacks = new System.Collections.Generic.List<string>();
             var damage = 0;
 
@@ -284,6 +325,112 @@ namespace Assets.Scripts
             return !IsInPoseState && !IsInResetState;
         }
 
+        // ── Momentum attacks (run-up before dash/slash) ───────────────────────────
+
+        /// <summary>
+        /// Clears all movement and attack animator booleans so the FSM can
+        /// settle back to idle naturally.
+        /// </summary>
+        /// <summary>
+        /// Sets heroWalkLoop or heroWalkBackLoop based on whether the movement
+        /// direction matches the hero's current facing direction.
+        /// Pass the raw X delta (targetX - heroX) or any signed movement value.
+        /// </summary>
+        public void SetWalkAnimation(float movementDirX)
+        {
+            float facing  = HeroFlipX ? -1f : 1f;         // -1 = facing left, +1 = facing right
+            bool  forward = Mathf.Sign(movementDirX) == facing;
+            NpcHeroAnimator.SetBool("heroWalkLoop",     forward);
+            NpcHeroAnimator.SetBool("heroWalkBackLoop", !forward);
+        }
+
+        /// <summary>Clears both walk animation booleans.</summary>
+        public void StopWalkAnimation()
+        {
+            NpcHeroAnimator.SetBool("heroWalkLoop",     false);
+            NpcHeroAnimator.SetBool("heroWalkBackLoop", false);
+        }
+
+        private void ReturnToIdle()
+        {
+            IsAttacking = false;
+            NpcHeroAnimator.SetBool("heroRun", false);
+            StopWalkAnimation();
+        }
+
+        /// <summary>
+        /// Plays a brief run phase then fires <paramref name="attackTrigger"/>.
+        /// After the expected animation window, resets to idle.
+        /// </summary>
+        public IEnumerator MomentumAttack(string attackTrigger, float runDuration = 0.22f, float postDelay = 0.9f)
+        {
+            NpcHeroAnimator.SetBool("heroRun", true);
+            yield return new WaitForSeconds(runDuration);
+            NpcHeroAnimator.SetBool("heroRun", false);
+
+            Attack(attackTrigger);
+
+            yield return new WaitForSeconds(postDelay);
+            ReturnToIdle();
+        }
+
+        /// <summary>
+        /// Plays a brief run phase then executes a full dash toward the nearest enemy.
+        /// Falls back to a dash-slash attack if no target is available.
+        /// </summary>
+        public IEnumerator MomentumDashAttack(float runDuration = 0.22f)
+        {
+            NpcHeroAnimator.SetBool("heroRun", true);
+            yield return new WaitForSeconds(runDuration);
+            NpcHeroAnimator.SetBool("heroRun", false);
+
+            // Find nearest live target
+            var targets = GoapHeroAction.NpcTargetAttributes;
+            GameObject closestTarget = null;
+            float minDist = float.MaxValue;
+            if (targets != null)
+            {
+                foreach (var t in targets)
+                {
+                    if (t == null) continue;
+                    var enemy = t.GetComponent<Enemy>();
+                    if (enemy != null && enemy.IsDead) continue;
+                    float d = Vector2.Distance(transform.position, t.transform.position);
+                    if (d < minDist) { minDist = d; closestTarget = t.gameObject; }
+                }
+            }
+
+            if (closestTarget == null)
+            {
+                // No target in range — fall back to dash-slash in place
+                Attack("heroAttackThree");
+                yield return new WaitForSeconds(0.9f);
+                ReturnToIdle();
+                yield break;
+            }
+
+            const float DashOffset = 1f;
+            var dashEnd = closestTarget.transform.position +
+                          new Vector3(HeroFlipX ? -DashOffset : DashOffset, 0f, 0f);
+            var dashEndPos = HeroFlipX
+                ? Vector3.Max(dashEnd, new Vector3(-3.5f, 0f, 0f))
+                : Vector3.Min(dashEnd, new Vector3(3.5f, 0f, 0f));
+            var dashRayCastEnd = dashEndPos +
+                                 new Vector3(HeroFlipX ? -DashOffset : DashOffset, 0f, 0f);
+
+            var box      = GetComponent<BoxCollider2D>();
+            var startPos = new Vector2(transform.position.x, box != null ? box.offset.y : 0f);
+            var hits     = Physics2D.RaycastAll(
+                startPos,
+                HeroFlipX ? Vector2.left : Vector2.right,
+                Vector2.Distance(startPos, dashRayCastEnd),
+                512);
+
+            Dash(dashEndPos, 6f, hits);
+        }
+
+        // ─────────────────────────────────────────────────────────────────────────
+
         public void Dash(Vector3 end, float speed, RaycastHit2D[] hits)
         {
             SlashRenderer.Instance.RemoveSlash();
@@ -293,6 +440,7 @@ namespace Assets.Scripts
                 {
                     NpcHeroAnimator.SetFloat("heroDashAttack", 0);
                     DamageRayCastTargets(hits);
+                    ReturnToIdle();
                 }, 0));
         }
 
@@ -300,6 +448,7 @@ namespace Assets.Scripts
         {
             NpcHeroAnimator.SetFloat("heroDashAttack", 0);
             DamageRayCastTargets(hits);
+            ReturnToIdle();
         }
 
         public void DamageRayCastTargets(RaycastHit2D[] hits)

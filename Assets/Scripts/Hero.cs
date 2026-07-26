@@ -282,14 +282,7 @@ namespace Assets.Scripts
                     Attack(queued);
                 }
 
-                // Derive damage tier from the attack name
-                if (queued == "heroDoubleSlashHigh" || queued == "heroDoubleSlashLow" ||
-                    queued == "heroDoubleSlashMid"  || queued == "heroAttackSeven")
-                    return 150;
-                if (queued == "heroAttackThree" || queued == "heroAttackFour" ||
-                    queued == "heroAttackFive"   || queued == "heroDashAttack")
-                    return 100;
-                return 60;
+                return SwipeAttackMap.DamageForTrigger(queued);
             }
 
             // ── No swipe queued — fall back to original contextual GOAP attack immediately ──

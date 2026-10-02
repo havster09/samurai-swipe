@@ -24,8 +24,17 @@ namespace Assets.Scripts
 
         void InitGame()
         {
+            InitCombatPauseManager();
             InitHero();
             InitEnemies();
+        }
+
+        private void InitCombatPauseManager()
+        {
+            if (CombatPauseManager.Instance != null) return;
+            var go = new GameObject("CombatPauseManager");
+            go.AddComponent<CombatPauseManager>();
+            DontDestroyOnLoad(go);
         }
 
         private void InitHero()
@@ -34,6 +43,8 @@ namespace Assets.Scripts
             var heroGO = Hero as GameObject;
             if (heroGO != null && heroGO.GetComponent<HeroSwipeController>() == null)
                 heroGO.AddComponent<HeroSwipeController>();
+            if (heroGO != null && heroGO.GetComponent<HeroAnimationPreview>() == null)
+                heroGO.AddComponent<HeroAnimationPreview>();
         }
 
         private void InitEnemies()

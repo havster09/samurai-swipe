@@ -22,9 +22,15 @@ namespace Assets.Scripts
         public FsmHeroBaseStateMachineHandler FsmHeroBaseStateMachineHandlerScript;
         public DashEndStateMachineHandler DashEndStateMachineHandlerScript;
 
-        public bool IsAttacking { get; set; }
         public bool IsInPoseState;
+        // True while a momentum-attack coroutine owns the attack slot.
+        // Included in IsAttackBusy so perform() doesn't double-fire.
+        private bool _momentumPending;
         public bool IsInResetState;
+
+        [Header("Dash Attack")]
+        [Tooltip("Seconds enemies cannot attack after a dash lands. Hero finishes animation during this window.")]
+        [SerializeField] private float dashPauseDuration = 1.2f;
 
         void Awake()
         {
@@ -163,7 +169,6 @@ namespace Assets.Scripts
 
         public void Attack(string attackType)
         {
-            IsAttacking = true;
             NpcHeroAnimator.SetBool("heroRun", false);
             StopWalkAnimation();
             NpcHeroAnimator.SetTrigger(attackType);
@@ -200,14 +205,28 @@ namespace Assets.Scripts
         }
 
         /// <summary>
-        /// Returns true during any state where player-driven movement must be
-        /// suppressed: attacks, cross-sword clash, hit reactions, turn animations.
-        /// IsAttacking is an explicit flag (set in Attack, cleared in ReturnToIdle)
-        /// so there are no animation-transition gaps during multi-hit combos.
+        /// True while an attack animation is active OR while the animator is
+        /// transitioning into one.  Derived entirely from Animator state — no
+        /// manual boolean to keep in sync.
+        /// </summary>
+        public bool IsAttackBusy
+        {
+            get
+            {
+                if (_momentumPending) return true;
+                if (IsAnimationTagPlaying("attack")) return true;
+                return NpcHeroAnimator.IsInTransition(0) &&
+                       NpcHeroAnimator.GetNextAnimatorStateInfo(0).IsTag("attack");
+            }
+        }
+
+        /// <summary>
+        /// True while the hero must not be moved by player input or GOAP.
+        /// Derived entirely from Animator state — no manual flags to sync.
         /// </summary>
         public bool IsBlockingMovement()
         {
-            return IsAttacking                     ||
+            return IsAttackBusy                    ||
                    IsAnimationTagPlaying("cross")  ||
                    IsAnimationTagPlaying("rest")   ||
                    IsAnimationTagPlaying("hit")    ||
@@ -219,7 +238,7 @@ namespace Assets.Scripts
             return NpcHeroAnimator.GetBool("heroBloodCover") ||
                    NpcHeroAnimator.GetBool("heroCleanWeapon") ||
                    IsAnimationTagPlaying("rest") ||
-                   IsAnimationTagPlaying("attack") ||
+                   IsAttackBusy ||
                    NpcHeroAnimator.GetBool("heroTurnPause");
         }
 
@@ -258,13 +277,20 @@ namespace Assets.Scripts
 
                 if (queued == "heroDashAttack")
                 {
-                    // Real dash: run-up → physical movement toward enemy → damage
-                    StartCoroutine(MomentumDashAttack());
-                    return 100;
+                    // Async: run-up → dash → damage after animation starts
+                    StartCoroutine(MomentumDashAttack(target));
+                    return 0;
+                }
+                else if (queued == "heroDoubleSlashHigh" ||
+                         queued == "heroDoubleSlashMid"  ||
+                         queued == "heroDoubleSlashLow")
+                {
+                    // Async: animation fires first, damage applied once it is active
+                    StartCoroutine(DelayedDoubleSlash(queued, target));
+                    return 0;
                 }
                 else if (queued == "heroAttackThree")
                 {
-                    // Dash slash: run-up → play animation in place
                     StartCoroutine(MomentumAttack("heroAttackThree"));
                     return 100;
                 }
@@ -342,7 +368,7 @@ namespace Assets.Scripts
 
         private void ReturnToIdle()
         {
-            IsAttacking = false;
+            _momentumPending = false;
             NpcHeroAnimator.SetBool("heroRun", false);
             StopWalkAnimation();
         }
@@ -364,34 +390,45 @@ namespace Assets.Scripts
         }
 
         /// <summary>
-        /// Plays a brief run phase then executes a full dash toward the nearest enemy.
-        /// Falls back to a dash-slash attack if no target is available.
+        /// Run-up → full dash toward target → damage applied once dash animation is active.
+        /// Returns 0 to GetAttackTypeAndDamage so GOAP does not double-apply damage.
         /// </summary>
-        public IEnumerator MomentumDashAttack(float runDuration = 0.22f)
+        public IEnumerator MomentumDashAttack(GameObject target, float runDuration = 0.22f)
         {
+            _momentumPending = true;
+
             NpcHeroAnimator.SetBool("heroRun", true);
             yield return new WaitForSeconds(runDuration);
             NpcHeroAnimator.SetBool("heroRun", false);
 
-            // Find nearest live target
-            var targets = GoapHeroAction.NpcTargetAttributes;
-            GameObject closestTarget = null;
-            float minDist = float.MaxValue;
-            if (targets != null)
+            // Find nearest live target (prefer the GOAP-supplied one)
+            GameObject dashTarget = null;
+            if (target != null)
             {
-                foreach (var t in targets)
+                var te = target.GetComponent<Enemy>();
+                if (te != null && !te.IsDead) dashTarget = target;
+            }
+
+            if (dashTarget == null)
+            {
+                // Fall back to nearest in list
+                var targets = GoapHeroAction.NpcTargetAttributes;
+                float minDist = float.MaxValue;
+                if (targets != null)
                 {
-                    if (t == null) continue;
-                    var enemy = t.GetComponent<Enemy>();
-                    if (enemy != null && enemy.IsDead) continue;
-                    float d = Vector2.Distance(transform.position, t.transform.position);
-                    if (d < minDist) { minDist = d; closestTarget = t.gameObject; }
+                    foreach (var t in targets)
+                    {
+                        if (t == null) continue;
+                        var e = t.GetComponent<Enemy>();
+                        if (e != null && e.IsDead) continue;
+                        float d = Vector2.Distance(transform.position, t.transform.position);
+                        if (d < minDist) { minDist = d; dashTarget = t.gameObject; }
+                    }
                 }
             }
 
-            if (closestTarget == null)
+            if (dashTarget == null)
             {
-                // No target in range — fall back to dash-slash in place
                 Attack("heroAttackThree");
                 yield return new WaitForSeconds(0.9f);
                 ReturnToIdle();
@@ -399,8 +436,8 @@ namespace Assets.Scripts
             }
 
             const float DashOffset = 1f;
-            var dashEnd = closestTarget.transform.position +
-                          new Vector3(HeroFlipX ? -DashOffset : DashOffset, 0f, 0f);
+            var dashEnd    = dashTarget.transform.position +
+                             new Vector3(HeroFlipX ? -DashOffset : DashOffset, 0f, 0f);
             var dashEndPos = HeroFlipX
                 ? Vector3.Max(dashEnd, new Vector3(-3.5f, 0f, 0f))
                 : Vector3.Min(dashEnd, new Vector3(3.5f, 0f, 0f));
@@ -416,6 +453,47 @@ namespace Assets.Scripts
                 512);
 
             Dash(dashEndPos, 6f, hits);
+
+            // Wait for the dash animation to start, then apply damage
+            yield return new WaitUntil(() => IsAnimationTagPlaying("dash") || IsAnimationTagPlaying("dashEnd"));
+            var enemyScript = dashTarget.GetComponent<Enemy>();
+            if (enemyScript != null && !enemyScript.IsDead)
+            {
+                enemyScript.EnemyHitSuccess(SwipeAttackMap.DamageForTrigger("heroDashAttack"));
+            }
+
+            // Dramatic pause: freeze enemy attacks while hero finishes dash animation.
+            // Enemies can still reposition. Chain effects subscribe to CombatPauseManager events.
+            if (CombatPauseManager.Instance != null)
+                CombatPauseManager.Instance.TriggerPause(dashPauseDuration);
+
+            _momentumPending = false;
+        }
+
+        /// <summary>
+        /// Fires a double-slash trigger and waits for the attack animation to start
+        /// before applying damage.  Ensures the visual precedes the hit.
+        /// Returns 0 to GetAttackTypeAndDamage so GOAP does not double-apply damage.
+        /// </summary>
+        public IEnumerator DelayedDoubleSlash(string trigger, GameObject target)
+        {
+            _momentumPending = true;
+
+            Attack(trigger);
+
+            // Wait until the attack animation is actually running
+            yield return new WaitUntil(() => IsAnimationTagPlaying("attack"));
+
+            var enemyScript = target != null ? target.GetComponent<Enemy>() : null;
+            if (enemyScript != null && !enemyScript.IsDead)
+            {
+                enemyScript.EnemyHitSuccess(SwipeAttackMap.DamageForTrigger(trigger));
+            }
+
+            // Wait for animation to finish before releasing the slot
+            yield return new WaitUntil(() => !IsAnimationTagPlaying("attack"));
+
+            ReturnToIdle();
         }
 
         // ─────────────────────────────────────────────────────────────────────────

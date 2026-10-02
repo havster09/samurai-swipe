@@ -19,6 +19,7 @@ namespace Assets.Scripts
         public bool IsAttacking { get; set; }
         public bool IsDead { get; set; }
         public bool IsCanWalk = true;
+        private bool _pendingDeath;
         public bool IsCelebrating;
 
         public Coroutine MoveEnemyCoroutine;
@@ -151,6 +152,14 @@ namespace Assets.Scripts
         private void EnemyHitEventHandler()
         {
             IsHit = false;
+            if (_pendingDeath)
+                StartCoroutine(DelayedDie(1f));
+        }
+
+        private IEnumerator DelayedDie(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            EnemyDie();
         }
 
         private void EnemyWalkEventHandler()
@@ -290,6 +299,14 @@ namespace Assets.Scripts
 
         public void Attack(string attackType)
         {
+            // Block enemy attacks during a global combat pause (e.g. post dash-attack window).
+            // Enemies can still reposition freely — only the attack trigger is gated here.
+            if (CombatPauseManager.Instance != null && CombatPauseManager.Instance.IsPaused)
+            {
+                Debug.Log(string.Format("[Pause] {0} attack blocked (pause active)", gameObject.name));
+                return;
+            }
+
             IsAttacking = true;
             NpcAnimator.SetTrigger(attackType);
         }
@@ -460,24 +477,21 @@ namespace Assets.Scripts
             IsHit = true;
             NpcAttribute.Health -= damage;
 
-            if (NpcAttribute.Health < 1 && !IsDead)
+            if (NpcAttribute.Health < 1 && !IsDead && !_pendingDeath)
             {
-                EnemyDie();
+                // Flag the kill — actual death fires after the hit animation ends.
+                _pendingDeath = true;
             }
         }
 
         public override bool IsFrozenPosition()
         {
-            if (
-                IsAttacking.Equals(true) ||
-                IsTaunting.Equals(true) ||
-                IsDead.Equals(true) ||
-                IsCelebrating.Equals(true) ||
-                IsHit.Equals(true))
-            {
-                return true;
-            }
-            return false;
+            return IsAttacking   ||
+                   IsTaunting    ||
+                   IsDead        ||
+                   _pendingDeath ||
+                   IsCelebrating ||
+                   IsHit;
         }
 
         public bool IsAnimationTagPlaying(string animationTag)
@@ -509,6 +523,10 @@ namespace Assets.Scripts
             Debug.Log(string.Format("[GOAP] ENEMY DISABLE  {0}  isDead:{1}", gameObject.name, IsDead));
             Broadcaster<Transform>.DisableListener("FindChild", OnTransformFind);
             GoapHeroAction.Instance.RemoveTargetFromList(NpcAttribute);
+            // If GOAP was locked onto this enemy as its current target, clear it so
+            // the hero doesn't keep chasing a pooled (inactive) object.
+            if (GoapHeroAction.Instance.TargetNpcAttribute == NpcAttribute)
+                GoapHeroAction.Instance.TargetNpcAttribute = null;
 
             if (GoapHeroDashAttackAction.Hits != null)
             {
@@ -521,12 +539,13 @@ namespace Assets.Scripts
 
         private void Reset()
         {
-            IsAttacking = false;
-            IsTaunting = false;
-            IsDead = false;
+            IsAttacking   = false;
+            IsTaunting    = false;
+            IsDead        = false;
+            _pendingDeath = false;
             IsCelebrating = false;
-            IsHit = false;
-            IsCanWalk = true;
+            IsHit         = false;
+            IsCanWalk     = true;
             IsCoroutineMoving = false;
         }
     }

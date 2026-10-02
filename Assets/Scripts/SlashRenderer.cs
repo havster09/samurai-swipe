@@ -124,13 +124,22 @@ namespace Assets.Scripts
             _touchUpPos = new Vector3(touch.position.x, touch.position.y, SlashZPosition);
             _linePositions.Add(_touchUpPos);
 
+            // Only create a slash collider when the finger actually moved enough to count as a
+            // real swipe.  Taps, holds, and other non-swipe touches used to unconditionally spawn
+            // a collider at the resting finger position, causing GOAP to detect a "hit" and queue
+            // an attack with no player swipe input.
+            bool wasValidSwipe = VerticalMove() > SWIPE_THRESHOLD || horizontalValMove() > SWIPE_THRESHOLD;
+
             CheckSwipe();
 
-            var startPoint = _linePositions.OrderByDescending(lp => lp.x).FirstOrDefault();
-            var endPoint = _linePositions.OrderByDescending(lp => lp.x).LastOrDefault();
+            if (wasValidSwipe)
+            {
+                var startPoint = _linePositions.OrderByDescending(lp => lp.x).FirstOrDefault();
+                var endPoint   = _linePositions.OrderByDescending(lp => lp.x).LastOrDefault();
+                AddColliderToLine(_lineRenderer, Camera.main.ScreenToWorldPoint(startPoint),
+                    Camera.main.ScreenToWorldPoint(endPoint));
+            }
 
-            AddColliderToLine(_lineRenderer, Camera.main.ScreenToWorldPoint(startPoint),
-                Camera.main.ScreenToWorldPoint(endPoint));
             _linePositions.Clear();
         }
 

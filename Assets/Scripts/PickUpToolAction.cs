@@ -83,7 +83,6 @@ public class PickUpToolAction : GoapAction
 
             // create the tool and add it to the agent
 
-            NpcAttributesComponent npcExperience = (NpcAttributesComponent)agent.GetComponent(typeof(NpcAttributesComponent));
             //GameObject prefab = Resources.Load<GameObject>(NpcExperience.toolType);
             //GameObject tool = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
             //NpcExperience.tool = tool;

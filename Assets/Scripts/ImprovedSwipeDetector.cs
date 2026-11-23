@@ -31,6 +31,11 @@ namespace Assets.Scripts
         private SwipeDirection _lastSwipeDirection = SwipeDirection.None;
         private float          _lastSwipeVelocity  = 0f;
         private float          _lastSwipeDistance  = 0f;
+        private EndSlope       _lastEndSlope       = EndSlope.Neutral;
+
+        [Header("End Slope Settings")]
+        [SerializeField] private float endSlopeAngle = 20f;
+        [SerializeField] private float endSlopeTailFraction = 0.2f;
 
         // Direction, Velocity, Distance
         public System.Action<SwipeDirection, float, float> OnSwipeDetected;
@@ -41,6 +46,8 @@ namespace Assets.Scripts
             Up, Down, Left, Right,
             UpLeft, UpRight, DownLeft, DownRight
         }
+
+        public enum EndSlope { Up, Neutral, Down }
 
         void Update()
         {
@@ -94,12 +101,14 @@ namespace Assets.Scripts
                 _lastSwipeDirection = dir;
                 _lastSwipeVelocity  = velocity;
                 _lastSwipeDistance  = distance;
+                _lastEndSlope       = ComputeEndSlope();
 
                 if (OnSwipeDetected != null)
                     OnSwipeDetected.Invoke(dir, velocity, distance);
 
                 if (showDebugInfo)
-                    Debug.Log(string.Format("[Swipe] {0}  {1:F0}px/s  {2:F0}px", dir, velocity, distance));
+                    Debug.Log(string.Format("[Swipe] {0}  {1:F0}px/s  {2:F0}px  slope:{3}",
+                        dir, velocity, distance, _lastEndSlope));
             }
             else if (showDebugInfo)
             {
@@ -200,9 +209,30 @@ namespace Assets.Scripts
             return Vector2.Distance(_startPosition, _endPosition);
         }
 
-        public SwipeDirection GetLastDirection() { return _lastSwipeDirection; }
-        public float          GetLastVelocity()  { return _lastSwipeVelocity;  }
-        public float          GetLastDistance()  { return _lastSwipeDistance;  }
-        public bool           IsTracking()       { return _isTracking;         }
+        /// <summary>
+        /// Examines the final portion of the swipe trail to determine whether the
+        /// gesture ended pointing upward, downward, or neutral (horizontal).
+        /// </summary>
+        private EndSlope ComputeEndSlope()
+        {
+            if (_touchPoints.Count < 2) return EndSlope.Neutral;
+
+            int tailCount = Mathf.Max(2, Mathf.RoundToInt(_touchPoints.Count * endSlopeTailFraction));
+            int startIdx  = Mathf.Max(0, _touchPoints.Count - tailCount);
+
+            Vector2 seg   = _touchPoints[_touchPoints.Count - 1] - _touchPoints[startIdx];
+            float   angle = Mathf.Atan2(seg.y, seg.x) * Mathf.Rad2Deg;
+
+            if (angle >  endSlopeAngle) return EndSlope.Up;
+            if (angle < -endSlopeAngle) return EndSlope.Down;
+            return EndSlope.Neutral;
+        }
+
+        public SwipeDirection GetLastDirection()   { return _lastSwipeDirection; }
+        public float          GetLastVelocity()    { return _lastSwipeVelocity;  }
+        public float          GetLastDistance()    { return _lastSwipeDistance;  }
+        public bool           IsTracking()         { return _isTracking;         }
+        public Vector2        GetLastEndPosition() { return _endPosition;        }
+        public EndSlope       GetLastEndSlope()    { return _lastEndSlope;       }
     }
 }

@@ -61,28 +61,25 @@ public sealed class GoapAgent : MonoBehaviour {
 
 	public void createIdleState() {
 		idleState = (fsm, gameObj) => {
-			// GOAP planning
-
-			// get the world state and the goal we want to plan for
 			var worldState = dataProvider.getWorldState();
 			var goal = dataProvider.createGoalState();
 
-			// Plan
+			// Empty goal means the data provider has nothing to plan right now.
+			// Stay on the idle state without planning — no log spam, no wasted work.
+			// The next frame will re-evaluate; as soon as a goal appears, planning resumes.
+			if (goal == null || goal.Count == 0) return;
+
 			Queue<GoapAction> plan = planner.plan(gameObject, availableActions, worldState, goal);
 			if (plan != null) {
-				// we have a plan, hooray!
 				currentActions = plan;
 				dataProvider.planFound(goal, plan);
-
-				fsm.popState(); // move to PerformAction state
+				fsm.popState();
 				fsm.pushState(performActionState);
-
 			} else {
 				dataProvider.planFailed(goal);
-				fsm.popState (); // move back to IdleAction state
-				fsm.pushState (idleState);
+				fsm.popState();
+				fsm.pushState(idleState);
 			}
-
 		};
 	}
 

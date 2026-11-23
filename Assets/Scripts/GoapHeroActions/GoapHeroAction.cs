@@ -147,7 +147,9 @@ namespace Assets.Scripts.GoapHeroActions
             if (TargetNpcAttribute != null)
             {
                 target = TargetNpcAttribute.gameObject;
-                ClearAllTargetsFromList();
+                // Do NOT clear here — clearing removes the slash collider, which would
+                // prevent any follow-up attacks after the first kill. Cleanup happens
+                // in ResetSingleAttack() once the enemy is confirmed dead.
                 return true;
             }
             return false;
@@ -169,6 +171,9 @@ namespace Assets.Scripts.GoapHeroActions
                 NpcTargetAttributes.Add(npcAttribute);
                 Debug.Log(string.Format("[GOAP] TARGET ADD  {0}  (list:{1})",
                     npcAttribute.gameObject.name, NpcTargetAttributes.Count));
+                // GOAP idleState polls createGoalState() every frame.
+                // Once a target is in the list, createGoalState() returns a real goal
+                // and planning resumes automatically — no explicit wake-up needed.
             }
         }
 
@@ -181,10 +186,10 @@ namespace Assets.Scripts.GoapHeroActions
 
         public void RemoveTargetFromList(NpcAttributesComponent npcAttribute)
         {
-            Debug.Log(string.Format("[GOAP] TARGET REMOVE  {0}  (list:{1})",
-                npcAttribute != null ? npcAttribute.gameObject.name : "null",
-                NpcTargetAttributes.Count - 1));
+            if (npcAttribute == null || !NpcTargetAttributes.Contains(npcAttribute)) return;
             NpcTargetAttributes.Remove(npcAttribute);
+            Debug.Log(string.Format("[GOAP] TARGET REMOVE  {0}  (list:{1})",
+                npcAttribute.gameObject.name, NpcTargetAttributes.Count));
         }
 
         protected bool InResetRange()

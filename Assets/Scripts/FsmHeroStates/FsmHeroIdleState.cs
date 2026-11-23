@@ -32,7 +32,9 @@ namespace Assets.Scripts.FsmHeroStates
             }
         }
 
+#pragma warning disable 67   // interface-required event, never raised internally
         public event EventHandler<StateBeginExitEventArgs> OnBeginExit;
+#pragma warning restore 67
         public void EndExit()
         {
             // Debug.Log("FsmHeroIdleState EndExit");

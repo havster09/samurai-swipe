@@ -45,21 +45,17 @@ namespace Assets.Scripts.GoapHeroActions
                 return false;
             }
 
-            var walkResetType =
-                (Hero.Instance.HeroFlipX && currentHeroPosition.x < 0) ||
-                (!Hero.Instance.HeroFlipX && currentHeroPosition.x > 0) ?
-                "heroWalkBackLoop" : "heroWalkLoop";
-
             if (Mathf.Abs(currentHeroPosition.x) > (Hero.HeroStep + Hero.ResetPositionThreshold))
             {
                 float step = MoveSpeed / 2 * Time.deltaTime;
+                float moveDirX = -currentHeroPosition.x; // always moves toward x=0
                 gameObject.transform.position =
                     Vector3.MoveTowards(gameObject.transform.position, new Vector3(0, 0), step);
-                Hero.Instance.NpcHeroAnimator.SetBool(walkResetType, true);
+                Hero.Instance.SetWalkAnimation(moveDirX);
             }
             else
             {
-                Hero.Instance.NpcHeroAnimator.SetBool(walkResetType, false);
+                Hero.Instance.StopWalkAnimation();
                 setInRange(true);
                 return true;
             }

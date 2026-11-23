@@ -50,17 +50,23 @@ namespace Assets.Scripts.GoapHeroTypes
         public HashSet<KeyValuePair<string, object>> createGoalState()
         {
             goal.Clear();
-            if (NpcHeroAttributesComponent.Instance.Brave > 10)
-            {
-                goal.Add(new KeyValuePair<string, object>("destroyEnemyNpcDash", true));
 
-            }
-            else
+            bool hasLivingTarget = GoapHeroAction.NpcTargetAttributes != null &&
+                GoapHeroAction.NpcTargetAttributes.Exists(n => n != null && n.Health > 0);
+
+            if (!hasLivingTarget)
             {
-                goal.Add(new KeyValuePair<string, object>("destroyEnemyNpcSingle", true));
+                // Empty goal signals GoapAgent to stay idle without planning.
+                // As soon as a slash adds a target, this returns a real goal
+                // and GOAP picks it up on the very next frame.
+                return goal;
             }
-            /*goal.Add(new KeyValuePair<string, object>("bloodCover", true));
-            goal.Add(new KeyValuePair<string, object>("wipeBlood", true));*/
+
+            if (NpcHeroAttributesComponent.Instance.Brave > 10)
+                goal.Add(new KeyValuePair<string, object>("destroyEnemyNpcDash", true));
+            else
+                goal.Add(new KeyValuePair<string, object>("destroyEnemyNpcSingle", true));
+
             return goal;
         }
 
@@ -83,7 +89,8 @@ namespace Assets.Scripts.GoapHeroTypes
 
         public void planFailed(HashSet<KeyValuePair<string, object>> failedGoal)
         {
-            // Debug.Log("<color=red>Hero Unhandled plan Failed</color> " + GoapAgent.prettyPrint(failedGoal));
+            Debug.Log("[GOAP] PLAN FAILED  " + GoapAgent.prettyPrint(failedGoal));
+
             var slashCollider = GameObject.FindGameObjectWithTag("SlashCollider");
             if (
                 !Hero.Instance.IsAnimationTagPlaying("dash") &&
@@ -92,32 +99,28 @@ namespace Assets.Scripts.GoapHeroTypes
                 Mathf.Abs(gameObject.transform.position.x) > (Hero.HeroStep + Hero.ResetPositionThreshold)
                 )
             {
-                // GoapAgentScript.createResetState();
-                var goalReset = createResetState();
-                GoapAgentScript.createIdleStateFromGoal(goalReset);
+                GoapAgentScript.createIdleStateFromGoal(createResetState());
             }
             else
             {
-                // var goal = createPoseState();
-                var goal = createGoalState();
-                GoapAgentScript.createIdleStateFromGoal(goal);
+                GoapAgentScript.createIdleStateFromGoal(createGoalState());
             }
         }
 
         public void planFound(HashSet<KeyValuePair<string, object>> goal, Queue<GoapAction> actions)
         {
-            // Debug.Log("<color=green>Hero Plan found</color> " + GoapAgent.prettyPrint(actions));
+            Debug.Log("[GOAP] PLAN FOUND  " + GoapAgent.prettyPrint(actions));
         }
 
         public void actionsFinished()
         {
-            // Debug.Log("<color=blue>Hero Actions completed</color>");
+            Debug.Log("[GOAP] ACTIONS FINISHED  replanning");
             GoapAgentScript.createIdleState();
         }
 
         public void planAborted(GoapAction aborter)
         {
-            // Debug.Log("<color=red>Hero Plan Aborted</color> " + GoapAgent.prettyPrint(aborter));
+            Debug.Log("[GOAP] PLAN ABORTED  by:" + GoapAgent.prettyPrint(aborter));
         }
 
         public bool moveAgent(GoapAction nextAction)

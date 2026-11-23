@@ -69,7 +69,6 @@ public class DropOffLogsAction: GoapAction
 	
 	public override bool perform (GameObject agent)
 	{
-		NpcAttributesComponent npcExperience = (NpcAttributesComponent)agent.GetComponent(typeof(NpcAttributesComponent));
 		// targetNpcHeroAttributes.numLogs += NpcExperience.numLogs;
 		droppedOffLogs = true;
 		// npcExperience.numLogs = 0;

@@ -15,7 +15,6 @@ namespace Assets.Scripts
         public float MaxWalkRange;
         public SpriteRenderer SpriteRenderer;
 
-        private BoxCollider2D _boxCollider;
         public Rigidbody2D Rb2D;
         private float _inverseMoveTime;
         public bool IsCoroutineMoving { get; set; }
@@ -30,7 +29,6 @@ namespace Assets.Scripts
 
         protected virtual void OnEnable()
         {
-            _boxCollider = GetComponent<BoxCollider2D>();
             Rb2D = GetComponent<Rigidbody2D>();
             SpriteRenderer = GetComponent<SpriteRenderer>();
             _inverseMoveTime = 1.1f / MoveTime;

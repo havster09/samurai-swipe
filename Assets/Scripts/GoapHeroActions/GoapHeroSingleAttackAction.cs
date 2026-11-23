@@ -13,6 +13,7 @@ namespace Assets.Scripts.GoapHeroActions
 
         public override void reset()
         {
+            Debug.Log("[GOAP] SingleAttack RESET");
             NpcIsDestroyed = false;
         }
 
@@ -41,24 +42,29 @@ namespace Assets.Scripts.GoapHeroActions
                 enemyScript.StopCoroutine(enemyScript.MoveEnemyCoroutine);
             }
 
-            // Only fire the next attack when not already mid-animation
             if (
-                !Hero.Instance.IsAnimationTagPlaying("attack") &&
+                !Hero.Instance.IsAttackBusy &&
                 !Hero.Instance.IsAnimationTagPlaying("cross") &&
                 !Hero.Instance.IsAnimationTagPlaying("rest") &&
                 !enemyScript.IsDead
                 )
             {
+                Debug.Log(string.Format("[GOAP] SingleAttack PERFORM  target:{0}  queueLen:{1}",
+                    target.name, HeroSwipeController.HasPending ? "has swipe" : "EMPTY→fallback"));
                 var damage = Hero.Instance.GetAttackTypeAndDamage(target);
 
-                if (TargetNpcAttribute.DefendCount < 1)
+                // damage == 0 means an async coroutine (dash / double-slash) owns
+                // this hit — it will call EnemyHitSuccess itself when the animation
+                // is actually playing.  Skip synchronous damage application.
+                if (damage > 0)
                 {
-                    enemyScript.EnemyHitSuccess(damage);
-                }
-                else
-                {
-                    enemyScript.EnemyHitFail();
-                    NpcHeroAttributesComponent.Instance.Rage -= 1;
+                    if (TargetNpcAttribute.DefendCount < 1)
+                        enemyScript.EnemyHitSuccess(damage);
+                    else
+                    {
+                        enemyScript.EnemyHitFail();
+                        NpcHeroAttributesComponent.Instance.Rage -= 1;
+                    }
                 }
 
                 NpcHeroAttributesComponent.Instance.AttackCount += 1;
@@ -66,6 +72,7 @@ namespace Assets.Scripts.GoapHeroActions
 
             if (enemyScript.IsDead)
             {
+                Debug.Log(string.Format("[GOAP] SingleAttack ENEMY DEAD  {0}", target.name));
                 NpcHeroAttributesComponent.Instance.KillCount += 1;
                 NpcHeroAttributesComponent.Instance.ComboCount += 1;
                 NpcHeroAttributesComponent.Instance.Rage += 1;
@@ -83,7 +90,8 @@ namespace Assets.Scripts.GoapHeroActions
         public void ResetSingleAttack()
         {
             TargetNpcAttribute = null;
-            NpcTargetAttributes.Clear();
+            // Use ClearAllTargetsFromList so the slash collider is removed on kill.
+            ClearAllTargetsFromList();
         }
     }
 }

@@ -24,6 +24,14 @@ namespace Assets.Scripts
 
         public Coroutine MoveEnemyCoroutine;
 
+        // ── Peer awareness ────────────────────────────────────────────────────────
+        /// <summary>All currently active (non-disabled) enemies. Updated on Enable/Disable.</summary>
+        public static readonly List<Enemy> ActiveEnemies = new List<Enemy>();
+
+        [Header("Separation")]
+        [SerializeField] private float separationRadius    = 1.5f;
+        [SerializeField] private float separationStepScale = 0.5f;
+
         private void Awake()
         {
             _goapEnemyAction = gameObject.GetComponent<GoapEnemyAction>();
@@ -193,35 +201,76 @@ namespace Assets.Scripts
             }
         }
 
+        /// <summary>
+        /// Returns true if any living peer enemy is currently mid-attack.
+        /// Used to gate approaching enemies — only one attacks at a time.
+        /// </summary>
+        public bool AnyPeerAttacking()
+        {
+            foreach (var peer in ActiveEnemies)
+            {
+                if (peer == null || peer == this || peer.IsDead) continue;
+                if (peer.IsAttacking) return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Computes a signed X offset that pushes this enemy away from overlapping peers.
+        /// Called once per walk step — not every frame.
+        /// </summary>
+        private float ComputeSeparationStepX()
+        {
+            float push = 0f;
+            foreach (var peer in ActiveEnemies)
+            {
+                if (peer == null || peer == this || peer.IsDead) continue;
+                float dx   = transform.position.x - peer.transform.position.x;
+                float dist = Mathf.Abs(dx);
+                if (dist < separationRadius && dist > 0.001f)
+                    push += Mathf.Sign(dx) * (1f - dist / separationRadius);
+            }
+            return push * separationStepScale;
+        }
+
         public void MoveEnemy()
         {
+            if (IsFrozenPosition()) return;
 
-            if (IsFrozenPosition())
-            {
-                return;
-            }
-
-            float xDir = 0;
             IsCanWalk = false;
+            float separationX = ComputeSeparationStepX();
 
-            bool walkBackwards = Random.Range(0, 5) < 2 &&
-                Utilities.ReplaceClone(name) != "Ukyo";
-            if (!walkBackwards)
+            float xDir;
+            bool  walkBackwards;
+
+            if (Mathf.Abs(separationX) > 0.1f)
             {
-                xDir = _goapEnemyAction.target.transform.position.x > transform.position.x ? .5f : -.5f;
-                NpcAnimator.SetBool("enemyWalk", true); 
+                // Peer pressure: step away from overlapping sibling
+                xDir = Mathf.Sign(separationX) * 0.5f;
+                // Walking away from the hero counts as backwards
+                float heroDir = _goapEnemyAction.target.transform.position.x > transform.position.x ? 1f : -1f;
+                walkBackwards = Mathf.Sign(xDir) != Mathf.Sign(heroDir);
+                Debug.Log(string.Format("[Sep] {0} separating  pushX:{1:F2}  walkBack:{2}",
+                    gameObject.name, separationX, walkBackwards));
             }
             else
             {
-                xDir = _goapEnemyAction.target.transform.position.x > transform.position.x ? -.5f : .5f;
-                NpcAnimator.SetTrigger("enemyWalkBack");
+                // No peer pressure — original random forward/back logic
+                walkBackwards = Random.Range(0, 5) < 2 && Utilities.ReplaceClone(name) != "Ukyo";
+                xDir = _goapEnemyAction.target.transform.position.x > transform.position.x
+                    ? (walkBackwards ? -0.5f :  0.5f)
+                    : (walkBackwards ?  0.5f : -0.5f);
             }
+
+            if (!walkBackwards)
+                NpcAnimator.SetBool("enemyWalk", true);
+            else
+                NpcAnimator.SetTrigger("enemyWalkBack");
 
             Vector2 end = new Vector2(transform.position.x, 0) + new Vector2(xDir, 0);
             if (!IsCoroutineMoving)
-            {
-                MoveEnemyCoroutine = StartCoroutine(PerformMovementTo(end, .8f, false, null, 1f, NpcAnimator, "enemyWalk"));
-            }
+                MoveEnemyCoroutine = StartCoroutine(
+                    PerformMovementTo(end, .8f, false, null, 1f, NpcAnimator, "enemyWalk"));
         }
 
         public bool IsInWalkRange()
@@ -514,6 +563,7 @@ namespace Assets.Scripts
         protected override void OnEnable()
         {
             Debug.Log(string.Format("[GOAP] ENEMY ENABLE  {0}  (recycled from pool)", gameObject.name));
+            if (!ActiveEnemies.Contains(this)) ActiveEnemies.Add(this);
             Broadcaster<Transform>.EnableListener("FindChild", OnTransformFind);
             base.OnEnable();
         }
@@ -521,6 +571,7 @@ namespace Assets.Scripts
         protected void OnDisable()
         {
             Debug.Log(string.Format("[GOAP] ENEMY DISABLE  {0}  isDead:{1}", gameObject.name, IsDead));
+            ActiveEnemies.Remove(this);
             Broadcaster<Transform>.DisableListener("FindChild", OnTransformFind);
             GoapHeroAction.Instance.RemoveTargetFromList(NpcAttribute);
             // If GOAP was locked onto this enemy as its current target, clear it so

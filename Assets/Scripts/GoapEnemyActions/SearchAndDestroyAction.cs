@@ -13,13 +13,20 @@ namespace Assets.Scripts.GoapEnemyActions
 
         public override bool Move()
         {
-            if (EnemyScript.IsFrozenPosition())
+            if (EnemyScript.IsFrozenPosition()) return false;
+
+            EnemyScript.FaceTarget();
+            float distanceFromTarget = Vector2.Distance(
+                gameObject.transform.position, target.transform.position);
+
+            // Hold back while a peer is mid-attack — face the hero, stay idle.
+            // Prevents simultaneous attacks and gives the player a fair window to respond.
+            if (EnemyScript.AnyPeerAttacking() && distanceFromTarget > 1f)
             {
+                EnemyScript.NpcAnimator.SetBool("enemyRun", false);
                 return false;
             }
 
-            EnemyScript.FaceTarget();
-            float distanceFromTarget = Vector2.Distance(gameObject.transform.position, target.transform.position);
             if (distanceFromTarget > 2 &&
                 !Hero.Instance.IsInResetState &&
                 !EnemyScript.IsAnimationTagPlaying("attack") &&

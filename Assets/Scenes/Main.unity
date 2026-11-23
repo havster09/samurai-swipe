@@ -445,7 +445,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Hero: {fileID: 0}
-  heroResourceName: JustoTakayamaHero
 --- !u!4 &1869648005
 Transform:
   m_ObjectHideFlags: 0
@@ -471,7 +470,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemsToPool:
-  - amountToPool: 8
+  - amountToPool: 40
     objectToPool: {fileID: 1662671873553116, guid: 7b17081931e49a046b8c51148a18009b,
       type: 2}
     shouldExpand: 0
@@ -543,6 +542,90 @@ MonoBehaviour:
     objectToPool: {fileID: 1748471367380564, guid: 362a8c2da1a99d8499560c0992475f7d,
       type: 2}
     shouldExpand: 0
+  - amountToPool: 1
+    objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
+      type: 2}
+    shouldExpand: 1
+  - amountToPool: 1
+    objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
+      type: 2}
+    shouldExpand: 1
+  - amountToPool: 1
+    objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
+      type: 2}
+    shouldExpand: 1
+  - amountToPool: 1
+    objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
+      type: 2}
+    shouldExpand: 1
+  - amountToPool: 1
+    objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
+      type: 2}
+    shouldExpand: 1
+  - amountToPool: 1
+    objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
+      type: 2}
+    shouldExpand: 1
+  - amountToPool: 1
+    objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
+      type: 2}
+    shouldExpand: 1
+  - amountToPool: 1
+    objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
+      type: 2}
+    shouldExpand: 1
+  - amountToPool: 1
+    objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
+      type: 2}
+    shouldExpand: 1
+  - amountToPool: 1
+    objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
+      type: 2}
+    shouldExpand: 1
+  - amountToPool: 1
+    objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
+      type: 2}
+    shouldExpand: 1
+  - amountToPool: 1
+    objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
+      type: 2}
+    shouldExpand: 1
+  - amountToPool: 1
+    objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
+      type: 2}
+    shouldExpand: 1
+  - amountToPool: 1
+    objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
+      type: 2}
+    shouldExpand: 1
+  - amountToPool: 1
+    objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
+      type: 2}
+    shouldExpand: 1
+  - amountToPool: 1
+    objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
+      type: 2}
+    shouldExpand: 1
+  - amountToPool: 1
+    objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
+      type: 2}
+    shouldExpand: 1
+  - amountToPool: 1
+    objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
+      type: 2}
+    shouldExpand: 1
+  - amountToPool: 1
+    objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
+      type: 2}
+    shouldExpand: 1
+  - amountToPool: 1
+    objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
+      type: 2}
+    shouldExpand: 1
+  - amountToPool: 1
+    objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
+      type: 2}
+    shouldExpand: 1
   - amountToPool: 1
     objectToPool: {fileID: 1179086470470778, guid: cdac6340852372643ac44dc9f0b16ece,
       type: 2}

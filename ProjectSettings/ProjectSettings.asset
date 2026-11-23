@@ -160,7 +160,7 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.hmanstudio.samuraiswipe
   buildNumber: {}
-  AndroidBundleVersionCode: 20
+  AndroidBundleVersionCode: 23
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 25
   AndroidPreferredInstallLocation: 1

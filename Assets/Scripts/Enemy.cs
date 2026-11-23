@@ -2,6 +2,7 @@ using Assets.Scripts.GoapAttributeComponents;
 using Assets.Scripts.GoapEnemyActions;
 using Assets.Scripts.GoapHeroActions;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
